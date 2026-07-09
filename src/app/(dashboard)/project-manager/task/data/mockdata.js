@@ -1,0 +1,38 @@
+export const tasksData = [
+  {
+    id: 1,
+    title: "Design Login Page",
+    project: "Project Management System",
+    assigned: "Ram",
+    due: "2026-07-20",
+    priority: "High",
+    status: "Todo",
+  },
+  {
+    id: 2,
+    title: "Build Dashboard",
+    project: "Project Management System",
+    assigned: "Hari",
+    due: "2026-07-24",
+    priority: "Medium",
+    status: "In Progress",
+  },
+  {
+    id: 3,
+    title: "API Testing",
+    project: "Project Management System",
+    assigned: "Ganesh",
+    due: "2026-07-15",
+    priority: "Low",
+    status: "Completed",
+  },
+  {
+    id: 4,
+    title: "Deploy to Production",
+    project: "Project Management System",
+    assigned: "Shiva",
+    due: "2026-07-30",
+    priority: "High",
+    status: "Todo",
+  },
+];

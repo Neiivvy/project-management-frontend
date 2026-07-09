@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Co-Work",
+  title: "Project-Clarity",
   description: "Collaborative Project Management Hub",
 };
 

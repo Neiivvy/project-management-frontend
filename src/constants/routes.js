@@ -5,6 +5,7 @@ export const Contact_route = "/contact";
 export const Login_route = "/login";
 export const Register_route = "/register";
 export const Forgot_password_route = "/forgot-password";
+export const AddProject_route = "/project-manager/projects/add";
 
 export const navMenu = [
   {

@@ -1,29 +1,490 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import useAuthStore from "@/store/authStore";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Navbar from "@/components/dashboard/Navbar";
+import {
+  FiFolder,
+  FiClock,
+  FiAlertTriangle,
+  FiUsers,
+  FiCheckCircle,
+  FiCalendar,
+  FiChevronRight,
+  FiFlag,
+  FiTrendingUp,
+} from "react-icons/fi";
 
-export default function ProjectManagerPage() {
+const CURRENT_USER = "Aashish";
+
+const MY_PROJECTS = [
+  {
+    name: "Riverside Housing Portal",
+    progress: 78,
+    status: "On track",
+    deadline: "Jul 18",
+    tasksLeft: 4,
+  },
+  {
+    name: "Inventory Sync API",
+    progress: 32,
+    status: "At risk",
+    deadline: "Jul 11",
+    tasksLeft: 11,
+  },
+  {
+    name: "Staff Onboarding App",
+    progress: 95,
+    status: "On track",
+    deadline: "Jul 09",
+    tasksLeft: 1,
+  },
+  {
+    name: "Payments Reconciliation",
+    progress: 54,
+    status: "Behind",
+    deadline: "Jul 22",
+    tasksLeft: 7,
+  },
+  {
+    name: "MongoDB Integration",
+    progress: 60,
+    status: "On track",
+    deadline: "Jul 30",
+    tasksLeft: 5,
+  },
+];
+
+const PENDING_TASKS = [
+  {
+    title: "Review API contract for /orders endpoint",
+    project: "Inventory Sync API",
+    due: "Today",
+    priority: "High",
+  },
+  {
+    title: "Prepare demo build for client walkthrough",
+    project: "Riverside Housing Portal",
+    due: "Tomorrow",
+    priority: "Medium",
+  },
+  {
+    title: "Write migration script for staff roles table",
+    project: "Staff Onboarding App",
+    due: "Jul 10",
+    priority: "Medium",
+  },
+  {
+    title: "Draft reconciliation edge-case tests",
+    project: "Payments Reconciliation",
+    due: "Jul 12",
+    priority: "Low",
+  },
+  {
+    title: "Set up MongoDB replica set locally",
+    project: "MongoDB Integration",
+    due: "Jul 13",
+    priority: "Low",
+  },
+];
+
+const OVERDUE_TASKS = [
+  {
+    title: "Fix pagination bug on inventory list",
+    project: "Inventory Sync API",
+    assignee: "Nikita D.",
+    daysOverdue: 3,
+  },
+  {
+    title: "Get sign-off on housing form UX",
+    project: "Riverside Housing Portal",
+    assignee: "Sagar S.",
+    daysOverdue: 1,
+  },
+  {
+    title: "Resolve failing reconciliation unit tests",
+    project: "Payments Reconciliation",
+    assignee: "Shovit R.",
+    daysOverdue: 5,
+  },
+];
+
+const TEAM_PROGRESS = [
+  { name: "Sagar Shrestha", role: "Designer", completed: 42, assigned: 48 },
+  { name: "Nikita Dangal", role: "Engineer", completed: 35, assigned: 50 },
+  { name: "Shovit Regmi", role: "Engineer", completed: 51, assigned: 55 },
+  { name: "Pankaj Rajbanshi", role: "PM", completed: 28, assigned: 30 },
+  { name: "Sumana Ranjit", role: "QA", completed: 33, assigned: 40 },
+];
+
+const TASK_BREAKDOWN = [
+  { label: "Completed", value: 96, tone: "bg-emerald-500", hex: "#10b981" },
+  { label: "Pending", value: 42, tone: "bg-amber-400", hex: "#fbbf24" },
+  { label: "Overdue", value: 12, tone: "bg-rose-500", hex: "#f43f5e" },
+];
+const TASK_TOTAL = TASK_BREAKDOWN.reduce((sum, t) => sum + t.value, 0);
+
+const STATUS_FILTERS = ["All", "On track", "At risk", "Behind"];
+
+const statusStyles = {
+  "On track": "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
+  "At risk": "bg-amber-50 text-amber-700 ring-amber-600/20",
+  Behind: "bg-rose-50 text-rose-700 ring-rose-600/20",
+};
+
+const priorityStyles = {
+  High: "bg-rose-500",
+  Medium: "bg-amber-400",
+  Low: "bg-slate-300",
+};
+
+const toneStyles = {
+  indigo: "bg-indigo-50 text-indigo-600",
+  emerald: "bg-emerald-50 text-emerald-600",
+  amber: "bg-amber-50 text-amber-600",
+  rose: "bg-rose-50 text-rose-600",
+};
+
+export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
+  const [filter, setFilter] = useState("All");
+
+  const visibleProjects = useMemo(
+    () =>
+      filter === "All"
+        ? MY_PROJECTS
+        : MY_PROJECTS.filter((p) => p.status === filter),
+    [filter],
+  );
+
+  const teamAvg = Math.round(
+    (TEAM_PROGRESS.reduce((sum, m) => sum + m.completed / m.assigned, 0) /
+      TEAM_PROGRESS.length) *
+      100,
+  );
+
+  const summary = [
+    {
+      label: "My projects",
+      value: String(MY_PROJECTS.length),
+      icon: FiFolder,
+      tone: "indigo",
+    },
+    {
+      label: "Pending tasks",
+      value: String(PENDING_TASKS.length),
+      icon: FiClock,
+      tone: "amber",
+    },
+    {
+      label: "Overdue",
+      value: String(OVERDUE_TASKS.length),
+      icon: FiAlertTriangle,
+      tone: "rose",
+    },
+    {
+      label: "Team progress",
+      value: `${teamAvg}%`,
+      icon: FiUsers,
+      tone: "emerald",
+    },
+  ];
 
   return (
-    <div className="flex min-h-screen bg-[#f7f6f6]">
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col">
-        <Navbar />
-
-        <main className="flex-1 p-8">
-          <h1 className="text-2xl font-bold text-[#181d19]">
-            Welcome, {user?.name}
+    <div>
+      {/* Header */}
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mx-auto max-w-7xl bg-slate-50  py-6 text-slate-900 sm:px-6">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Welcome back, {user?.name}
           </h1>
-
-          <p className="mt-2 text-[#404943]">
-            Project Manager Dashboard
+          <p className="mt-1 text-sm text-slate-500">
+            Here&rsquo;s what&rsquo;s happening across your projects today.
           </p>
-        </main>
+        </div>
+      </div>
+
+      {/* Summary cards */}
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {summary.map((s) => (
+          <div
+            key={s.label}
+            className="rounded-xl border border-slate-200 bg-white p-4"
+          >
+            <span
+              className={`flex h-9 w-9 items-center justify-center rounded-lg ${toneStyles[s.tone]}`}
+            >
+              <s.icon className="h-4.5 w-4.5" />
+            </span>
+            <p className="mt-3 text-2xl font-semibold tracking-tight tabular-nums">
+              {s.value}
+            </p>
+            <p className="text-sm text-slate-500">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Task breakdown donut */}
+        <div className="rounded-xl border border-slate-200 bg-white p-5 lg:col-span-1">
+          <h2 className="text-sm font-semibold">Task status breakdown</h2>
+
+          <div className="mt-5 flex justify-center">
+            <DonutChart segments={TASK_BREAKDOWN} total={TASK_TOTAL} />
+          </div>
+
+          <ul className="mt-5 space-y-2">
+            {TASK_BREAKDOWN.map((t) => (
+              <li
+                key={t.label}
+                className="flex items-center justify-between text-sm"
+              >
+                <span className="flex items-center gap-2 text-slate-600">
+                  <span className={`h-2.5 w-2.5 rounded-full ${t.tone}`} />
+                  {t.label}
+                </span>
+                <span className="font-medium tabular-nums text-slate-900">
+                  {t.value}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* My projects */}
+        <div className="rounded-xl border border-slate-200 bg-white lg:col-span-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
+            <h2 className="text-sm font-semibold">My projects</h2>
+            <div className="flex flex-wrap gap-3 ">
+              {STATUS_FILTERS.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`rounded-full px-5 py-1 text-xs font-medium transition ${
+                    filter === f
+                      ? "bg-indigo-600 text-white"
+                      : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {visibleProjects.map((p) => (
+              <div key={p.name} className="px-5 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="truncate text-sm font-medium text-slate-900">
+                    {p.name}
+                  </p>
+                  <span
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${statusStyles[p.status]}`}
+                  >
+                    {p.status}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center gap-3">
+                  <div className="h-1.5 w-full rounded-full bg-slate-100">
+                    <div
+                      className="h-1.5 rounded-full bg-indigo-500"
+                      style={{ width: `${p.progress}%` }}
+                    />
+                  </div>
+                  <span className="w-10 shrink-0 text-right text-xs text-slate-400">
+                    {p.progress}%
+                  </span>
+                </div>
+                <div className="mt-1.5 flex items-center gap-3 text-xs text-slate-400">
+                  <span>Due {p.deadline}</span>
+                  <span>&middot;</span>
+                  <span>
+                    {p.tasksLeft} task{p.tasksLeft === 1 ? "" : "s"} left
+                  </span>
+                </div>
+              </div>
+            ))}
+            {visibleProjects.length === 0 && (
+              <p className="px-5 py-8 text-center text-sm text-slate-400">
+                No projects match &ldquo;{filter}&rdquo;.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Team progress */}
+        <div className="rounded-xl border border-slate-200 bg-white lg:col-span-2">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+            <h2 className="text-sm font-semibold">Team progress</h2>
+            <span className="flex items-center gap-1 text-xs text-slate-400">
+              <FiTrendingUp className="h-3.5 w-3.5" />
+              This sprint
+            </span>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {TEAM_PROGRESS.map((m) => {
+              const rate = Math.round((m.completed / m.assigned) * 100);
+              return (
+                <div key={m.name} className="flex items-center gap-4 px-5 py-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
+                    {m.name[0]}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-slate-900">
+                      {m.name}
+                    </p>
+                    <p className="text-xs text-slate-400">{m.role}</p>
+                  </div>
+                  <div className="hidden w-32 sm:block">
+                    <div className="h-1.5 w-full rounded-full bg-slate-100">
+                      <div
+                        className="h-1.5 rounded-full bg-emerald-500"
+                        style={{ width: `${rate}%` }}
+                      />
+                    </div>
+                  </div>
+                  <span className="w-16 shrink-0 text-right text-xs text-slate-500 tabular-nums">
+                    {m.completed}/{m.assigned}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Pending tasks */}
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold">Pending tasks</h2>
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
+              {PENDING_TASKS.length}
+            </span>
+          </div>
+          <ul className="mt-3 divide-y divide-slate-100">
+            {PENDING_TASKS.map((t, i) => (
+              <li key={i} className="flex items-start gap-2.5 py-3 first:pt-3">
+                <span
+                  className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${priorityStyles[t.priority]}`}
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-slate-900">
+                    {t.title}
+                  </p>
+                  <p className="mt-0.5 text-xs text-slate-400">
+                    {t.project} &middot; {t.due}
+                  </p>
+                </div>
+                <FiChevronRight className="mt-1 h-3.5 w-3.5 shrink-0 text-slate-300" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Overdue */}
+      <div className="mt-6 rounded-xl border border-rose-100 bg-white">
+        <div className="flex items-center justify-between border-b border-rose-50 px-5 py-4">
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+            <FiFlag className="h-4 w-4 text-rose-500" />
+            Overdue tasks
+          </h2>
+          <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-600">
+            {OVERDUE_TASKS.length} need attention
+          </span>
+        </div>
+        <div className="divide-y divide-slate-100">
+          {OVERDUE_TASKS.map((t, i) => (
+            <div
+              key={i}
+              className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
+            >
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-slate-900">{t.title}</p>
+                <p className="mt-0.5 text-xs text-slate-400">
+                  {t.project} &middot; assigned to {t.assignee}
+                </p>
+              </div>
+              <span className="flex shrink-0 items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">
+                <FiAlertTriangle className="h-3 w-3" />
+                {t.daysOverdue}d overdue
+              </span>
+            </div>
+          ))}
+          {OVERDUE_TASKS.length === 0 && (
+            <div className="flex items-center gap-2 px-5 py-8 text-sm text-slate-400">
+              <FiCheckCircle className="h-4 w-4 text-emerald-500" />
+              Nothing overdue — great work.
+            </div>
+          )}
+        </div>
       </div>
     </div>
+  );
+}
+
+// ---------- Small inline SVG donut chart (no chart library needed) ----------
+function DonutChart({ segments, total }) {
+  const radius = 52;
+  const stroke = 16;
+  const circumference = 2 * Math.PI * radius;
+
+  return (
+    <svg width="140" height="140" viewBox="0 0 140 140">
+      <g transform="rotate(-90 70 70)">
+        <circle
+          cx="70"
+          cy="70"
+          r={radius}
+          fill="none"
+          stroke="#f1f5f9"
+          strokeWidth={stroke}
+        />
+        {segments.map((seg, index) => {
+          const fraction = seg.value / total;
+          const dash = fraction * circumference;
+          const gap = circumference - dash;
+          const offset = segments
+            .slice(0, index)
+            .reduce(
+              (sum, item) => sum + (item.value / total) * circumference,
+              0,
+            );
+
+          return (
+            <circle
+              key={seg.label}
+              cx="70"
+              cy="70"
+              r={radius}
+              fill="none"
+              stroke={seg.hex}
+              strokeWidth={stroke}
+              strokeDasharray={`${dash} ${gap}`}
+              strokeDashoffset={-offset}
+              strokeLinecap="butt"
+            />
+          );
+        })}
+      </g>
+      <text
+        x="70"
+        y="66"
+        textAnchor="middle"
+        className="fill-slate-900 font-semibold"
+        style={{ fontSize: "22px" }}
+      >
+        {total}
+      </text>
+      <text
+        x="70"
+        y="86"
+        textAnchor="middle"
+        className="fill-slate-400"
+        style={{ fontSize: "11px" }}
+      >
+        total tasks
+      </text>
+    </svg>
   );
 }
