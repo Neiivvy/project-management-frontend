@@ -19,8 +19,7 @@ export default function UsersPage() {
     async function loadUsers() {
       try {
         const data = await fetchUsersApi();
-
-        const formattedUsers = data.users.map((user) => ({
+        const formattedUsers = data.data.map((user) => ({
           id: user._id,
           name: user.name,
           email: user.email,

@@ -16,7 +16,7 @@ const useUsersStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const data = await fetchUsersApi();
-      set({ users: data.users ?? [], isLoading: false });
+      set({ users: data.data ?? [], isLoading: false });
     } catch (err) {
       set({
         error: err?.response?.data?.message || "Failed to load users",
