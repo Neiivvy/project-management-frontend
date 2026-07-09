@@ -1,4 +1,5 @@
 import { ROLE } from "@/constants/roles";
+import { adminNavItems } from "@/constants/routes";
 
 export const getDashboardRoute = (role) => {
   switch (role) {
@@ -31,12 +32,7 @@ export const getPanelTitle = (role) => {
 export const getSidebarItems = (role) => {
   switch (role) {
     case ROLE.ADMIN:
-      return [
-        { label: "Dashboard", route: "/admin" },
-        { label: "Users", route: "/admin/users" },
-        { label: "Projects", route: "/admin/projects" },
-        { label: "Settings", route: "/admin/settings" },
-      ];
+  return adminNavItems;
 
     case ROLE.PROJECT_MANAGER:
       return [
