@@ -1,35 +1,78 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import ProjectStatsBar from "@/components/projects/ProjectStatsBar";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import ProjectGrid from "@/components/projects/ProjectGrid";
 import Pagination from "@/components/shared/Pagination";
-import { MOCK_PROJECTS } from "@/constants/adminMockData";
+
+import useProjectStore from "@/store/useProjectStore";
 
 const PAGE_SIZE = 6;
 
 export default function ProjectsPage() {
-  const [projects] = useState(MOCK_PROJECTS);
+  const { projects, fetchProjects, isLoading, error } = useProjectStore();
+
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [view, setView] = useState("grid");
   const [page, setPage] = useState(1);
 
-  const filtered = useMemo(() => {
-    return projects.filter((p) => {
-      const matchesSearch =
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.manager.toLowerCase().includes(search.toLowerCase());
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
-      const matchesStatus = status === "all" || p.status === status;
+  // Map backend response to match the UI
+ const projectList = useMemo(() => {
+  return projects.map((project) => ({
+    id: project._id,
+    name: project.title,
+    description: project.description || "No description",
+
+    manager: project.manager?.name || "Unknown",
+
+    status: project.status,
+
+    dueDate: project.deadline || new Date(),
+
+    // Fake values until backend supports them
+    progress: 0,
+    priority: "low",
+
+    team:
+      project.teamMembers?.map((member) => ({
+        id: member._id,
+        name: member.name,
+      })) || [],
+
+    tasksDone: 0,
+    tasksTotal: 0,
+  }));
+}, [projects]);
+
+  const filtered = useMemo(() => {
+    return projectList.filter((project) => {
+      const matchesSearch =
+        project.name.toLowerCase().includes(search.toLowerCase()) ||
+        project.manager.toLowerCase().includes(search.toLowerCase());
+
+      const matchesStatus =
+        status === "all" || project.status === status;
 
       return matchesSearch && matchesStatus;
     });
-  }, [projects, search, status]);
+  }, [projectList, search, status]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filtered.length / PAGE_SIZE)
+  );
+
+  const pageItems = filtered.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE
+  );
 
   function handleFilterChange(setter) {
     return (value) => {
@@ -50,7 +93,7 @@ export default function ProjectsPage() {
         </p>
       </header>
 
-      <ProjectStatsBar projects={projects} />
+      <ProjectStatsBar projects={projectList} />
 
       <section
         className="
@@ -70,18 +113,30 @@ export default function ProjectsPage() {
           onStatusChange={handleFilterChange(setStatus)}
           view={view}
           onViewChange={setView}
-          onNewProject={() => console.log("open new-project modal")}
+          onNewProject={() => console.log("Open Create Project Modal")}
         />
 
-        <ProjectGrid projects={pageItems} view={view} />
+        {isLoading ? (
+          <div className="py-20 text-center text-gray-500">
+            Loading projects...
+          </div>
+        ) : error ? (
+          <div className="py-20 text-center text-red-500">
+            {error}
+          </div>
+        ) : (
+          <>
+            <ProjectGrid projects={pageItems} view={view} />
 
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          totalItems={filtered.length}
-          pageSize={PAGE_SIZE}
-        />
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              totalItems={filtered.length}
+              pageSize={PAGE_SIZE}
+            />
+          </>
+        )}
       </section>
     </div>
   );

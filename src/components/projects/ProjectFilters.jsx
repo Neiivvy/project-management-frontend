@@ -4,7 +4,12 @@ import { Plus } from "lucide-react";
 import SearchInput from "@/components/shared/SearchInput";
 import ViewToggle from "@/components/projects/ViewToggle";
 
-const STATUS_OPTIONS = ["all", "active", "at-risk", "on-hold", "completed"];
+const STATUS_OPTIONS = [
+  { value: "all", label: "All Statuses" },
+  { value: "planning", label: "Planning" },
+  { value: "active", label: "Active" },
+  { value: "completed", label: "Completed" },
+];
 
 export default function ProjectFilters({
   search,
@@ -44,18 +49,13 @@ export default function ProjectFilters({
             hover:border-[#b8cdc3]
           "
         >
-          {STATUS_OPTIONS.map((s) => (
+          {STATUS_OPTIONS.map((option) => (
             <option
-              key={s}
-              value={s}
+              key={option.value}
+              value={option.value}
               className="bg-white text-[#2f3a36]"
             >
-              {s === "all"
-                ? "All Statuses"
-                : s
-                    .split("-")
-                    .map((w) => w[0].toUpperCase() + w.slice(1))
-                    .join(" ")}
+              {option.label}
             </option>
           ))}
         </select>

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+
 import useUsersStore from "@/store/useUsersStore";
+
 import RolesToolbar from "@/components/admin/roles/RolesToolbar";
 import UsersRolesTable from "@/components/admin/roles/UsersRolesTable";
 import ConfirmRoleChangeModal from "@/components/admin/roles/ConfirmRoleChangeModal";
@@ -18,42 +20,65 @@ const RolesPage = () => {
     setRoleFilter,
     fetchUsers,
     promoteUser,
+    // demoteUser, // Uncomment once backend API is implemented
   } = useUsersStore();
 
   const [pendingUser, setPendingUser] = useState(null);
+  const [pendingAction, setPendingAction] = useState(null);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
   const filteredUsers = useMemo(() => {
-    return users.filter((u) => {
-      const matchesRole = roleFilter === "all" || u.role === roleFilter;
-      const q = searchQuery.trim().toLowerCase();
+    return users.filter((user) => {
+      const matchesRole =
+        roleFilter === "all" || user.role === roleFilter;
+
+      const query = searchQuery.trim().toLowerCase();
+
       const matchesSearch =
-        !q || u.name?.toLowerCase().includes(q) || u.email?.toLowerCase().includes(q);
+        !query ||
+        user.name?.toLowerCase().includes(query) ||
+        user.email?.toLowerCase().includes(query);
+
       return matchesRole && matchesSearch;
     });
   }, [users, roleFilter, searchQuery]);
 
   const handleConfirm = async () => {
     if (!pendingUser) return;
-    await promoteUser(pendingUser._id);
+
+    if (pendingAction === "promote") {
+      await promoteUser(pendingUser._id);
+    }
+
+    // Enable later when backend route exists
+    /*
+    if (pendingAction === "demote") {
+      await demoteUser(pendingUser._id);
+    }
+    */
+
     setPendingUser(null);
+    setPendingAction(null);
   };
 
   return (
-    <div className="min-h-screen bg-white px-6 py-8">
-      <div className="mx-auto max-w-5xl">
+    <div>
+      <div className="mx-auto max-w-6xl">
         <div className="mb-6">
-          <h1 className="text-xl font-semibold text-gray-900">Users & Roles</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">
+            Users & Roles
+          </h1>
+
           <p className="mt-1 text-sm text-gray-500">
-            View team members and promote them to Project Manager.
+            Manage user roles and permissions across the system.
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 rounded-lg border border-red-100 bg-red-50 px-4 py-2 text-sm text-red-600">
+          <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
             {error}
           </div>
         )}
@@ -66,14 +91,17 @@ const RolesPage = () => {
         />
 
         {isLoading ? (
-          <div className="rounded-xl border border-gray-200 bg-white px-5 py-10 text-center text-gray-400">
+          <div className="rounded-xl border border-gray-200 bg-white py-16 text-center text-gray-400">
             Loading users...
           </div>
         ) : (
           <UsersRolesTable
             users={filteredUsers}
-            onRequestPromote={setPendingUser}
             isUpdatingId={isUpdatingId}
+            onRequestAction={(user, action) => {
+              setPendingUser(user);
+              setPendingAction(action);
+            }}
           />
         )}
       </div>
@@ -81,7 +109,11 @@ const RolesPage = () => {
       <ConfirmRoleChangeModal
         open={!!pendingUser}
         user={pendingUser}
-        onCancel={() => setPendingUser(null)}
+        action={pendingAction}
+        onCancel={() => {
+          setPendingUser(null);
+          setPendingAction(null);
+        }}
         onConfirm={handleConfirm}
         isSubmitting={!!isUpdatingId}
       />

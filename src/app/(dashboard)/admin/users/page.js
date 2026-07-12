@@ -5,7 +5,7 @@ import UserStatsBar from "@/components/users/UserStatsBar";
 import UserFilters from "@/components/users/UserFilters";
 import UserTable from "@/components/users/UserTable";
 import Pagination from "@/components/shared/Pagination";
-import { fetchUsersApi } from "@/api/users";
+import { fetchUsersApi } from "@/api/admin/users";
 
 const PAGE_SIZE = 6;
 

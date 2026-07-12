@@ -87,7 +87,9 @@ export default function ProjectCard({ project, index = 0 }) {
           className={`flex items-center gap-1 text-[11px] font-medium ${PRIORITY_STYLES[project.priority]}`}
         >
           <Flag size={11} />
-          {project.priority[0].toUpperCase() + project.priority.slice(1)}
+        {project.priority
+  ? project.priority[0].toUpperCase() + project.priority.slice(1)
+  : "N/A"}
         </span>
       </div>
 

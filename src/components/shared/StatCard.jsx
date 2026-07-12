@@ -1,14 +1,12 @@
 "use client";
 
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+
 
 export default function StatCard({
   icon: Icon,
   label,
   value,
   trend,
-  trendLabel,
-  accent = "green",
 }) {
   const isUp = typeof trend === "number" && trend >= 0;
 
@@ -83,30 +81,6 @@ export default function StatCard({
           </div>
         )}
       </div>
-
-      {typeof trend === "number" && (
-        <div className="relative mt-3 flex items-center gap-1 text-xs">
-          <span
-            className={`flex items-center gap-0.5 font-medium ${
-              isUp
-                ? "text-[#2d8a5a]"
-                : "text-[#d95d39]"
-            }`}
-          >
-            {isUp ? (
-              <ArrowUpRight size={13} />
-            ) : (
-              <ArrowDownRight size={13} />
-            )}
-
-            {Math.abs(trend)}%
-          </span>
-
-          <span className="text-[#66756e]">
-            {trendLabel || "vs last month"}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

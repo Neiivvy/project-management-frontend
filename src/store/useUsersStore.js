@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { fetchUsersApi, promoteUserApi } from "@/api/users";
-
+import { fetchUsersApi, promoteUserApi , demoteUserApi } from "@/api/admin/users";
 const useUsersStore = create((set, get) => ({
   users: [],
   isLoading: false,
@@ -44,6 +43,35 @@ const useUsersStore = create((set, get) => ({
       });
     }
   },
+
+  demoteUser: async (userId) => {
+  const prevUsers = get().users;
+
+  set({
+    isUpdatingId: userId,
+    users: prevUsers.map((u) =>
+      u._id === userId
+        ? { ...u, role: "member" }
+        : u
+    ),
+  });
+
+  try {
+    await demoteUserApi(userId);
+
+    set({
+      isUpdatingId: null,
+    });
+  } catch (err) {
+    set({
+      users: prevUsers,
+      isUpdatingId: null,
+      error:
+        err?.response?.data?.message ||
+        "Failed to demote user",
+    });
+  }
+},
 }));
 
 export default useUsersStore;
