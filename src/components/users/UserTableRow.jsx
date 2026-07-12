@@ -39,7 +39,7 @@ export default function UserTableRow({
       {/* User */}
       <td className="py-3 pl-4 pr-3 sm:pl-5">
         <Link
-          href={`/admin/users/${user.id}`}
+          href={`/admin/users/${user._id}`}
           className="flex min-w-0 items-center gap-3"
         >
           <Avatar name={user.name} />

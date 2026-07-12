@@ -20,7 +20,7 @@ const RolesPage = () => {
     setRoleFilter,
     fetchUsers,
     promoteUser,
-    // demoteUser, // Uncomment once backend API is implemented
+    demoteUser, 
   } = useUsersStore();
 
   const [pendingUser, setPendingUser] = useState(null);
@@ -46,23 +46,17 @@ const RolesPage = () => {
     });
   }, [users, roleFilter, searchQuery]);
 
-  const handleConfirm = async () => {
-    if (!pendingUser) return;
+const handleConfirm = async () => {
+  if (!pendingUser) return;
 
-    if (pendingAction === "promote") {
-      await promoteUser(pendingUser._id);
-    }
+  if (pendingUser.action === "promote") {
+    await promoteUser(pendingUser._id);
+  } else {
+    await demoteUser(pendingUser._id);
+  }
 
-    // Enable later when backend route exists
-    /*
-    if (pendingAction === "demote") {
-      await demoteUser(pendingUser._id);
-    }
-    */
-
-    setPendingUser(null);
-    setPendingAction(null);
-  };
+  setPendingUser(null);
+};
 
   return (
     <div>

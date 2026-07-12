@@ -71,10 +71,10 @@ export default function UserActionsMenu({
   ];
 
   return (
-    <div
-      className="relative inline-block"
-      ref={containerRef}
-    >
+   <div
+  ref={containerRef}
+  className="relative inline-block"
+>
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Open actions menu"
@@ -88,12 +88,11 @@ export default function UserActionsMenu({
       </button>
 
       {open && (
-        <div
-          ref={menuRef}
-          className={`
-            absolute
-            right-0
-            z-30
+       <div
+  ref={menuRef}
+  className={`
+    fixed
+    z-999
             w-44
             overflow-hidden
             rounded-xl
@@ -104,7 +103,7 @@ export default function UserActionsMenu({
             backdrop-blur-xl
             animate-[fadeSlide_0.15s_ease-out]
             origin-top-right
-            ${openUp ? "bottom-9" : "top-9"}
+          right-0
           `}
         >
           {items.map((item) => (

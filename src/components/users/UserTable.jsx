@@ -37,8 +37,8 @@ export default function UserTable({
   }
 
   return (
-    <div className="w-full rounded-2xl border border-[#dbe6e1] bg-white">
-  <div className="overflow-x-auto">
+<div className="overflow-x-auto">
+  <div className="overflow-visible">
     <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-[#dbe6e1] bg-[#f7fbf9]">
@@ -61,14 +61,14 @@ export default function UserTable({
 
           <tbody>
             {users.map((user, i) => (
-              <UserTableRow
-                key={user.id}
-                user={user}
-                index={i}
-                onView={onView}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
+           <UserTableRow
+  key={user._id}
+  user={user}
+  index={i}
+  onView={onView}
+  onEdit={onEdit}
+  onDelete={onDelete}
+/>
             ))}
           </tbody>
         </table>

@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { fetchUsersApi, promoteUserApi , demoteUserApi } from "@/api/admin/users";
+import { fetchUsersApi, promoteUserApi , demoteUserApi ,  updateUserApi,
+  deleteUserApi} from "@/api/admin/users";
 const useUsersStore = create((set, get) => ({
   users: [],
   isLoading: false,
@@ -69,6 +70,73 @@ const useUsersStore = create((set, get) => ({
       error:
         err?.response?.data?.message ||
         "Failed to demote user",
+    });
+  }
+},
+
+updateUser: async (userId, body) => {
+  const prevUsers = get().users;
+
+  set({
+    isUpdatingId: userId,
+    error: null,
+  });
+
+  try {
+    const response = await updateUserApi(userId, body);
+
+    const updatedUser = response.data;
+
+    set({
+      users: prevUsers.map((user) =>
+        user._id === userId
+          ? {
+              ...user,
+              name: updatedUser.name,
+              email: updatedUser.email,
+              role: updatedUser.role,
+            }
+          : user
+      ),
+      isUpdatingId: null,
+    });
+
+  } catch (err) {
+    set({
+      users: prevUsers,
+      isUpdatingId: null,
+      error:
+        err?.response?.data?.message ||
+        "Failed to update user",
+    });
+  }
+},
+
+
+deleteUser: async (userId) => {
+  const prevUsers = get().users;
+
+  set({
+    isUpdatingId: userId,
+    error: null,
+  });
+
+  try {
+    await deleteUserApi(userId);
+
+    set({
+      users: prevUsers.filter(
+        (user) => user._id !== userId
+      ),
+      isUpdatingId: null,
+    });
+
+  } catch (err) {
+    set({
+      isUpdatingId: null,
+      error:
+        err?.response?.data?.message ||
+        "Failed to delete user",
     });
   }
 },
