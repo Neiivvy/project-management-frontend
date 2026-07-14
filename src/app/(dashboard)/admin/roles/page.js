@@ -49,15 +49,15 @@ const RolesPage = () => {
 const handleConfirm = async () => {
   if (!pendingUser) return;
 
-  if (pendingUser.action === "promote") {
+  if (pendingAction === "promote") {
     await promoteUser(pendingUser._id);
-  } else {
+  } else if (pendingAction === "demote") {
     await demoteUser(pendingUser._id);
   }
 
   setPendingUser(null);
+  setPendingAction(null);
 };
-
   return (
     <div>
       <div className="mx-auto max-w-6xl">
