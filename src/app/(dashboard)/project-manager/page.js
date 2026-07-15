@@ -100,10 +100,11 @@ const priorityStyles = {
 };
 
 const toneStyles = {
-  indigo: "bg-indigo-50 text-indigo-600",
-  emerald: "bg-emerald-50 text-emerald-600",
-  amber: "bg-amber-50 text-amber-600",
-  rose: "bg-rose-50 text-rose-600",
+  indigo: "bg-indigo-50 text-[#2d6a4f",
+  emerald: "bg-emerald-50 text-[#2d6a4f",
+  amber: "bg-amber-50 text-[#2d6a4f",
+  rose: "bg-rose-50 text-[#2d6a4f",
+  green: "bg-indigo-50 text-[#2d6a4f] ",
 };
 
 export default function DashboardPage() {
@@ -200,7 +201,7 @@ export default function DashboardPage() {
       label: "My projects",
       value: totalProjects,
       icon: FiFolder,
-      tone: "indigo",
+      tone: "green",
     },
     {
       label: "Pending tasks",
