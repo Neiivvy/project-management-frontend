@@ -1,6 +1,6 @@
 "use client";
 
-import useAuthStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import Sidebar from "@/components/dashboard/Sidebar";
 import Navbar from "@/components/dashboard/Navbar";
 
@@ -19,9 +19,7 @@ export default function AdminPage() {
             Welcome, {user?.name}
           </h1>
 
-          <p className="mt-2 text-[#404943]">
-            Admin Dashboard
-          </p>
+          <p className="mt-2 text-[#404943]">Admin Dashboard</p>
         </main>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 export default function TaskBoard({ tasks }) {
-  const columns = ["Todo", "In Progress", "Completed"];
+  const columns = ["To Do", "Review", "In Progress", "Completed"];
 
   return (
     <div className="grid lg:grid-cols-3 gap-6">

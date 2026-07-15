@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import useProjectStore from "@/store/useProjectStore";
+import { useMemo, useState } from "react";
+import { FaRProject, FaTasks, FaThinkPeaks } from "react-icons/fa";
+import { Fa0 } from "react-icons/fa6";
 import {
   FiDownload,
   FiPrinter,
@@ -12,14 +15,8 @@ import {
   FiTrendingUp,
   FiChevronDown,
   FiFolder,
+  FiFlag,
 } from "react-icons/fi";
-
-const summary = [
-  { label: "Total tasks", value: "312", icon: FiFolder, tone: "indigo" },
-  { label: "Completed", value: "218", icon: FiCheckCircle, tone: "emerald" },
-  { label: "In progress", value: "71", icon: FiClock, tone: "amber" },
-  { label: "Overdue", value: "23", icon: FiAlertTriangle, tone: "rose" },
-];
 
 const taskBreakdown = [
   { label: "Completed", value: 218, tone: "bg-emerald-500" },
@@ -69,6 +66,27 @@ const teamPerformance = [
   { name: "Sumana Ranjit", role: "QA", completed: 33, assigned: 40 },
 ];
 
+const OVERDUE_TASKS = [
+  {
+    title: "Fix bug on Project Clarity",
+    project: "Project Clarity",
+    assignee: "Nikita D.",
+    daysOverdue: 3,
+  },
+  {
+    title: "Review API",
+    project: "PMS API",
+    assignee: "Sagar S.",
+    daysOverdue: 1,
+  },
+  {
+    title: "Writting Project Report",
+    project: "Project Clarity App",
+    assignee: "Shovit R.",
+    daysOverdue: 5,
+  },
+];
+
 const milestones = [
   { label: "Discovery & scoping complete", date: "Jun 02", done: true },
   { label: "Design system finalized", date: "Jun 20", done: true },
@@ -91,9 +109,48 @@ const toneStyles = {
 
 const dateRanges = ["Last 7 days", "Last 30 days", "This quarter", "All time"];
 
-export default function ProjectReportPage() {
+export default function ProjectReportPage({ currentPage, projectsPerPage }) {
   const [range, setRange] = useState(dateRanges[1]);
   const [rangeOpen, setRangeOpen] = useState(false);
+  const projects = useProjectStore((state) => state.projects);
+
+  const projectStats = useMemo(
+    () => ({
+      totalProjects: projects.length,
+      completedProjects: projects.filter((p) => p.status === "completed")
+        .length,
+      activeProjects: projects.filter((p) => p.status === "active").length,
+      planningProject: projects.filter((p) => p.status === "planning").length,
+    }),
+    [projects],
+  );
+
+  const summary = [
+    {
+      label: "Total Projects",
+      value: projectStats.totalProjects,
+      icon: FiFolder,
+      tone: "indigo",
+    },
+    {
+      label: "Completed",
+      value: projectStats.completedProjects,
+      icon: FiCheckCircle,
+      tone: "emerald",
+    },
+    {
+      label: "In progress",
+      value: projectStats.activeProjects,
+      icon: FiClock,
+      tone: "amber",
+    },
+    {
+      label: "Planning",
+      value: projectStats.planningProject,
+      icon: FaTasks,
+      tone: "rose",
+    },
+  ];
 
   return (
     <div className="bg-slate-50 text-slate-900 mx-auto max-w-7xl px-4 py-2 sm:px-6">
@@ -305,6 +362,44 @@ export default function ProjectReportPage() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="mt-6 rounded-xl border border-rose-100 bg-white min-w-3xl ">
+          <div className="flex items-center justify-between border-b border-rose-50 px-5 py-4">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+              <FiFlag className="h-4 w-4 text-rose-500" />
+              Overdue tasks
+            </h2>
+            <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-600">
+              {OVERDUE_TASKS.length} need attention
+            </span>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {OVERDUE_TASKS.map((t, i) => (
+              <div
+                key={i}
+                className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-900">
+                    {t.title}
+                  </p>
+                  <p className="mt-0.5 text-xs text-slate-400">
+                    {t.project} &middot; assigned to {t.assignee}
+                  </p>
+                </div>
+                <span className="flex shrink-0 items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">
+                  <FiAlertTriangle className="h-3 w-3" />
+                  {t.daysOverdue}d overdue
+                </span>
+              </div>
+            ))}
+            {OVERDUE_TASKS.length === 0 && (
+              <div className="flex items-center gap-2 px-5 py-8 text-sm text-slate-400">
+                <FiCheckCircle className="h-4 w-4 text-emerald-500" />
+                Nothing overdue — great work.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

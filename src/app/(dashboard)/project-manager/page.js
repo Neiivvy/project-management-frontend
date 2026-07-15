@@ -1,81 +1,45 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import useAuthStore from "@/store/authStore";
+import { useEffect, useMemo, useState } from "react";
+import useAuthStore from "@/store/useAuthStore";
 import {
   FiFolder,
   FiClock,
   FiAlertTriangle,
   FiUsers,
   FiCheckCircle,
-  FiCalendar,
   FiChevronRight,
   FiFlag,
   FiTrendingUp,
 } from "react-icons/fi";
-
-const CURRENT_USER = "Aashish";
-
-const MY_PROJECTS = [
-  {
-    name: "Riverside Housing Portal",
-    progress: 78,
-    status: "On track",
-    deadline: "Jul 18",
-    tasksLeft: 4,
-  },
-  {
-    name: "Inventory Sync API",
-    progress: 32,
-    status: "At risk",
-    deadline: "Jul 11",
-    tasksLeft: 11,
-  },
-  {
-    name: "Staff Onboarding App",
-    progress: 95,
-    status: "On track",
-    deadline: "Jul 09",
-    tasksLeft: 1,
-  },
-  {
-    name: "Payments Reconciliation",
-    progress: 54,
-    status: "Behind",
-    deadline: "Jul 22",
-    tasksLeft: 7,
-  },
-  {
-    name: "MongoDB Integration",
-    progress: 60,
-    status: "On track",
-    deadline: "Jul 30",
-    tasksLeft: 5,
-  },
-];
+import { getProjects } from "@/api/projectApi";
+import Pagination from "./projects/components/Pagination";
+import { FaUserFriends } from "react-icons/fa";
+import { getTasks } from "@/api/taskApi";
+import { getUsers } from "@/api/userApi";
 
 const PENDING_TASKS = [
   {
-    title: "Review API contract for /orders endpoint",
-    project: "Inventory Sync API",
+    title: "Review API ",
+    project: "PMS API",
     due: "Today",
     priority: "High",
   },
   {
-    title: "Prepare demo build for client walkthrough",
-    project: "Riverside Housing Portal",
+    title: "Landing page",
+    project: "E-Commerce",
     due: "Tomorrow",
     priority: "Medium",
   },
   {
-    title: "Write migration script for staff roles table",
-    project: "Staff Onboarding App",
+    title: "Writting Project Report",
+    project: "Project Clarity App",
     due: "Jul 10",
     priority: "Medium",
   },
   {
-    title: "Draft reconciliation edge-case tests",
-    project: "Payments Reconciliation",
+    title: "Payment Integration",
+    project: "Esewa",
     due: "Jul 12",
     priority: "Low",
   },
@@ -89,20 +53,20 @@ const PENDING_TASKS = [
 
 const OVERDUE_TASKS = [
   {
-    title: "Fix pagination bug on inventory list",
-    project: "Inventory Sync API",
+    title: "Fix bug on Project Clarity",
+    project: "Project Clarity",
     assignee: "Nikita D.",
     daysOverdue: 3,
   },
   {
-    title: "Get sign-off on housing form UX",
-    project: "Riverside Housing Portal",
+    title: "Review API",
+    project: "PMS API",
     assignee: "Sagar S.",
     daysOverdue: 1,
   },
   {
-    title: "Resolve failing reconciliation unit tests",
-    project: "Payments Reconciliation",
+    title: "Writting Project Report",
+    project: "Project Clarity App",
     assignee: "Shovit R.",
     daysOverdue: 5,
   },
@@ -123,12 +87,10 @@ const TASK_BREAKDOWN = [
 ];
 const TASK_TOTAL = TASK_BREAKDOWN.reduce((sum, t) => sum + t.value, 0);
 
-const STATUS_FILTERS = ["All", "On track", "At risk", "Behind"];
-
 const statusStyles = {
-  "On track": "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
-  "At risk": "bg-amber-50 text-amber-700 ring-amber-600/20",
-  Behind: "bg-rose-50 text-rose-700 ring-rose-600/20",
+  planning: "bg-amber-50 text-amber-700 ring-amber-600/20",
+  active: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
+  completed: "bg-blue-50 text-blue-700 ring-blue-600/20",
 };
 
 const priorityStyles = {
@@ -148,13 +110,84 @@ export default function DashboardPage() {
   const user = useAuthStore((state) => state.user);
   const [filter, setFilter] = useState("All");
 
-  const visibleProjects = useMemo(
-    () =>
-      filter === "All"
-        ? MY_PROJECTS
-        : MY_PROJECTS.filter((p) => p.status === filter),
-    [filter],
+  const [projects, setProjects] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [tasks, setTasks] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const projectsPerPage = 5;
+
+  const indexOfLastProject = currentPage * projectsPerPage;
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+
+  const statusFilters = [
+    "All",
+    ...new Set(projects.map((project) => project.status)),
+  ];
+
+  const filteredProjects =
+    filter === "All"
+      ? projects
+      : projects.filter((project) => project.status === filter);
+
+  const currentProjects = filteredProjects.slice(
+    indexOfFirstProject,
+    indexOfLastProject,
   );
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const data = await getProjects();
+        setProjects(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadProjects();
+  }, []);
+
+  const totalProjects = projects.length;
+
+  const completedProjects = projects.filter(
+    (p) => p.status === "completed",
+  ).length;
+
+  const activeProjects = projects.filter((p) => p.status === "active").length;
+
+  const pendingProjects = projects.filter(
+    (p) => p.status === "planning",
+  ).length;
+
+  useEffect(() => {
+    async function loadTasks() {
+      try {
+        const data = await getTasks();
+        setTasks(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadTasks();
+  }, []);
+  const totalTasks = tasks.length;
+
+  useEffect(() => {
+    async function loadMembers() {
+      try {
+        const data = await getUsers();
+        console.log(data);
+
+        setUsers(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadMembers();
+  }, []);
+  const totalMembers = users.filter((user) => user.role === "member").length;
 
   const teamAvg = Math.round(
     (TEAM_PROGRESS.reduce((sum, m) => sum + m.completed / m.assigned, 0) /
@@ -165,20 +198,20 @@ export default function DashboardPage() {
   const summary = [
     {
       label: "My projects",
-      value: String(MY_PROJECTS.length),
+      value: totalProjects,
       icon: FiFolder,
       tone: "indigo",
     },
     {
       label: "Pending tasks",
-      value: String(PENDING_TASKS.length),
+      value: totalTasks,
       icon: FiClock,
       tone: "amber",
     },
     {
-      label: "Overdue",
-      value: String(OVERDUE_TASKS.length),
-      icon: FiAlertTriangle,
+      label: "Total Members",
+      value: totalMembers,
+      icon: FaUserFriends,
       tone: "rose",
     },
     {
@@ -213,7 +246,7 @@ export default function DashboardPage() {
             >
               <s.icon className="h-4.5 w-4.5" />
             </span>
-            <p className="mt-3 text-2xl font-semibold tracking-tight tabular-nums">
+            <p className="mt-3 text-2xl font-semibold tracking-tight tabular-nums ">
               {s.value}
             </p>
             <p className="text-sm text-slate-500">{s.label}</p>
@@ -222,7 +255,6 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Task breakdown donut */}
         <div className="rounded-xl border border-slate-200 bg-white p-5 lg:col-span-1">
           <h2 className="text-sm font-semibold">Task status breakdown</h2>
 
@@ -250,40 +282,41 @@ export default function DashboardPage() {
 
         <div className="rounded-xl border border-slate-200 bg-white lg:col-span-2">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
-            <h2 className="text-sm font-semibold">My projects</h2>
-            <div className="flex flex-wrap gap-3 ">
-              {STATUS_FILTERS.map((f) => (
+            <h2 className="text-sm font-semibold">My Projects</h2>
+
+            <div className="flex flex-wrap gap-3">
+              {statusFilters.map((status) => (
                 <button
-                  key={f}
-                  onClick={() => setFilter(f)}
+                  key={status}
+                  onClick={() => setFilter(status)}
                   className={`rounded-full px-5 py-1 text-xs font-medium transition ${
-                    filter === f
-                      ? "bg-indigo-600 text-white"
+                    filter === status
+                      ? " bg-[#2d6a4f] text-white"
                       : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                   }`}
                 >
-                  {f}
+                  {status}
                 </button>
               ))}
             </div>
           </div>
           <div className="divide-y divide-slate-100">
-            {visibleProjects.map((p) => (
-              <div key={p.name} className="px-5 py-4">
+            {currentProjects.map((p) => (
+              <div key={p._id} className="px-5 py-4">
                 <div className="flex items-center justify-between gap-3">
                   <p className="truncate text-sm font-medium text-slate-900">
-                    {p.name}
+                    {p.title}
                   </p>
                   <span
                     className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${statusStyles[p.status]}`}
                   >
-                    {p.status}
+                    {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
                   </span>
                 </div>
                 <div className="mt-2 flex items-center gap-3">
                   <div className="h-1.5 w-full rounded-full bg-slate-100">
                     <div
-                      className="h-1.5 rounded-full bg-indigo-500"
+                      className="h-1.5 rounded-full bg-[#2d6a4f]"
                       style={{ width: `${p.progress}%` }}
                     />
                   </div>
@@ -300,11 +333,18 @@ export default function DashboardPage() {
                 </div>
               </div>
             ))}
-            {visibleProjects.length === 0 && (
+
+            {filteredProjects.length === 0 && (
               <p className="px-5 py-8 text-center text-sm text-slate-400">
                 No projects match &ldquo;{filter}&rdquo;.
               </p>
             )}
+            <Pagination
+              totalItems={filteredProjects.length}
+              itemsPerPage={projectsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </div>
       </div>
@@ -417,7 +457,6 @@ export default function DashboardPage() {
     </div>
   );
 }
-
 function DonutChart({ segments, total }) {
   const radius = 52;
   const stroke = 16;

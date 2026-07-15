@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { login } from "@/api/auth";
-import useAuthStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { getDashboardRoute } from "@/utils/auth";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const {
@@ -28,9 +29,18 @@ export default function LoginPage() {
       console.log("Role:", response.data.user.role);
       console.log("Route:", route);
 
-      router.replace(route);
+      toast.success("Login successful!");
+
+      // Give the toast a moment to display before redirecting
+      setTimeout(() => {
+        router.replace(route);
+      }, 800);
     } catch (error) {
       console.error(error);
+
+      toast.error(
+        error?.response?.data?.message || "Login failed. Please try again.",
+      );
     }
   };
 

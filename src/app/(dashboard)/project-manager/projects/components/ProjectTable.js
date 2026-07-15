@@ -1,88 +1,180 @@
 "use client";
 
-import { FaEdit, FaEye, FaArchive } from "react-icons/fa";
+import {
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaCalendarAlt,
+  FaFolderOpen,
+} from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-export default function ProjectTable({ projects }) {
+export default function ProjectTable({
+  projects,
+  currentPage,
+  projectsPerPage,
+  onEdit,
+  onDelete,
+}) {
+  const router = useRouter();
+
+  const getInitials = (name = "") =>
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .substring(0, 2)
+      .toUpperCase();
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case "completed":
+        return "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200";
+
+      case "active":
+        return "bg-blue-100 text-blue-700 ring-1 ring-blue-200";
+
+      case "pending":
+        return "bg-amber-100 text-amber-700 ring-1 ring-amber-200";
+
+      default:
+        return "bg-slate-100 text-slate-700 ring-1 ring-slate-200";
+    }
+  };
+
+  const sortedProjects = [...projects].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  const indexOfLast = currentPage * projectsPerPage;
+  const indexOfFirst = indexOfLast - projectsPerPage;
+
+  const currentProjects = sortedProjects.slice(indexOfFirst, indexOfLast);
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-200">
-      <table className="w-full">
-        <thead className="bg-slate-100">
-          <tr className="text-sm text-slate-600">
-            <th className="px-6 py-4 text-left">Project</th>
-            <th className="px-6 py-4 text-left">Manager</th>
-            <th className="px-6 py-4 text-left">Deadline</th>
-            <th className="px-6 py-4 text-left">Status</th>
-            <th className="px-6 py-4 text-center">Action</th>
-          </tr>
-        </thead>
+    <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-100 transition-all duration-300">
+      <div className="overflow-x-auto">
+        <table className="min-w-full">
+          <thead className="sticky top-0 z-10 bg-linear-to-r from-slate-50 via-white to-slate-50 backdrop-blur-sm border-b border-slate-200">
+            <tr className="text-xs uppercase tracking-wider text-slate-500 font-semibold">
+              <th className="px-4 py-3 w-10">SN</th>
+              <th className="px-5 py-3 text-center">Project</th>
+              <th className="px-5 py-3 text-center">Members</th>
+              <th className="px-5 py-3 text-center">Deadline</th>
+              <th className="px-5 py-3 text-center">Status</th>
+              <th className="px-5 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {projects.length > 0 ? (
-            projects.map((project) => (
-              <tr
-                key={project._id}
-                className="border-t hover:bg-slate-50 transition"
-              >
-                <td className="px-6 py-5">
-                  <div>
-                    <h3 className="font-semibold text-slate-800">
-                      {project.title}
-                    </h3>
+          <tbody>
+            {projects.length > 0 ? (
+              currentProjects.map((project, index) => (
+                <tr
+                  key={index}
+                  className="group border-b border-slate-100 last:border-0 transition-all duration-300 hover:bg-emerald-50/60 hover:shadow-inner"
+                >
+                  <td className="px-4 py-3 text-slate-500">
+                    {(currentPage - 1) * projectsPerPage + index + 1}
+                  </td>
 
-                    <p className="mt-1 text-sm text-slate-500 line-clamp-2">
-                      {project.description || "No description"}
-                    </p>
+                  <td className="px-5 py-3">
+                    <div className="flex items-start gap-4 ">
+                      <div className="flex h-8 sm:min-w-8 mt-2 items-center justify-center rounded-2xl bg-linear-to-br from-[#0f5238] to-emerald-500 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
+                        <FaFolderOpen className="text-2xs" />
+                      </div>
+
+                      <div>
+                        <h3 className="text-2xs font-bold text-slate-800 group-hover:text-[#0f5238] transition">
+                          {project.title}
+                        </h3>
+
+                        <p className="mt-1 max-w-xs text-xs text-slate-500 line-clamp-2">
+                          {project.description || "No description"}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-3">
+                    <div className="flex items-center gap-3">
+                      <span className="rext-xs text-slate-700">
+                        {project.teamMembers?.length || 0}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-5">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-emerald-700">
+                      {" "}
+                      <FaCalendarAlt className="text-[#0f5238]" />
+                      <span className="text-sm">
+                        {project.deadline
+                          ? new Date(project.deadline).toLocaleDateString()
+                          : "-"}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-5">
+                    <span
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold ${getStatusColor(project.status)}`}
+                    >
+                      <div className="h-2 w-2 rounded-full bg-current opacity-80"></div>
+
+                      {project.status || "Pending"}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-5">
+                    <div className="flex justify-center gap-2 opacity-90 transition-all group-hover:opacity-100">
+                      <button
+                        title="View"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-green-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-green-700 hover:text-white"
+                        onClick={() =>
+                          router.push(
+                            `/project-manager/projects/${project._id}`,
+                          )
+                        }
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        title="Edit"
+                        onClick={() => onEdit(project)}
+                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-blue-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-blue-700 hover:text-white"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        title="Delete"
+                        onClick={() => onDelete(project)}
+                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-red-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-red-600 hover:text-white"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className="py-24 text-center">
+                  <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-50">
+                    <FaFolderOpen className="text-5xl text-[#0f5238]" />
                   </div>
-                </td>
 
-                <td className="px-6 py-5">{project.manager?.name || "-"}</td>
+                  <h2 className="mt-6 text-2xl font-bold text-slate-800">
+                    No Projects Yet
+                  </h2>
 
-                <td className="px-6 py-5">
-                  {project.deadline
-                    ? new Date(project.deadline).toLocaleDateString()
-                    : "-"}
-                </td>
-
-                <td className="px-6 py-5">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                      project.status === "completed"
-                        ? "bg-green-100 text-green-700"
-                        : project.status === "active"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-yellow-100 text-yellow-700"
-                    }`}
-                  >
-                    {project.status}
-                  </span>
-                </td>
-
-                <td className="px-6 py-5">
-                  <div className="flex justify-center gap-4">
-                    <button className="text-blue-600 transition hover:text-blue-800">
-                      <FaEye />
-                    </button>
-
-                    <button className="text-green-600 transition hover:text-green-800">
-                      <FaEdit />
-                    </button>
-
-                    <button className="text-red-600 transition hover:text-red-800">
-                      <FaArchive />
-                    </button>
-                  </div>
+                  <p className="mx-auto mt-2 max-w-sm text-slate-500">
+                    Your projects will appear here once you create them.
+                  </p>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" className="py-12 text-center text-slate-500">
-                No projects found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

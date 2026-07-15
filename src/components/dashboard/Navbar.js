@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import useAuthStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 
 import {
   FaSearch,
@@ -89,14 +89,14 @@ export default function Navbar() {
             className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 transition hover:bg-slate-50"
           >
             <div className="hidden text-right lg:block">
-              <p className="font-semibold text-[#181d19]">{user?.name}</p>
+              <p className=" text-[#181d19]">{user?.name}</p>
 
               <p className="text-xs capitalize text-slate-500">
                 {user?.role?.replaceAll("_", " ")}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0f5238] font-bold text-white">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0f5238] text-white">
               {initials}
             </div>
 
@@ -111,12 +111,12 @@ export default function Navbar() {
             <div className="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
               <div className="border-b bg-slate-50 p-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0f5238] font-bold text-white">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0f5238]  text-white">
                     {initials}
                   </div>
 
                   <div>
-                    <h3 className="font-semibold">{user?.name}</h3>
+                    <h3>{user?.name}</h3>
 
                     <p className="text-sm capitalize text-slate-500">
                       {user?.role?.replaceAll("_", " ")}

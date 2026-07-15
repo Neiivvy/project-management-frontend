@@ -6,7 +6,7 @@ export const tasksData = [
     assigned: "Ram",
     due: "2026-07-20",
     priority: "High",
-    status: "Todo",
+    status: "To Do",
   },
   {
     id: 2,
@@ -33,6 +33,6 @@ export const tasksData = [
     assigned: "Shiva",
     due: "2026-07-30",
     priority: "High",
-    status: "Todo",
+    status: "Review",
   },
 ];

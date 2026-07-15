@@ -1,5 +1,5 @@
-import TaskBoard from "../task/components/TaskBoard";
-import { tasksData } from "../task/data/mockdata";
+import TaskBoard from "../tasks/components/TaskBoard";
+import { tasksData } from "../tasks/data/mockdata";
 
 export default function ProgressPage() {
   return (

@@ -56,7 +56,7 @@ export const getSidebarItems = (role) => {
           route: "/project-manager/projects",
           icon: <FaFolderOpen />,
         },
-        { label: "Tasks", route: "/project-manager/task", icon: <FaTasks /> },
+        { label: "Tasks", route: "/project-manager/tasks", icon: <FaTasks /> },
         { label: "Team", route: "/project-manager/team", icon: <FaUsers /> },
         {
           label: "Members",

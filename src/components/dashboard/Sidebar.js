@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import useAuthStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import {
   getDashboardRoute,
   getPanelTitle,
@@ -31,14 +31,12 @@ export default function Sidebar() {
 
       <div className="border-b border-slate-200 p-6">
         <Link href={dashboardRoute} className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0f5238] text-lg font-bold text-white shadow-md">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2d6a4f] text-white ">
             PC
           </div>
 
           <div>
-            <h1 className="text-lg font-bold text-[#181d19]">
-              Project Clarity
-            </h1>
+            <h1 className="text-lg  text-[#181d19]">Project Clarity</h1>
 
             <p className="text-xs text-slate-500">{panelTitle}</p>
           </div>
@@ -73,7 +71,7 @@ export default function Sidebar() {
                   {item.icon}
                 </span>
 
-                <span className="font-medium">{item.label}</span>
+                <span>{item.label}</span>
               </Link>
             );
           })}
