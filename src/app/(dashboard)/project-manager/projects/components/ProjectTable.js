@@ -104,7 +104,6 @@ export default function ProjectTable({
 
                   <td className="px-6 py-5">
                     <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-emerald-700">
-                      {" "}
                       <FaCalendarAlt className="text-[#0f5238]" />
                       <span className="text-sm">
                         {project.deadline

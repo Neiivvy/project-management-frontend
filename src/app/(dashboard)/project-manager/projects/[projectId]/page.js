@@ -82,8 +82,6 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-1">
-      {/* Header */}
-
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-4">
           <button
@@ -102,8 +100,6 @@ export default function ProjectDetailsPage() {
           </div>
         </div>
       </div>
-
-      {/* Overview Cards */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow p-6">
@@ -140,8 +136,6 @@ export default function ProjectDetailsPage() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* LEFT */}
-
         <div className="xl:col-span-2 space-y-6">
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-xl font-bold mb-4">Description</h2>
@@ -198,14 +192,9 @@ export default function ProjectDetailsPage() {
               </div>
             </div>
           </div>
-          {/* Project Information */}
         </div>
 
-        {/* RIGHT SIDEBAR */}
-
         <div className="space-y-6">
-          {/* Manager */}
-
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-xl font-bold mb-5">Project Manager</h2>
 
@@ -233,8 +222,6 @@ export default function ProjectDetailsPage() {
               </div>
             </div>
           </div>
-
-          {/* Team Members */}
 
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-xl font-bold mb-5">Team Members</h2>
@@ -274,8 +261,6 @@ export default function ProjectDetailsPage() {
               </div>
             )}
           </div>
-
-          {/* Summary */}
 
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-xl font-bold mb-5">Project Summary</h2>

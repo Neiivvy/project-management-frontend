@@ -28,7 +28,6 @@ export default function Pagination({
 
   return (
     <div className="mt-4 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-2 shadow-sm md:flex-row md:items-center md:justify-between">
-      {/* Showing */}
       <p className="text-sm text-slate-600">
         Showing{" "}
         <span className="font-semibold text-[#0f5238]">
@@ -38,9 +37,7 @@ export default function Pagination({
         projects
       </p>
 
-      {/* Pagination */}
       <div className="flex items-center gap-2">
-        {/* Previous */}
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
@@ -53,7 +50,6 @@ export default function Pagination({
           <FaChevronLeft />
         </button>
 
-        {/* Page Numbers */}
         {pages.map((page) => (
           <button
             key={page}
@@ -68,7 +64,6 @@ export default function Pagination({
           </button>
         ))}
 
-        {/* Next */}
         <button
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage(currentPage + 1)}

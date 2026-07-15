@@ -36,7 +36,7 @@ export default function ProjectsPage() {
       toast.error("Failed to delete project");
     }
   };
-  // Pagination
+
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 6;
 
@@ -48,7 +48,6 @@ export default function ProjectsPage() {
     ...new Set((projects || []).map((project) => project.status)),
   ];
 
-  // Filter projects
   const filteredProjects = useMemo(() => {
     return (projects || []).filter((project) => {
       const matchesSearch = project.title
@@ -62,13 +61,11 @@ export default function ProjectsPage() {
     });
   }, [projects, search, statusFilter]);
 
-  // Reset page when search changes
   const handleSearch = (e) => {
     setSearch(e.target.value);
     setCurrentPage(1);
   };
 
-  // Current page data
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
 
@@ -79,7 +76,6 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Projects</h1>
@@ -99,7 +95,6 @@ export default function ProjectsPage() {
         </button>
       </div>
 
-      {/* Search */}
       <div className="mb-5 flex items-center justify-between">
         <div className="relative w-full max-w-md">
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -135,7 +130,6 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* Table */}
       {loading ? (
         <div className="rounded-xl bg-white p-10 text-center shadow-sm">
           Loading Projects...

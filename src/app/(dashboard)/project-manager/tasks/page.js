@@ -85,7 +85,6 @@ export default function TasksPage() {
             currentPage={currentPage}
             tasksPerPage={tasksPerPage}
             onEdit={handleEdit}
-            onDelete={handleDelete}
           />
 
           <Pagination

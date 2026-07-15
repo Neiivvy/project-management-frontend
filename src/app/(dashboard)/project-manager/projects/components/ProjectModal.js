@@ -112,9 +112,7 @@ export default function ProjectModal({
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 p-6">
-          {/* Title */}
           <div>
             <label className="mb-2 block text-sm font-medium">
               Project Title
@@ -144,7 +142,6 @@ export default function ProjectModal({
             )}
           </div>
 
-          {/* Description */}
           <div>
             <label className="mb-2 block text-sm font-medium">
               Description
@@ -158,7 +155,6 @@ export default function ProjectModal({
             />
           </div>
 
-          {/* Deadline */}
           <div>
             <label className="mb-2 block text-sm font-medium">Deadline</label>
 
@@ -169,7 +165,6 @@ export default function ProjectModal({
             />
           </div>
 
-          {/* Status (Edit only) */}
           {mode === "edit" && (
             <div>
               <label className="mb-2 block text-sm font-medium">Status</label>
@@ -185,7 +180,6 @@ export default function ProjectModal({
             </div>
           )}
 
-          {/* Footer */}
           <div className="flex justify-end gap-3 pt-3">
             <button
               type="button"

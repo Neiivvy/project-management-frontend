@@ -69,10 +69,8 @@ export default function MemberTable({ members = [], onAssign, onDelete }) {
                     </div>
                   </td>
 
-                  {/* Email */}
                   <td className="px-6 py-4 text-gray-500">{member.email}</td>
 
-                  {/* Role */}
                   <td className="px-6 py-4">
                     <span
                       className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium capitalize ${
@@ -83,7 +81,6 @@ export default function MemberTable({ members = [], onAssign, onDelete }) {
                     </span>
                   </td>
 
-                  {/* Actions */}
                   <td className="px-6 py-4">
                     <div className="flex justify-center gap-2 opacity-80 transition-opacity group-hover:opacity-100">
                       <button

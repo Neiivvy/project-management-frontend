@@ -158,7 +158,7 @@ export default function TaskModal({
               </p>
             )}
           </div>
-          {/* Description */}
+
           <div>
             <label className="mb-2 block text-sm font-medium">
               Description

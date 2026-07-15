@@ -139,7 +139,6 @@ export default function TaskTable({
                     </div>
                   </td>
 
-                  {/* Priority */}
                   <td className="px-2 py-2">
                     <span
                       className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold ring-1 ${

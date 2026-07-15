@@ -75,7 +75,6 @@ export default function TaskDetailsPage() {
         fontFamily: "var(--font-inter)",
       }}
     >
-      {/* Header */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => router.back()}
@@ -167,7 +166,6 @@ export default function TaskDetailsPage() {
             })}
           </div>
         </div>
-
         {/* Meta grid */}
         <div className="grid gap-px bg-[#eef1ef] sm:grid-cols-2">
           <MetaCell icon={<FaFolderOpen size={13} />} label="Project">

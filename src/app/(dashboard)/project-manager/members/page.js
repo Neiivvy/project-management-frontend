@@ -22,7 +22,6 @@ export default function MembersPage() {
     fetchUsers();
   }, [fetchUsers]);
 
-  // Show only members
   const members = useMemo(() => {
     return (users || []).filter(
       (user) =>
@@ -42,14 +41,12 @@ export default function MembersPage() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Members</h1>
 
         <p className="text-gray-500">Available users and team assignments.</p>
       </div>
 
-      {/* Search */}
       <div className="mb-6">
         <div className="relative w-full max-w-md">
           <FaSearch className="absolute left-4 top-4 text-gray-400" />
@@ -67,7 +64,6 @@ export default function MembersPage() {
         </div>
       </div>
 
-      {/* Table */}
       {loading ? (
         <div className="rounded-xl bg-white p-10 text-center shadow-sm">
           Loading Members...
