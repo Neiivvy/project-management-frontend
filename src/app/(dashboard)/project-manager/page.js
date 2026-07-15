@@ -191,7 +191,6 @@ export default function DashboardPage() {
 
   return (
     <div>
-      {/* Header */}
       <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mx-auto max-w-7xl bg-slate-50  py-6 text-slate-900 sm:px-6">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">
@@ -203,7 +202,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Summary cards */}
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {summary.map((s) => (
           <div
@@ -250,7 +248,6 @@ export default function DashboardPage() {
           </ul>
         </div>
 
-        {/* My projects */}
         <div className="rounded-xl border border-slate-200 bg-white lg:col-span-2">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 px-5 py-4">
             <h2 className="text-sm font-semibold">My projects</h2>
@@ -353,7 +350,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Pending tasks */}
         <div className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold">Pending tasks</h2>
@@ -382,7 +378,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Overdue */}
       <div className="mt-6 rounded-xl border border-rose-100 bg-white">
         <div className="flex items-center justify-between border-b border-rose-50 px-5 py-4">
           <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
@@ -423,7 +418,6 @@ export default function DashboardPage() {
   );
 }
 
-// ---------- Small inline SVG donut chart (no chart library needed) ----------
 function DonutChart({ segments, total }) {
   const radius = 52;
   const stroke = 16;

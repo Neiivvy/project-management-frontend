@@ -71,7 +71,6 @@ export default function ProjectModal({ show, setShow, refreshProjects }) {
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5 p-6">
           <div>
             <label className="mb-2 block text-sm font-medium">

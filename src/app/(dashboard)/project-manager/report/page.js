@@ -97,7 +97,6 @@ export default function ProjectReportPage() {
 
   return (
     <div className="bg-slate-50 text-slate-900 mx-auto max-w-7xl px-4 py-2 sm:px-6">
-      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">
@@ -109,7 +108,6 @@ export default function ProjectReportPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Date range dropdown */}
           <div className="relative">
             <button
               onClick={() => setRangeOpen((o) => !o)}
@@ -152,7 +150,6 @@ export default function ProjectReportPage() {
         </div>
       </div>
 
-      {/* Summary cards */}
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {summary.map((s) => (
           <div
@@ -199,7 +196,6 @@ export default function ProjectReportPage() {
           </ul>
         </div>
 
-        {/* Project progress */}
         <div className="rounded-xl border border-slate-200 bg-white lg:col-span-2">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
             <h2 className="text-sm font-semibold">Project progress</h2>
@@ -240,7 +236,6 @@ export default function ProjectReportPage() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Team performance */}
         <div className="rounded-xl border border-slate-200 bg-white lg:col-span-2">
           <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
             <h2 className="text-sm font-semibold">Team performance</h2>
@@ -280,7 +275,6 @@ export default function ProjectReportPage() {
           </div>
         </div>
 
-        {/* Milestones */}
         <div className="rounded-xl border border-slate-200 bg-white p-5">
           <h2 className="text-sm font-semibold">Upcoming milestones</h2>
           <ul className="mt-4 space-y-4">
@@ -317,7 +311,6 @@ export default function ProjectReportPage() {
   );
 }
 
-// ---------- Small inline SVG donut chart (no chart library needed) ----------
 function DonutChart({ segments, total }) {
   const radius = 52;
   const stroke = 16;
@@ -346,7 +339,6 @@ function DonutChart({ segments, total }) {
           const dash = fraction * circumference;
           const gap = circumference - dash;
 
-          // Calculate offset without mutating any variable
           const offset = segments
             .slice(0, index)
             .reduce(

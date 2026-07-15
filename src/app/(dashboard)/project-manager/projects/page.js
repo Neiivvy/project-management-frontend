@@ -15,7 +15,6 @@ export default function ProjectsPage() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Fetch Projects
   const getProjects = async () => {
     try {
       setLoading(true);
@@ -52,8 +51,6 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      {/* Header */}
-
       <div className="flex justify-between items-center mb-5">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Projects</h1>
@@ -70,8 +67,6 @@ export default function ProjectsPage() {
         </button>
       </div>
 
-      {/* Search */}
-
       <div className="p-3 mb-2">
         <div className="relative w-96">
           <FaSearch className="absolute left-4 top-4 text-gray-400" />
@@ -85,8 +80,6 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* Table */}
-
       {loading ? (
         <div className="bg-white rounded-xl shadow-2xs p-10 text-center">
           Loading Projects...
@@ -94,8 +87,6 @@ export default function ProjectsPage() {
       ) : (
         <ProjectTable projects={filteredProjects} />
       )}
-
-      {/* Modal */}
 
       <ProjectModal
         show={showModal}
