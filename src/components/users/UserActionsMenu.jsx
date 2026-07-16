@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 
 export default function UserActionsMenu({
-  onView,
   onEdit,
   onDelete,
 }) {
@@ -52,11 +51,6 @@ export default function UserActionsMenu({
   }, [open]);
 
   const items = [
-    {
-      label: "View profile",
-      icon: Eye,
-      onClick: onView,
-    },
     {
       label: "Edit user",
       icon: PenLine,

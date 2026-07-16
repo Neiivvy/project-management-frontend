@@ -1,6 +1,5 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import SearchInput from "@/components/shared/SearchInput";
 import ViewToggle from "@/components/projects/ViewToggle";
 
@@ -18,7 +17,6 @@ export default function ProjectFilters({
   onStatusChange,
   view,
   onViewChange,
-  onNewProject,
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -63,32 +61,6 @@ export default function ProjectFilters({
 
       <div className="flex items-center gap-2">
         <ViewToggle view={view} onChange={onViewChange} />
-
-        <button
-          onClick={onNewProject}
-          className="
-            group
-            flex items-center justify-center gap-1.5
-            rounded-xl
-            bg-[#0f5238]
-            px-4 py-2.5
-            text-sm font-medium
-            text-white
-            ring-1 ring-[#40916c]/30
-            transition-all duration-200
-            hover:bg-[#12664a]
-            hover:ring-[#40916c]/50
-            active:scale-[0.98]
-          "
-        >
-          <Plus
-            size={16}
-            className="transition-transform duration-200 group-hover:rotate-90"
-          />
-          <span className="hidden sm:inline">
-            New Project
-          </span>
-        </button>
       </div>
     </div>
   );

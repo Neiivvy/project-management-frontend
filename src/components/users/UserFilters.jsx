@@ -68,38 +68,6 @@ export default function UserFilters({
           </select>
         </div>
       </div>
-
-      {/* Right */}
-      <button
-        onClick={onAddUser}
-        className="
-          group
-          flex
-          w-full
-          items-center
-          justify-center
-          gap-1.5
-          rounded-xl
-          bg-[#257d5c]
-          px-4
-          py-2.5
-          text-sm
-          font-medium
-          text-white
-          transition-all
-          duration-200
-          hover:bg-[#339973]
-          active:scale-[0.98]
-          sm:w-auto
-        "
-      >
-        <Plus
-          size={16}
-          className="transition-transform duration-200 group-hover:rotate-90"
-        />
-
-        Add User
-      </button>
     </div>
   );
 }

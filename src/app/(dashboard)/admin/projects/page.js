@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import ProjectStatsBar from "@/components/projects/ProjectStatsBar";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import ProjectGrid from "@/components/projects/ProjectGrid";
-import Pagination from "@/components/shared/Pagination";
+import Pagination from "@/components/shared/Pagination";  
 
 import useProjectStore from "@/store/useProjectStore";
 

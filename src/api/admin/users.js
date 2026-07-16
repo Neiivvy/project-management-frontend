@@ -7,6 +7,11 @@ export const fetchUsersApi = async () => {
   return data;
 };
 
+//get users by id
+export const fetchUserByIdApi = async (id) => {
+  const { data } = await axiosInstance.get(`/users/${id}`);
+  return data;
+};
 
 // Promote member -> project_manager
 export const promoteUserApi = async (id) => {

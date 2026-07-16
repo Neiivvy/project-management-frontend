@@ -5,25 +5,9 @@ import Avatar from "@/components/shared/Avatar";
 import RoleBadge from "@/components/users/RoleBadge";
 import UserActionsMenu from "@/components/users/UserActionsMenu";
 
-function formatRelative(iso) {
-  if (!iso) return "—";
-
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diffMs / 60000);
-
-  if (mins < 60) return `${mins}m ago`;
-
-  const hours = Math.floor(mins / 60);
-
-  if (hours < 24) return `${hours}h ago`;
-
-  return `${Math.floor(hours / 24)}d ago`;
-}
-
 export default function UserTableRow({
   user,
   index,
-  onView,
   onEdit,
   onDelete,
 }) {
@@ -68,34 +52,41 @@ export default function UserTableRow({
         <RoleBadge role={user.role} />
       </td>
 
-      {/* Projects */}
-      <td
-        className="hidden whitespace-nowrap
-                   px-3 py-3
-                   text-center
-                   text-sm
-                   font-medium
-                   text-[#394640]
-                   lg:table-cell"
-      >
-        {user.projects || "—"}
-      </td>
+{/* Projects */}
+<td
+  className="hidden whitespace-nowrap
+             px-3 py-3
+             text-center
+             text-sm
+             font-medium
+             text-[#394640]
+             lg:table-cell"
+>
+  {user.projectCount ?? "—"}
+</td>
 
-      {/* Last Active */}
-      <td
-        className="hidden whitespace-nowrap
-                   px-3 py-3
-                   text-sm
-                   text-[#66756e]
-                   xl:table-cell"
-      >
-        {formatRelative(user.lastActive)}
-      </td>
+    {/* Availability */}
+<td
+  className="hidden whitespace-nowrap
+             px-3 py-3
+             xl:table-cell"
+>
+  <span
+    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+      user.availability === "available"
+        ? "bg-[#e7f8ef] text-[#1d7a46]"
+        : "bg-[#fdf0f0] text-[#c03d3d]"
+    }`}
+  >
+    {user.availability === "available"
+      ? "Available"
+      : "Unavailable"}
+  </span>
+</td>
 
       {/* Actions */}
       <td className="py-3 pl-3 pr-4 text-right sm:pr-5">
         <UserActionsMenu
-          onView={() => onView?.(user)}
           onEdit={() => onEdit?.(user)}
           onDelete={() => onDelete?.(user)}
         />

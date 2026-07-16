@@ -6,23 +6,33 @@ import EmptyState from "@/components/shared/EmptyState";
 
 const COLUMNS = [
   { key: "name", label: "User", cellClass: "" },
-  { key: "role", label: "Role", cellClass: "hidden md:table-cell" },
+
+  {
+    key: "role",
+    label: "Role",
+    cellClass: "hidden md:table-cell",
+  },
+
   {
     key: "projects",
     label: "Projects",
     cellClass: "hidden lg:table-cell text-center",
   },
+
   {
-    key: "lastActive",
-    label: "Last Active",
+    key: "availability",
+    label: "Availability",
     cellClass: "hidden xl:table-cell",
   },
-  { key: "actions", label: "", cellClass: "text-right" },
-];
 
+  {
+    key: "actions",
+    label: "",
+    cellClass: "text-right",
+  },
+];
 export default function UserTable({
   users,
-  onView,
   onEdit,
   onDelete,
 }) {
@@ -65,7 +75,6 @@ export default function UserTable({
   key={user._id}
   user={user}
   index={i}
-  onView={onView}
   onEdit={onEdit}
   onDelete={onDelete}
 />

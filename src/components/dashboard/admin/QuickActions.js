@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FiUserPlus, FiFolderPlus, FiShield, FiFileText } from "react-icons/fi";
 
 const ACTIONS = [
-  { label: "Add User", icon: FiUserPlus, route: "/admin/users" },
+  { label: "Manage Users", icon: FiUserPlus, route: "/admin/users" },
   { label: "View Projects", icon: FiFolderPlus, route: "/admin/projects" },
   { label: "Manage Roles", icon: FiShield, route: "/admin/roles" },
   { label: "Generate Report", icon: FiFileText, route: "/admin/reports" },

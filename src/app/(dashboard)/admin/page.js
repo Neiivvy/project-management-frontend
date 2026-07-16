@@ -45,7 +45,7 @@ export default function AdminPage() {
         </h1>
 
         <p className="mt-1 text-[#697268]">
-          Here&apos;s what&apos;s happening across Project Clarity today.
+          Here&apos;s what&apos;s happening across Co-Work today.
         </p>
       </div>
 

@@ -8,9 +8,9 @@ export default function TeamAvatarStack({ team = [], max = 3 }) {
 
   return (
     <div className="flex items-center">
-      {visible.map((name, i) => (
+      {visible.map((member, i) => (
         <div
-          key={name}
+          key={member.id}
           style={{
             zIndex: visible.length - i,
             marginLeft: i === 0 ? 0 : -10,
@@ -25,7 +25,7 @@ export default function TeamAvatarStack({ team = [], max = 3 }) {
             hover:scale-110
           "
         >
-          <Avatar name={name} size="sm" />
+          <Avatar name={member.name} size="sm" />
         </div>
       ))}
 

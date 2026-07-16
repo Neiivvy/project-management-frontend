@@ -123,7 +123,7 @@ export default function UsersPage() {
         </h1>
 
         <p className="text-sm text-[#375948]">
-          Manage every member and their access across Project Clarity.
+          Manage every member and their access across Co-Work.
         </p>
 
       </header>
