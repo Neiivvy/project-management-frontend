@@ -19,11 +19,11 @@ export default function Header() {
           <div className="md:flex md:items-center md:gap-12">
             <Link className="flex items-center gap-2 text-[#0f5238]" href="/">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f5238] text-white text-sm font-bold">
-                PC
+                CW
               </span>
 
               <span className="font-semibold tracking-tight text-[#0f5238]">
-                Project Clarity
+                Co-Work
               </span>
 
               <span className="sr-only">Home</span>

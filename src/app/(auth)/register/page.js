@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signup } from "@/api/auth";
-import useAuthStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { getDashboardRoute } from "@/utils/auth";
-
 
 export default function RegisterPage() {
   const {
@@ -18,21 +17,19 @@ export default function RegisterPage() {
   const registerStore = useAuthStore((state) => state.login);
   const router = useRouter();
 
-const onSubmit = async (data) => {
-  try {
-    const response = await signup(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await signup(data);
 
-    registerStore(response.data);
+      registerStore(response.data);
 
-    const route = getDashboardRoute(response.data.user.role);
+      const route = getDashboardRoute(response.data.user.role);
 
-    router.push(route);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
+      router.push(route);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full max-w-sm">
@@ -40,13 +37,10 @@ const onSubmit = async (data) => {
         <h1 className="text-2xl font-semibold text-[#181d19] mb-1">
           Create an account
         </h1>
-        <p className="text-sm text-[#404943]">
-          Sign up to get started.
-        </p>
+        <p className="text-sm text-[#404943]">Sign up to get started.</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
         {/* Name */}
         <div className="space-y-1.5">
           <label htmlFor="name" className="block text-sm font-medium">
@@ -64,9 +58,7 @@ const onSubmit = async (data) => {
           />
 
           {errors.name && (
-            <p className="text-red-500 text-xs">
-              {errors.name.message}
-            </p>
+            <p className="text-red-500 text-xs">{errors.name.message}</p>
           )}
         </div>
 
@@ -83,8 +75,7 @@ const onSubmit = async (data) => {
             {...register("email", {
               required: "Email is required",
               pattern: {
-                value:
-                  /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+                value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
                 message: "Enter a valid email",
               },
             })}
@@ -92,9 +83,7 @@ const onSubmit = async (data) => {
           />
 
           {errors.email && (
-            <p className="text-red-500 text-xs">
-              {errors.email.message}
-            </p>
+            <p className="text-red-500 text-xs">{errors.email.message}</p>
           )}
         </div>
 
@@ -119,9 +108,7 @@ const onSubmit = async (data) => {
           />
 
           {errors.password && (
-            <p className="text-red-500 text-xs">
-              {errors.password.message}
-            </p>
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
           )}
         </div>
 
@@ -134,8 +121,7 @@ const onSubmit = async (data) => {
       </form>
 
       <p className="mt-6 text-center text-sm">
-        Already have an account?{" "}
-        <Link href="/login">Login</Link>
+        Already have an account? <Link href="/login">Login</Link>
       </p>
     </div>
   );

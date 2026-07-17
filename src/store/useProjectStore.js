@@ -1,125 +1,158 @@
 import { create } from "zustand";
-
+import { persist } from "zustand/middleware";
 import {
-  fetchProjectsApi,
-  fetchProjectByIdApi,
-} from "@/api/admin/project";
+  getProjects,
+  createProject,
+  updateProject,
+  getProjectById,
+  removeProject,
+} from "@/api/projectApi";
 
-import { fetchTasksByProjectApi } from "@/api/admin/task";
-
-const useProjectStore = create((set) => ({
-  // ==========================
-  // Project List
-  // ==========================
-  projects: [],
-  isLoading: false,
-  error: null,
-
-  // ==========================
-  // Single Project
-  // ==========================
-  currentProject: null,
-  isLoadingProject: false,
-  projectError: null,
-
-  // ==========================
-  // Project Tasks
-  // ==========================
-  projectTasks: [],
-  isLoadingTasks: false,
-  taskError: null,
-
-  // ==========================
-  // Fetch All Projects
-  // ==========================
-  fetchProjects: async () => {
-    set({
-      isLoading: true,
+const useProjectStore = create(
+  persist(
+    (set, get) => ({
+      projects: [],
+      users: [],
+      project: null,
+      loading: false,
       error: null,
-    });
 
-    try {
-      const data = await fetchProjectsApi();
+      // Fetch All Projects
+      fetchProjects: async () => {
+        try {
+          set({ loading: true, error: null });
 
-      set({
-        projects: data.data ?? [],
-        isLoading: false,
-      });
-    } catch (err) {
-      set({
-        error:
-          err?.response?.data?.message ||
-          "Failed to fetch projects",
-        isLoading: false,
-      });
-    }
-  },
+          const projects = await getProjects();
 
-  // ==========================
-  // Fetch Single Project
-  // ==========================
-  fetchProjectById: async (id) => {
-    set({
-      isLoadingProject: true,
-      projectError: null,
-      currentProject: null,
-    });
+          set({
+            projects,
+            loading: false,
+          });
+        } catch (error) {
+          set({
+            loading: false,
+            error: error.response?.data?.message || "Failed to fetch projects",
+          });
+        }
+      },
 
-    try {
-      const data = await fetchProjectByIdApi(id);
+      // Fetch Single Project
+      fetchProjectById: async (id) => {
+        try {
+          set({ loading: true, error: null });
 
-      set({
-        currentProject: data.data ?? null,
-        isLoadingProject: false,
-      });
-    } catch (err) {
-      set({
-        projectError:
-          err?.response?.data?.message ||
-          "Failed to fetch project",
-        isLoadingProject: false,
-      });
-    }
-  },
+          const project = await getProjectById(id);
 
-  // ==========================
-  // Fetch Tasks for Project
-  // ==========================
-  fetchProjectTasks: async (projectId) => {
-    set({
-      isLoadingTasks: true,
-      taskError: null,
-      projectTasks: [],
-    });
+          set({
+            project,
+            loading: false,
+          });
 
-    try {
-      const data = await fetchTasksByProjectApi(projectId);
+          return project;
+        } catch (error) {
+          set({
+            loading: false,
+            error: error.response?.data?.message || "Failed to fetch project",
+          });
 
-      set({
-        projectTasks: data.data ?? [],
-        isLoadingTasks: false,
-      });
-    } catch (err) {
-      set({
-        taskError:
-          err?.response?.data?.message ||
-          "Failed to fetch project tasks",
-        isLoadingTasks: false,
-      });
-    }
-  },
+          return null;
+        }
+      },
 
-  // ==========================
-  // Clear Detail Page
-  // ==========================
-  clearCurrentProject: () =>
-    set({
-      currentProject: null,
-      projectError: null,
+      // Add Project
+      addProject: async (projectData) => {
+        try {
+          set({ loading: true, error: null });
 
-      projectTasks: [],
-      taskError: null,
+          const newProject = await createProject(projectData);
+
+          set((state) => ({
+            projects: [...state.projects, newProject],
+            loading: false,
+          }));
+
+          return true;
+        } catch (error) {
+          set({
+            loading: false,
+            error: error.response?.data?.message || "Failed to create project",
+          });
+
+          return false;
+        }
+      },
+      // Update Project
+      editProject: async (id, projectData) => {
+        try {
+          set({ loading: true, error: null });
+          console.log(id);
+          console.log(projectData);
+
+          const updatedProject = await updateProject(id, projectData);
+          console.log(updatedProject);
+
+          set((state) => ({
+            project: updatedProject,
+            projects: state.projects.map((project) =>
+              project._id === id ? updatedProject : project,
+            ),
+            loading: false,
+          }));
+
+          return true;
+        } catch (error) {
+          set({
+            loading: false,
+            error: error.response?.data?.message || "Failed to update project",
+          });
+
+          return false;
+        }
+      },
+
+      deleteProject: async (id) => {
+        try {
+          set({ loading: true, error: null });
+
+          await removeProject(id);
+
+          set((state) => ({
+            projects: state.projects.filter((project) => project._id !== id),
+            loading: false,
+          }));
+
+          return true;
+        } catch (error) {
+          set({
+            loading: false,
+            error: error.response?.data?.message || "Failed to delete project",
+          });
+
+          return false;
+        }
+      },
+
+      clearProject: () =>
+        set({
+          project: null,
+        }),
+
+      clearProjects: () =>
+        set({
+          projects: [],
+          project: null,
+          error: null,
+          loading: false,
+        }),
     }),
-}));
+    {
+      name: "project-storage",
+      partialize: (state) => ({
+        projects: state.projects,
+        project: state.project,
+      }),
+    },
+  ),
+);
 
 export default useProjectStore;

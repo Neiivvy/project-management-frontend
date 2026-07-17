@@ -7,7 +7,7 @@ import ProjectFilters from "@/components/projects/ProjectFilters";
 import ProjectGrid from "@/components/projects/ProjectGrid";
 import Pagination from "@/components/shared/Pagination";  
 
-import useProjectStore from "@/store/useProjectStore";
+import useProjectStore from "@/store/admin/useProjectStore"
 
 const PAGE_SIZE = 6;
 

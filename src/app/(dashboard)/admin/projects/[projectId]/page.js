@@ -13,7 +13,7 @@ import ProjectManagerCard from "@/components/projects/ProjectManagerCard";
 import ProjectTeamCard from "@/components/projects/ProjectTeamCard";
 import ProjectMetaCard from "@/components/projects/ProjectMetaCard";
 
-import useProjectStore from "@/store/useProjectStore";
+import useProjectStore from "@/store/admin/useProjectStore";
 import { mapProjectDetail } from "@/lib/mappers/project";
 
 export default function ProjectDetailPage() {

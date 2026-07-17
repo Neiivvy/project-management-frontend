@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import useAuthStore from "@/store/authStore";
+import useAuthStore from "@/store/useAuthStore";
 import useDashboardStore from "@/store/useDashboardStore";
 
 import {

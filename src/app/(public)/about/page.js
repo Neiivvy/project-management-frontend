@@ -115,7 +115,7 @@ export default function AboutPage() {
           <span className="text-[#498f70] ">Manage Projects</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-500">
-          Project Clarity is a project management system built for teams that
+          Co-Work is a project management system built for teams that
           can&apos;t afford to miss deadlines. We bring structure, visibility,
           and accountability to every project from kickoff to delivery.
         </p>
@@ -130,11 +130,11 @@ export default function AboutPage() {
             <p className="mt-5 text-slate-500">
               Too many projects fail not because of bad ideas, but because of
               poor coordination missed handoffs, unclear ownership, and no
-              single source of truth. Project Clarity fixes that by giving every
+              single source of truth. Co-Work fixes that by giving every
               team member a clear picture of what needs to happen and when.
             </p>
             <p className="mt-4 text-slate-500">
-              Founded in 2026, Project Clarity was built by project managers for
+              Founded in 2026, Co-Work was built by project managers for
               project managers. Whether you&apos;re running a two-week sprint or
               a year-long enterprise rollout, our platform adapts to your
               process not the other way around.
