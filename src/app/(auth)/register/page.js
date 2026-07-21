@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { signup } from "@/api/auth";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import { getDashboardRoute } from "@/utils/auth";
 
 
 export default function RegisterPage() {
@@ -17,12 +18,15 @@ export default function RegisterPage() {
   const registerStore = useAuthStore((state) => state.login);
   const router = useRouter();
 
-  const onSubmit = async (data) => {
+const onSubmit = async (data) => {
   try {
     const response = await signup(data);
 
-registerStore(response.data);
-   router.push("/member");
+    registerStore(response.data);
+
+    const route = getDashboardRoute(response.data.user.role);
+
+    router.push(route);
   } catch (error) {
     console.log(error);
   }

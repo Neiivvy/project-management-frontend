@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { login } from "@/api/auth";
 import useAuthStore from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import { getDashboardRoute } from "@/utils/auth";
 
 export default function LoginPage() {
   const {
@@ -22,8 +23,9 @@ const onSubmit = async (data) => {
 
     loginStore(response.data);
 
-    console.log(response.data);
-      router.push("/member");
+    const route = getDashboardRoute(response.data.user.role);
+
+    router.push(route);
   } catch (error) {
     console.log(error);
   }
