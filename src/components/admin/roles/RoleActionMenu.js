@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MoreVertical, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
+import {
+  MoreVertical,
+  ArrowUpCircle,
+  ArrowDownCircle,
+} from "lucide-react";
 
 export default function RoleActionMenu({
   user,
@@ -9,33 +13,66 @@ export default function RoleActionMenu({
   disabled = false,
 }) {
   const [open, setOpen] = useState(false);
+  const [openUp, setOpenUp] = useState(false);
+
   const menuRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target)
+      ) {
         setOpen(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
     };
   }, []);
+
+
+  const handleToggle = () => {
+    if (!open && menuRef.current) {
+      const buttonPosition =
+        menuRef.current.getBoundingClientRect();
+
+      const spaceBelow =
+        window.innerHeight - buttonPosition.bottom;
+
+      const menuHeight = 120;
+
+      setOpenUp(spaceBelow < menuHeight);
+    }
+
+    setOpen((prev) => !prev);
+  };
+
 
   const handleAction = (action) => {
     setOpen(false);
     onAction(user, action);
   };
 
+
   return (
-    <div className="relative inline-block text-left" ref={menuRef}>
+    <div
+      className="relative inline-block text-left"
+      ref={menuRef}
+    >
       <button
         type="button"
         disabled={disabled}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleToggle}
         className="
           rounded-lg
           p-2
@@ -49,13 +86,13 @@ export default function RoleActionMenu({
         <MoreVertical size={18} />
       </button>
 
+
       {open && (
         <div
-          className="
+          className={`
             absolute
             right-0
-            z-20
-            mt-2
+            z-50
             w-52
             overflow-hidden
             rounded-xl
@@ -63,11 +100,19 @@ export default function RoleActionMenu({
             border-gray-200
             bg-white
             shadow-lg
-          "
+            ${
+              openUp
+                ? "bottom-full mb-2"
+                : "mt-2"
+            }
+          `}
         >
+
           {user.role === "member" && (
             <button
-              onClick={() => handleAction("promote")}
+              onClick={() =>
+                handleAction("promote")
+              }
               className="
                 flex
                 w-full
@@ -88,9 +133,12 @@ export default function RoleActionMenu({
             </button>
           )}
 
+
           {user.role === "project_manager" && (
             <button
-              onClick={() => handleAction("demote")}
+              onClick={() =>
+                handleAction("demote")
+              }
               className="
                 flex
                 w-full
@@ -111,11 +159,13 @@ export default function RoleActionMenu({
             </button>
           )}
 
+
           {user.role === "admin" && (
             <div className="px-4 py-3 text-sm text-gray-400">
               No actions available
             </div>
           )}
+
         </div>
       )}
     </div>

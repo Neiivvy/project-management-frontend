@@ -10,7 +10,7 @@ import Pagination from "@/components/shared/Pagination";
 import EditUserModal from "@/components/users/EditUserModal";
 import DeleteUserModal from "@/components/users/DeleteUserModal";
 
-import useUsersStore from "@/store/useUsersStore";
+import useUsersStore from "@/store/admin/useUsersStore";
 
 const PAGE_SIZE = 6;
 

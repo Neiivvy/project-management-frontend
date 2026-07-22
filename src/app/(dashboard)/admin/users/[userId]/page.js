@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-import useUserDetailStore from "@/store/useUserDetailStore";
+import useUserDetailStore from "@/store/admin/useUserDetailStore";
 
 import UserProfileCard from "@/components/users/detail/UserProfileCard";
 import UserProjectsGrid from "@/components/users/detail/UserProjectsGrid";

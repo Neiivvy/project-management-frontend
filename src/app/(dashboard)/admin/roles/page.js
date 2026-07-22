@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 
-import useUsersStore from "@/store/useUsersStore";
+import useUsersStore from "@/store/admin/useUsersStore";
 
 import RolesToolbar from "@/components/admin/roles/RolesToolbar";
 import UsersRolesTable from "@/components/admin/roles/UsersRolesTable";

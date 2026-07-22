@@ -21,14 +21,16 @@ const UsersRolesTable = ({
     <>
       {/* Desktop Table */}
 
-      <div className="hidden overflow-hidden rounded-xl border border-gray-200 bg-white md:block">
+      <div className="hidden rounded-xl border border-gray-200 bg-white md:block">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50 text-gray-500">
               <th className="px-5 py-3 font-medium">Name</th>
               <th className="px-5 py-3 font-medium">Email</th>
               <th className="px-5 py-3 font-medium">Current Role</th>
-              <th className="px-5 py-3 text-right font-medium">Action</th>
+              <th className="px-5 py-3 text-right font-medium">
+                Action
+              </th>
             </tr>
           </thead>
 
@@ -62,6 +64,7 @@ const UsersRolesTable = ({
           </tbody>
         </table>
       </div>
+
 
       {/* Mobile Cards */}
 

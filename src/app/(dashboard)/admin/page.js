@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import useAuthStore from "@/store/useAuthStore";
-import useDashboardStore from "@/store/useDashboardStore";
+import useDashboardStore from "@/store/admin/useDashboardStore";
 
 import {
   FiUsers,
@@ -53,28 +53,28 @@ export default function AdminPage() {
         <StatCard
           icon={FiUsers}
           label="Total Users"
-          value={summary.totalUsers}
+          value={summary.totalUsers ?? 0}
           color="#0f5238"
         />
 
         <StatCard
           icon={FiFolder}
           label="Projects"
-          value={summary.totalProjects}
+          value={summary.totalProjects ?? 0}
           color="#2d6a4f"
         />
 
         <StatCard
           icon={FiUserCheck}
           label="Project Managers"
-          value={summary.projectManagers}
+          value={summary.projectManagers ?? 0}
           color="#40916c"
         />
 
         <StatCard
           icon={FiCheckCircle}
           label="Completed Tasks"
-          value={summary.completedTasks}
+          value={summary.completedTasks ?? 0}
           color="#b08900"
         />
       </div>
