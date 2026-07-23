@@ -48,7 +48,7 @@ const useTaskStore = create((set, get) => ({
         loading: false,
         error: err.response?.data?.message || "Failed to create task",
       });
-
+      console.log(err.response?.data);
       return false;
     }
   },
@@ -60,10 +60,12 @@ const useTaskStore = create((set, get) => ({
         error: null,
       });
 
-      await updateTask(id, data);
+      const updatedTask = await updateTask(id, data);
+      console.log("Updated Task:", updatedTask);
 
       // Refetch all tasks from the backend
       await get().fetchTasks();
+      console.log("Tasks after refresh:", get().tasks);
 
       set({
         loading: false,

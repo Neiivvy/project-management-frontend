@@ -6,6 +6,7 @@ import {
   updateProject,
   getProjectById,
   removeProject,
+  assignMembersToProject,
 } from "@/api/projectApi";
 
 const useProjectStore = create(
@@ -106,6 +107,25 @@ const useProjectStore = create(
             error: error.response?.data?.message || "Failed to update project",
           });
 
+          return false;
+        }
+      },
+
+      assignMemberToProject: async (projectId, memberIds) => {
+        try {
+          const updatedProject = await assignMembersToProject(projectId, [
+            memberIds._id,
+          ]);
+
+          set((state) => ({
+            projects: state.projects.map((project) =>
+              project._id === projectId ? updatedProject : project,
+            ),
+          }));
+
+          return true;
+        } catch (error) {
+          console.log(error.response?.data);
           return false;
         }
       },

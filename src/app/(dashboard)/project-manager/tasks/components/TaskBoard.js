@@ -145,7 +145,14 @@ export default function TaskBoard({ tasks = [] }) {
                             }`}
                           >
                             {task.deadline
-                              ? new Date(task.deadline).toLocaleDateString()
+                              ? new Date(task.deadline).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                  },
+                                )
                               : "-"}
                           </p>
 
