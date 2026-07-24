@@ -107,7 +107,14 @@ export default function ProjectTable({
                       <FaCalendarAlt className="text-[#0f5238]" />
                       <span className="text-sm">
                         {project.deadline
-                          ? new Date(project.deadline).toLocaleDateString()
+                          ? new Date(project.deadline).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )
                           : "-"}
                       </span>
                     </div>

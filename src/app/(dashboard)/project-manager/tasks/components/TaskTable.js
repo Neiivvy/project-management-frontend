@@ -31,10 +31,6 @@ export default function TaskTable({
     Completed: "bg-emerald-100 text-emerald-700 ring-emerald-200",
   };
 
-  const sortedTasks = [...tasks].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  );
-
   const getInitials = (name = "") =>
     name
       .split(" ")
@@ -43,10 +39,7 @@ export default function TaskTable({
       .substring(0, 2)
       .toUpperCase();
 
-  // Pagination
-  const indexOfLast = currentPage * tasksPerPage;
-  const indexOfFirst = indexOfLast - tasksPerPage;
-  const currentTasks = sortedTasks.slice(indexOfFirst, indexOfLast);
+  const currentTasks = tasks;
 
   return (
     <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-100 transition-all duration-300">
@@ -133,7 +126,14 @@ export default function TaskTable({
                       <FaCalendarAlt className="text-[#0f5238]" />
                       <span className="text-sm">
                         {task.deadline
-                          ? new Date(task.deadline).toLocaleDateString()
+                          ? new Date(task.deadline).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )
                           : "-"}
                       </span>
                     </div>

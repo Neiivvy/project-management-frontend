@@ -47,17 +47,19 @@ export default function TasksPage() {
     fetchTasks();
   }, [fetchTasks]);
 
-  const tasksPerPage = 8;
+  const tasksPerPage = 6;
 
-  // Pagination
+  const sortedTasks = [...(tasks || [])].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  );
+
   const indexOfLastTask = currentPage * tasksPerPage;
   const indexOfFirstTask = indexOfLastTask - tasksPerPage;
 
-  const currentTasks = (tasks || []).slice(indexOfFirstTask, indexOfLastTask);
+  const currentTasks = sortedTasks.slice(indexOfFirstTask, indexOfLastTask);
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Tasks</h1>
@@ -73,7 +75,6 @@ export default function TasksPage() {
         </button>
       </div>
 
-      {/* Table */}
       {loading ? (
         <div className="rounded-xl bg-white p-10 text-center shadow-sm">
           Loading Tasks...
@@ -85,10 +86,11 @@ export default function TasksPage() {
             currentPage={currentPage}
             tasksPerPage={tasksPerPage}
             onEdit={handleEdit}
+            onDelete={handleDelete}
           />
 
           <Pagination
-            totalItems={(tasks || []).length}
+            totalItems={sortedTasks.length}
             itemsPerPage={tasksPerPage}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

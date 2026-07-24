@@ -1,6 +1,5 @@
 "use client";
 
-// ---- Column definitions: each status carries its own accent color ----
 const COLUMN_STYLES = {
   "To Do": {
     dot: "bg-slate-400",
@@ -95,17 +94,14 @@ export default function TaskBoard({ tasks = [] }) {
                         />
                       </div>
 
-                      {/* Title */}
                       <h3 className="line-clamp-2 text-[15px] font-semibold text-slate-800">
                         {task.title}
                       </h3>
 
-                      {/* Description */}
                       <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-500">
                         {task.description || "No description available"}
                       </p>
 
-                      {/* Priority */}
                       <div className="mt-3">
                         <span
                           className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
@@ -120,7 +116,6 @@ export default function TaskBoard({ tasks = [] }) {
                         </span>
                       </div>
 
-                      {/* Footer */}
                       <div className="mt-5 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0f5238]/10 text-xs font-bold text-[#0f5238]">
@@ -145,7 +140,14 @@ export default function TaskBoard({ tasks = [] }) {
                             }`}
                           >
                             {task.deadline
-                              ? new Date(task.deadline).toLocaleDateString()
+                              ? new Date(task.deadline).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                  },
+                                )
                               : "-"}
                           </p>
 

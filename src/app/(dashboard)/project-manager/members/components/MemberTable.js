@@ -2,13 +2,6 @@
 
 import { FaUserPlus, FaTrash, FaUsers } from "react-icons/fa";
 
-const ROLE_STYLES = {
-  admin: "bg-purple-50 text-purple-700 ring-1 ring-purple-200",
-  manager: "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
-  member: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
-  default: "bg-gray-100 text-gray-700 ring-1 ring-gray-200",
-};
-
 const AVATAR_COLORS = [
   "bg-[#0f5238]/10 text-[#0f5238]",
   "bg-indigo-100 text-indigo-700",
@@ -17,7 +10,7 @@ const AVATAR_COLORS = [
   "bg-sky-100 text-sky-700",
 ];
 
-export default function MemberTable({ members = [], onAssign, onDelete }) {
+export default function MemberTable({ members = [], onAssign }) {
   const getInitials = (name = "") =>
     name
       .split(" ")
@@ -41,7 +34,7 @@ export default function MemberTable({ members = [], onAssign, onDelete }) {
             <tr className="text-xs font-semibold uppercase tracking-wider text-gray-500">
               <th className="px-6 py-4 text-left">Member</th>
               <th className="px-6 py-4 text-left">Email</th>
-              <th className="px-6 py-4 text-left">Role</th>
+              <th className="px-6 py-4 text-left">Availability</th>
               <th className="px-6 py-4 text-center">Actions</th>
             </tr>
           </thead>
@@ -73,11 +66,21 @@ export default function MemberTable({ members = [], onAssign, onDelete }) {
 
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium capitalize ${
-                        ROLE_STYLES[member.role] || ROLE_STYLES.default
+                      className={`flex items-center w-fit text-xs font-medium px-1.5 py-0.5 rounded border ${
+                        member.availability === "available"
+                          ? "bg-green-50 border-green-200 text-green-700"
+                          : "bg-red-50 border-red-200 text-red-700"
                       }`}
                     >
-                      {member.role.replace("_", " ")}
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full me-1 ${
+                          member.availability === "not available"
+                            ? "bg-green-700"
+                            : "bg-red-700"
+                        }`}
+                      ></span>
+
+                      {member.availability}
                     </span>
                   </td>
 
@@ -87,18 +90,9 @@ export default function MemberTable({ members = [], onAssign, onDelete }) {
                         onClick={() => onAssign?.(member)}
                         title="Assign to Project"
                         aria-label={`Assign ${member.name} to project`}
-                        className="rounded-lg border border-green-200 bg-green-50 p-2.5 text-green-600 transition hover:scale-105 hover:bg-green-600 hover:text-white active:scale-95"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-green-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-green-700 hover:text-white"
                       >
                         <FaUserPlus size={14} />
-                      </button>
-
-                      <button
-                        onClick={() => onDelete?.(member)}
-                        title="Remove Member"
-                        aria-label={`Remove ${member.name}`}
-                        className="rounded-lg border border-red-200 bg-red-50 p-2.5 text-red-600 transition hover:scale-105 hover:bg-red-600 hover:text-white active:scale-95"
-                      >
-                        <FaTrash size={14} />
                       </button>
                     </div>
                   </td>
