@@ -10,7 +10,7 @@ export default function ProjectDetailHeader({ project }) {
         href="/admin/projects"
         className="
           inline-flex w-fit items-center gap-2
-          text-sm font-medium text-[#66756e]
+          text-sm font-medium text-slate-500
           transition-colors hover:text-[#0f5238]
         "
       >
@@ -18,10 +18,15 @@ export default function ProjectDetailHeader({ project }) {
         Back to Projects
       </Link>
 
-      <div>
-        <h1 className="wrap-break-word text-3xl font-semibold text-[#23312d] sm:text-4xl">
-          {project.name}
-        </h1>
+      <div className="flex items-center gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0f5238] to-[#2d6a4f] text-white text-lg font-bold shadow-lg shadow-[#0f5238]/20">
+          {project.name?.charAt(0)?.toUpperCase() || "P"}
+        </div>
+        <div>
+          <h1 className="wrap-break-word text-2xl font-bold text-[#181d19] sm:text-3xl">
+            {project.name}
+          </h1>
+        </div>
       </div>
     </section>
   );

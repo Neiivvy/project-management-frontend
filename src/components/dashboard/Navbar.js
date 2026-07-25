@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
+import useNotificationStore from "@/store/admin/useNotificationStore";
+import { ROLE } from "@/constants/roles";
 
 import {
   FaSearch,
@@ -13,14 +15,20 @@ import {
   FaBars,
 } from "react-icons/fa";
 
+import NotificationPanel from "./NotificationPanel";
+
 export default function Navbar({ setIsOpen }) {
   const router = useRouter();
 
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
+  const { isNotificationOpen, setIsNotificationOpen } = useNotificationStore();
+
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const isAdmin = user?.role === ROLE.ADMIN;
 
   const initials =
     user?.name
@@ -87,13 +95,22 @@ export default function Navbar({ setIsOpen }) {
           <p className="text-sm font-medium text-slate-700">{today}</p>
         </div>
 
-        {/* Notification */}
+        {/* Notification - Admin only */}
 
-        <button className="relative rounded-xl bg-slate-100 p-3 transition hover:bg-slate-200">
-          <FaBell className="text-slate-600" />
+        {isAdmin && (
+          <div className="relative">
+            <button
+              onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+              className="relative rounded-xl bg-slate-100 p-3 transition hover:bg-slate-200"
+            >
+              <FaBell className="text-slate-600" />
 
-          <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500"></span>
-        </button>
+              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
+            </button>
+
+            <NotificationPanel />
+          </div>
+        )}
 
         {/* Profile */}
 
@@ -142,6 +159,7 @@ export default function Navbar({ setIsOpen }) {
               <button
                 onClick={() => {
                   setOpen(false);
+                  router.push("/admin/profile");
                 }}
                 className="flex w-full items-center gap-3 px-5 py-4 transition hover:bg-slate-100"
               >

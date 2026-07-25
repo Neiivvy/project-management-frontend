@@ -7,18 +7,18 @@ export default function EmptyState({
   action,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+    <div className="flex flex-col items-center justify-center gap-4 py-16 text-center">
 
       {Icon && (
         <div
           className="flex h-14 w-14 items-center justify-center
                      rounded-2xl
-                     bg-[#0f5238]/45
-                     ring-1 ring-[#40916c]/40"
+                     bg-slate-100
+                     text-slate-400
+                     border border-slate-200"
         >
           <Icon
             size={22}
-            className="text-[#d8ebe2]"
             strokeWidth={1.5}
           />
         </div>
@@ -26,12 +26,12 @@ export default function EmptyState({
 
       <div className="space-y-1">
 
-        <p className="text-sm font-semibold text-[#edf8f2]">
+        <p className="text-sm font-semibold text-[#181d19]">
           {title}
         </p>
 
         {message && (
-          <p className="text-xs text-[#b7cbc1]">
+          <p className="text-xs text-slate-500">
             {message}
           </p>
         )}

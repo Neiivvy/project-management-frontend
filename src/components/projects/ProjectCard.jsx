@@ -3,13 +3,12 @@
 import Link from "next/link";
 import { Calendar, Flag, CheckCircle2 } from "lucide-react";
 import StatusBadge from "@/components/shared/StatusBadge";
-import ProgressRing from "@/components/projects/ProgressRing";
 import TeamAvatarStack from "@/components/projects/TeamAvatarStack";
 
 const PRIORITY_STYLES = {
-  high: "text-[#d95d39]",
-  medium: "text-[#d4a017]",
-  low: "text-[#40916c]",
+  high: "text-red-600 bg-red-50",
+  medium: "text-amber-600 bg-amber-50",
+  low: "text-emerald-600 bg-emerald-50",
 };
 
 function formatDueDate(dateStr) {
@@ -34,14 +33,14 @@ export default function ProjectCard({ project, index = 0 }) {
         overflow-hidden
         rounded-2xl
         border border-[#dbe6e1]
-        bg-white
+        bg-[#f7fbf9]
         p-5
         shadow-sm
         transition-all
         duration-300
         hover:-translate-y-1
         hover:border-[#8fbda7]
-        hover:shadow-lg
+        hover:shadow-md
       "
     >
       <div
@@ -53,7 +52,7 @@ export default function ProjectCard({ project, index = 0 }) {
           h-32
           w-32
           rounded-full
-          bg-[#8fbda7]/20
+          bg-[#0f5238]/5
           blur-3xl
           opacity-0
           transition-opacity
@@ -64,19 +63,22 @@ export default function ProjectCard({ project, index = 0 }) {
 
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-[#8a9892]">
+          <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">
             {project.id}
           </p>
 
-          <h3 className="truncate text-sm font-semibold text-[#2f3a36] transition-colors group-hover:text-[#0f5238]">
+          <h3 className="truncate text-sm font-semibold text-[#181d19] transition-colors group-hover:text-[#0f5238]">
             {project.name}
           </h3>
         </div>
 
-        <ProgressRing progress={project.progress} />
+        {/* Progress percentage text instead of ring */}
+        <span className="text-lg font-bold text-[#0f5238]">
+          {project.progress}%
+        </span>
       </div>
 
-      <p className="relative line-clamp-2 text-xs leading-relaxed text-[#66756e]">
+      <p className="relative line-clamp-2 text-xs leading-relaxed text-slate-500">
         {project.description}
       </p>
 
@@ -84,7 +86,7 @@ export default function ProjectCard({ project, index = 0 }) {
         <StatusBadge status={project.status} size="sm" />
 
         <span
-          className={`flex items-center gap-1 text-[11px] font-medium ${PRIORITY_STYLES[project.priority]}`}
+          className={`flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${PRIORITY_STYLES[project.priority] || "text-slate-500 bg-slate-50"}`}
         >
           <Flag size={11} />
         {project.priority
@@ -93,16 +95,16 @@ export default function ProjectCard({ project, index = 0 }) {
         </span>
       </div>
 
-      <div className="relative flex items-center justify-between border-t border-[#e6efeb] pt-3">
+      <div className="relative flex items-center justify-between border-t border-slate-100 pt-3">
         <TeamAvatarStack team={project.team} />
 
         <div className="flex flex-col items-end gap-1">
-          <span className="flex items-center gap-1 text-[11px] text-[#66756e]">
+          <span className="flex items-center gap-1 text-[11px] text-slate-500">
             <Calendar size={11} />
             {formatDueDate(project.dueDate)}
           </span>
 
-          <span className="flex items-center gap-1 text-[11px] text-[#66756e]">
+          <span className="flex items-center gap-1 text-[11px] text-slate-500">
             <CheckCircle2 size={11} />
             {project.tasksDone}/{project.tasksTotal}
           </span>

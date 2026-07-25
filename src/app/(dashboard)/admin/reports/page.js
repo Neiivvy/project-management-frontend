@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { FiBarChart2 } from "react-icons/fi";
 
 import OverviewCards from "@/components/reports/admin/OverviewCards";
 import TopPMTable from "@/components/reports/admin/TopPMTable";
@@ -44,6 +45,24 @@ export default function ReportsPage() {
 
   const [loading, setLoading] = useState(true);
   const [reportLoading, setReportLoading] = useState(false);
+
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    el.style.opacity = "0";
+    el.style.transform = "translateY(-10px)";
+
+    const timeout = setTimeout(() => {
+      el.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    }, 50);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const loadReports = async () => {
@@ -127,53 +146,87 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-900">Reports</h1>
-
-        <p className="text-gray-500">
-          Analyze users, projects and task performance
-        </p>
+    <div className="space-y-8 p-4 md:p-6 lg:p-8">
+      {/* Header */}
+      <div ref={headerRef}>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f5238]/10 text-[#0f5238]">
+            <FiBarChart2 className="text-lg" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-[#181d19]">
+              Reports
+            </h1>
+            <p className="text-sm text-slate-500">
+              Analyze users, projects and task performance
+            </p>
+          </div>
+        </div>
       </div>
 
       {overview && (
         <>
-          <OverviewCards overview={overview} />
+          <section>
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                Overview
+              </h2>
+              <div className="flex-1 h-px bg-slate-200" />
+            </div>
+            <OverviewCards overview={overview} />
+          </section>
 
-          <TopPMTable data={overview.topProjectManagers} />
+          <section>
+            <TopPMTable data={overview.topProjectManagers} />
+          </section>
         </>
       )}
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          md:grid-cols-2
-          gap-5
-        "
-      >
-        <UserSelector
-          users={users}
-          selectedUser={selectedUser}
-          onSelect={handleUserSelect}
-        />
+      {/* Selectors */}
+      <section>
+        <div className="flex items-center gap-2 mb-4">
+          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+            Detailed Reports
+          </h2>
+          <div className="flex-1 h-px bg-slate-200" />
+        </div>
 
-        <ProjectSelector
-          projects={projects}
-          selectedProject={selectedProject}
-          onSelect={handleProjectSelect}
-        />
-      </div>
+        <div
+          className="
+            grid
+            grid-cols-1
+            md:grid-cols-2
+            gap-5
+          "
+        >
+          <UserSelector
+            users={users}
+            selectedUser={selectedUser}
+            onSelect={handleUserSelect}
+          />
 
-      {reportLoading && <LoadingReport />}
+          <ProjectSelector
+            projects={projects}
+            selectedProject={selectedProject}
+            onSelect={handleProjectSelect}
+          />
+        </div>
+      </section>
 
-      {!reportLoading && userReport && <UserReportCard report={userReport} />}
+      {/* Report Content */}
+      <section className="space-y-6">
+        {reportLoading && <LoadingReport />}
 
-      {!reportLoading && projectReport && (
-        <ProjectReportCard report={projectReport} />
-      )}
+        {!reportLoading && userReport && (
+          <UserReportCard report={userReport} />
+        )}
 
-      {!userReport && !projectReport && !reportLoading && <EmptyReport />}
+        {!reportLoading && projectReport && (
+          <ProjectReportCard report={projectReport} />
+        )}
+
+        {!userReport && !projectReport && !reportLoading && <EmptyReport />}
+      </section>
     </div>
   );
 }

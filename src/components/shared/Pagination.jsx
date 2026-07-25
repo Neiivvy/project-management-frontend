@@ -34,14 +34,14 @@ export default function Pagination({
   };
 
   return (
-    <div className="flex flex-col-reverse items-center justify-between gap-3 border-t border-[#e6efeb] px-1 pt-4 sm:flex-row">
-      <p className="text-xs text-[#66756e]">
+    <div className="flex flex-col-reverse items-center justify-between gap-3 border-t border-slate-100 px-1 pt-4 sm:flex-row">
+      <p className="text-xs text-slate-500">
         Showing{" "}
-        <span className="font-medium text-[#2f3a36]">
+        <span className="font-medium text-[#181d19]">
           {start}–{end}
         </span>{" "}
         of{" "}
-        <span className="font-medium text-[#2f3a36]">
+        <span className="font-medium text-[#181d19]">
           {totalItems}
         </span>
       </p>
@@ -58,14 +58,14 @@ export default function Pagination({
             items-center
             justify-center
             rounded-lg
-            text-[#66756e]
-            transition-colors
-            hover:bg-[#f7fbf9]
+            text-slate-500
+            transition-all duration-200
+            hover:bg-slate-50
             hover:text-[#0f5238]
             disabled:cursor-not-allowed
             disabled:opacity-40
             disabled:hover:bg-transparent
-            disabled:hover:text-[#66756e]
+            disabled:hover:text-slate-500
           "
         >
           <ChevronLeft size={16} />
@@ -75,7 +75,7 @@ export default function Pagination({
           n === "..." ? (
             <span
               key={`dots-${i}`}
-              className="px-1 text-xs text-[#8a9892]"
+              className="px-1 text-xs text-slate-400"
             >
               …
             </span>
@@ -86,7 +86,7 @@ export default function Pagination({
               className={`h-8 min-w-8 rounded-lg px-2 text-xs font-medium transition-all duration-200 ${
                 n === page
                   ? "bg-[#0f5238] text-white shadow-sm"
-                  : "text-[#66756e] hover:bg-[#f7fbf9] hover:text-[#0f5238]"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-[#0f5238]"
               }`}
             >
               {n}
@@ -105,14 +105,14 @@ export default function Pagination({
             items-center
             justify-center
             rounded-lg
-            text-[#66756e]
-            transition-colors
-            hover:bg-[#f7fbf9]
+            text-slate-500
+            transition-all duration-200
+            hover:bg-slate-50
             hover:text-[#0f5238]
             disabled:cursor-not-allowed
             disabled:opacity-40
             disabled:hover:bg-transparent
-            disabled:hover:text-[#66756e]
+            disabled:hover:text-slate-500
           "
         >
           <ChevronRight size={16} />

@@ -5,8 +5,8 @@ const STATUS_STYLES = {
     label: "Planning",
     dot: "bg-white",
     text: "text-white",
-    bg: "bg-[#E0B84C]",
-    ring: "ring-[#D4A017]",
+    bg: "bg-[#f59e0b]",
+    ring: "ring-[#d97706]",
     pulse: false,
   },
 
@@ -14,8 +14,8 @@ const STATUS_STYLES = {
     label: "Active",
     dot: "bg-white",
     text: "text-white",
-    bg: "bg-[#3FA67B]",
-    ring: "ring-[#3FA67B]",
+    bg: "bg-[#0f5238]",
+    ring: "ring-[#0a3d2a]",
     pulse: true,
   },
 
@@ -23,8 +23,8 @@ const STATUS_STYLES = {
     label: "Completed",
     dot: "bg-white",
     text: "text-white",
-    bg: "bg-[#207655]",
-    ring: "ring-[#207655]",
+    bg: "bg-[#10b981]",
+    ring: "ring-[#059669]",
     pulse: false,
   },
 };

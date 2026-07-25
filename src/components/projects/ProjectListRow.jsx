@@ -25,14 +25,14 @@ export default function ProjectListRow({ project, index = 0 }) {
         items-center
         gap-4
         rounded-xl
-        border border-[#dbe6e1]
+        border border-slate-100
         bg-white
         p-3.5
         shadow-sm
         transition-all
         duration-200
         hover:-translate-y-0.5
-        hover:border-[#8fbda7]
+        hover:border-slate-200
         hover:shadow-md
         sm:p-4
       "
@@ -44,11 +44,11 @@ export default function ProjectListRow({ project, index = 0 }) {
       />
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-[#2f3a36] transition-colors group-hover:text-[#0f5238]">
+        <p className="truncate text-sm font-medium text-[#181d19] transition-colors group-hover:text-[#0f5238]">
           {project.name}
         </p>
 
-        <p className="truncate text-xs text-[#66756e]">
+        <p className="truncate text-xs text-slate-500">
           {project.manager}
         </p>
       </div>
@@ -57,7 +57,7 @@ export default function ProjectListRow({ project, index = 0 }) {
         <TeamAvatarStack team={project.team} max={3} />
       </div>
 
-      <span className="hidden items-center gap-1 whitespace-nowrap text-xs text-[#66756e] md:flex">
+      <span className="hidden items-center gap-1 whitespace-nowrap text-xs text-slate-500 md:flex">
         <Calendar size={12} />
         {formatDueDate(project.dueDate)}
       </span>

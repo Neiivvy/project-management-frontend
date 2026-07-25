@@ -18,14 +18,14 @@ export default function TeamAvatarStack({ team = [], max = 3 }) {
           className="
             rounded-full
             ring-2 ring-white
-            border border-[#dbe6e1]
+            border border-slate-200
             transition-transform
             duration-200
             hover:z-10
             hover:scale-110
           "
         >
-          <Avatar name={member.name} size="sm" />
+          <Avatar name={member.name} size="sm" variant="dark" />
         </div>
       ))}
 
@@ -39,11 +39,11 @@ export default function TeamAvatarStack({ team = [], max = 3 }) {
             items-center
             justify-center
             rounded-full
-            border border-[#dbe6e1]
-            bg-[#f7fbf9]
+            border border-slate-200
+            bg-slate-50
             text-[10px]
             font-semibold
-            text-[#4f5d57]
+            text-slate-600
             ring-2
             ring-white
           "

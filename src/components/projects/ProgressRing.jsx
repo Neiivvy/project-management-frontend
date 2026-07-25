@@ -15,12 +15,12 @@ export default function ProgressRing({
 
   const color =
     progress >= 100
-      ? "#40916c"
+      ? "#0f5238"
       : progress >= 50
-      ? "#52b788"
+      ? "#2d6a4f"
       : progress >= 20
-      ? "#95d5b2"
-      : "#d9a441";
+      ? "#40916c"
+      : "#6b7280";
 
   return (
     <div
@@ -37,7 +37,7 @@ export default function ProgressRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#dbe6e1"
+          stroke="#f1f5f9"
           strokeWidth={strokeWidth}
         />
 
@@ -55,7 +55,7 @@ export default function ProgressRing({
         />
       </svg>
 
-      <span className="absolute font-mono text-[10px] font-semibold text-[#2f3a36]">
+      <span className="absolute font-mono text-[10px] font-semibold text-[#181d19]">
         {progress}%
       </span>
     </div>

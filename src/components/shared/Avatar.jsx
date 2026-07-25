@@ -8,6 +8,13 @@ const PALETTE = [
   { bg: "bg-[#d5ede1]", ring: "ring-[#82b99f]", text: "text-[#214a36]" },
 ];
 
+const DARK_PALETTE = [
+  { bg: "bg-[#0f5238]", ring: "ring-[#0a3d2a]", text: "text-white" },
+  { bg: "bg-[#2d6a4f]", ring: "ring-[#1f5238]", text: "text-white" },
+  { bg: "bg-[#40916c]", ring: "ring-[#2d6a4f]", text: "text-white" },
+  { bg: "bg-[#1f4734]", ring: "ring-[#163025]", text: "text-white" },
+];
+
 function hashName(name = "") {
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
@@ -33,8 +40,11 @@ export default function Avatar({
   size = "md",
   status,
   className = "",
+  variant = "light",
 }) {
-  const palette = PALETTE[hashName(name) % PALETTE.length];
+  const palette = variant === "dark"
+    ? DARK_PALETTE[hashName(name) % DARK_PALETTE.length]
+    : PALETTE[hashName(name) % PALETTE.length];
   const sizeClasses = SIZES[size] || SIZES.md;
 
   return (

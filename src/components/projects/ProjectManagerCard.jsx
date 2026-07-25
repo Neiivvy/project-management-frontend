@@ -8,22 +8,25 @@ export default function ProjectManagerCard({ manager }) {
     <section
       className="
         rounded-2xl
-        border border-[#dbe6e1]
+        border border-slate-100
         bg-white
         p-5
         shadow-sm
         sm:p-6
+        transition-all duration-300
+        hover:shadow-md
       "
     >
       {/* Header */}
 
       <div className="flex items-center gap-2">
-        <Briefcase
-          size={18}
-          className="text-[#40916c]"
-        />
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f5238]/10 text-[#0f5238]">
+          <Briefcase
+            size={16}
+          />
+        </div>
 
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[#66756e]">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Project Manager
         </h2>
       </div>
@@ -38,20 +41,24 @@ export default function ProjectManagerCard({ manager }) {
         />
 
         <div className="min-w-0 flex-1">
-          <h3 className="truncate text-base font-semibold text-[#23312d]">
+          <h3 className="truncate text-base font-semibold text-[#181d19]">
             {manager?.name || "Unknown"}
           </h3>
 
-          <div className="mt-2 flex items-center gap-2 text-sm text-[#66756e]">
-            <Mail size={15} />
+          <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+              <Mail size={13} />
+            </div>
 
             <span className="truncate">
               {manager?.email || "No email available"}
             </span>
           </div>
 
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#eef7f2] px-3 py-1.5 text-xs font-semibold text-[#0f5238]">
-            <ShieldCheck size={14} />
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#0f5238]/10 px-3 py-1.5 text-xs font-semibold text-[#0f5238]">
+            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-[#0f5238] text-white">
+              <ShieldCheck size={12} />
+            </div>
             Project Manager
           </div>
         </div>

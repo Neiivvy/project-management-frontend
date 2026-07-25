@@ -10,10 +10,11 @@ export default function SearchInput({
 }) {
   return (
     <div className={`relative ${className}`}>
-      <Search
-        size={16}
-        className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8a9892]"
-      />
+      <div className="flex h-5 w-5 items-center justify-center rounded-md bg-slate-100 text-slate-500">
+        <Search
+          size={14}
+        />
+      </div>
 
       <input
         type="text"
@@ -23,21 +24,21 @@ export default function SearchInput({
         className="
           w-full
           rounded-xl
-          border border-[#dbe6e1]
+          border border-slate-200
           bg-white
           py-2.5
           pl-10
           pr-9
           text-sm
-          text-[#2f3a36]
-          placeholder:text-[#8a9892]
+          text-[#181d19]
+          placeholder:text-slate-400
           outline-none
           transition-all
           duration-200
-          hover:border-[#bfd3ca]
-          focus:border-[#40916c]
+          hover:border-slate-300
+          focus:border-[#0f5238]
           focus:ring-2
-          focus:ring-[#40916c]/15
+          focus:ring-[#0f5238]/15
         "
       />
 
@@ -51,9 +52,12 @@ export default function SearchInput({
             right-3
             top-1/2
             -translate-y-1/2
-            text-[#8a9892]
+            flex h-5 w-5 items-center justify-center
+            rounded-md
+            text-slate-400
             transition-colors
-            hover:text-[#2f3a36]
+            hover:text-[#181d19]
+            hover:bg-slate-100
           "
         >
           <X size={14} />
