@@ -2,18 +2,18 @@
 
 import Avatar from "@/components/shared/Avatar";
 
-export default function TeamAvatarStack({ team = [], max = 3 }) {
+export default function TeamAvatarStack({ team = [], max =3 }) {
   const visible = team.slice(0, max);
   const overflow = team.length - visible.length;
 
   return (
     <div className="flex items-center">
-      {visible.map((member, i) => (
+      {visible.map((member, index) => (
         <div
           key={member.id}
           style={{
-            zIndex: visible.length - i,
-            marginLeft: i === 0 ? 0 : -10,
+            zIndex: visible.length - index,
+            marginLeft: index === 0 ? 0 : -10,
           }}
           className="
             rounded-full
@@ -25,7 +25,12 @@ export default function TeamAvatarStack({ team = [], max = 3 }) {
             hover:scale-110
           "
         >
-          <Avatar name={member.name} size="sm" variant="dark" />
+          <Avatar
+            name={member.name}
+            size="sm"
+            variant="dark"
+            paletteIndex={index}
+          />
         </div>
       ))}
 

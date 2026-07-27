@@ -54,28 +54,28 @@ export default function AdminPage() {
           icon={FiUsers}
           label="Total Users"
           value={summary.totalUsers ?? 0}
-          color="#0f5238"
+          color="#1a7a4c"
         />
 
         <StatCard
           icon={FiFolder}
           label="Projects"
           value={summary.totalProjects ?? 0}
-          color="#2d6a4f"
+          color="#c9a000"
         />
 
         <StatCard
           icon={FiUserCheck}
           label="Project Managers"
           value={summary.projectManagers ?? 0}
-          color="#40916c"
+          color="#2563eb"
         />
 
         <StatCard
           icon={FiCheckCircle}
           label="Completed Tasks"
           value={summary.completedTasks ?? 0}
-          color="#b08900"
+          color="#c2410c"
         />
       </div>
 

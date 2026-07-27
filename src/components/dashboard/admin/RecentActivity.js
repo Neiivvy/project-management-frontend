@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import useActivityStore from "@/store/admin/useActivityStore";
-import ActivityItem from "./ActivityItem";
+import ActivityCard from "./ActivityCard";
 
 export default function RecentActivity() {
   const {
@@ -43,12 +43,15 @@ export default function RecentActivity() {
           No recent activity found.
         </div>
       ) : (
-        <div className="divide-y divide-[#ecefe9]">
-          {activities.map((activity) => (
-            <ActivityItem
-              key={activity._id}
-              activity={activity}
-            />
+        <div className="p-5 space-y-0">
+          {activities.map((activity, index) => (
+           <ActivityCard
+  key={activity._id}
+  activity={activity}
+  isFirst={index === 0}
+  isLast={index === activities.length - 1}
+  paletteIndex={index}
+/>
           ))}
         </div>
       )}

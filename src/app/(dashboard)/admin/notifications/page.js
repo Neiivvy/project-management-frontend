@@ -61,7 +61,7 @@ export default function AdminNotificationsPage() {
               onClick={() => setFilter("all")}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                 filter === "all"
-                  ? "bg-[#0f5238] text-white"
+                  ? "bg-[#1a7a4c] text-white"
                   : "text-slate-600 hover:bg-slate-100"
               }`}
             >
@@ -71,7 +71,7 @@ export default function AdminNotificationsPage() {
               onClick={() => setFilter("unread")}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                 filter === "unread"
-                  ? "bg-[#0f5238] text-white"
+                  ? "bg-[#c9a000] text-white"
                   : "text-slate-600 hover:bg-slate-100"
               }`}
             >
@@ -83,7 +83,7 @@ export default function AdminNotificationsPage() {
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
-              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#0f5238] hover:bg-[#0f5238]/5 transition"
+              className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#1a7a4c] hover:bg-[#1a7a4c]/5 transition"
             >
               <FaCheckDouble className="text-sm" />
               Mark all read

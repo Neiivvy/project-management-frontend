@@ -150,7 +150,7 @@ export default function ReportsPage() {
       {/* Header */}
       <div ref={headerRef}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f5238]/10 text-[#0f5238]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a7a4c]/10 text-[#1a7a4c]">
             <FiBarChart2 className="text-lg" />
           </div>
           <div>

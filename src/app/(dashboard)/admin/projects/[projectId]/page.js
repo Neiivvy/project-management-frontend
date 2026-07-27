@@ -67,8 +67,8 @@ export default function ProjectDetailPage() {
                 rounded-full
                 border-4
                 border-transparent
-                border-t-[#0f5238]
-                border-r-[#3b82f6]
+                border-t-[#1a7a4c]
+                border-r-[#2563eb]
                 animate-spin
               "
             />
@@ -174,8 +174,8 @@ export default function ProjectDetailPage() {
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               activeTab === tab.key
-                ? "bg-[#0f5238] text-white shadow-sm"
-                : "text-slate-600 hover:bg-slate-50 hover:text-[#0f5238]"
+                ? "bg-[#1a7a4c] text-white shadow-sm"
+                : "text-slate-600 hover:bg-slate-50 hover:text-[#1a7a4c]"
             }`}
           >
             {tab.label}
@@ -190,7 +190,7 @@ export default function ProjectDetailPage() {
           {activeTab === "overview" && (
             <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
               <div className="flex items-center gap-2 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#800000]/10 text-[#800000]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#c9a000]/10 text-[#c9a000]">
                   <span className="text-sm font-bold">📝</span>
                 </div>
                 <h2 className="text-base font-semibold text-[#181d19]">
@@ -289,7 +289,7 @@ export default function ProjectDetailPage() {
           {/* Manager Card */}
           <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f5238]/10 text-[#0f5238]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563eb]/10 text-[#2563eb]">
                 <span className="text-sm font-bold">👤</span>
               </div>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
@@ -313,7 +313,7 @@ export default function ProjectDetailPage() {
           {/* Meta Card */}
           <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f5238]/10 text-[#0f5238]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#0d7377]/10 text-[#0d7377]">
                 <span className="text-sm font-bold">ℹ️</span>
               </div>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">

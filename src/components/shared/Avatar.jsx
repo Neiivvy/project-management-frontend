@@ -1,18 +1,24 @@
 "use client";
 
-// Green palette with solid backgrounds for better visibility on light surfaces.
+// Alternating palette: green, yellow, blue, orange, purple, maroon, teal.
 const PALETTE = [
-  { bg: "bg-[#d9efe4]", ring: "ring-[#8bbfa6]", text: "text-[#1f4734]" },
-  { bg: "bg-[#d3ebdf]", ring: "ring-[#7fb595]", text: "text-[#244d39]" },
-  { bg: "bg-[#e2f3ea]", ring: "ring-[#90c8ae]", text: "text-[#204633]" },
-  { bg: "bg-[#d5ede1]", ring: "ring-[#82b99f]", text: "text-[#214a36]" },
+  { bg: "bg-[#1a7a4c]/15", ring: "ring-[#1a7a4c]/40", text: "text-[#1a7a4c]" },
+  { bg: "bg-[#c9a000]/15", ring: "ring-[#c9a000]/40", text: "text-[#8a6d00]" },
+  { bg: "bg-[#2563eb]/15", ring: "ring-[#2563eb]/40", text: "text-[#1e40af]" },
+  { bg: "bg-[#c2410c]/15", ring: "ring-[#c2410c]/40", text: "text-[#9a3412]" },
+  { bg: "bg-[#7c3aed]/15", ring: "ring-[#7c3aed]/40", text: "text-[#5b21b6]" },
+  { bg: "bg-[#800000]/15", ring: "ring-[#800000]/40", text: "text-[#800000]" },
+  { bg: "bg-[#0d7377]/15", ring: "ring-[#0d7377]/40", text: "text-[#0f5255]" },
 ];
 
 const DARK_PALETTE = [
-  { bg: "bg-[#0f5238]", ring: "ring-[#0a3d2a]", text: "text-white" },
-  { bg: "bg-[#2d6a4f]", ring: "ring-[#1f5238]", text: "text-white" },
-  { bg: "bg-[#40916c]", ring: "ring-[#2d6a4f]", text: "text-white" },
-  { bg: "bg-[#1f4734]", ring: "ring-[#163025]", text: "text-white" },
+  { bg: "bg-[#1a7a4c]", ring: "ring-[#145d3a]", text: "text-white" },
+  { bg: "bg-[#c9a000]", ring: "ring-[#997a00]", text: "text-white" },
+  { bg: "bg-[#2563eb]", ring: "ring-[#1e40af]", text: "text-white" },
+  { bg: "bg-[#c2410c]", ring: "ring-[#9a3412]", text: "text-white" },
+  { bg: "bg-[#7c3aed]", ring: "ring-[#5b21b6]", text: "text-white" },
+  { bg: "bg-[#800000]", ring: "ring-[#600000]", text: "text-white" },
+  { bg: "bg-[#0d7377]", ring: "ring-[#0a5558]", text: "text-white" },
 ];
 
 function hashName(name = "") {
@@ -41,10 +47,16 @@ export default function Avatar({
   status,
   className = "",
   variant = "light",
+  paletteIndex,
 }) {
-  const palette = variant === "dark"
-    ? DARK_PALETTE[hashName(name) % DARK_PALETTE.length]
-    : PALETTE[hashName(name) % PALETTE.length];
+  const colors = variant === "dark" ? DARK_PALETTE : PALETTE;
+
+  const index =
+    paletteIndex !== undefined
+      ? paletteIndex % colors.length
+      : hashName(name) % colors.length;
+
+  const palette = colors[index];
   const sizeClasses = SIZES[size] || SIZES.md;
 
   return (

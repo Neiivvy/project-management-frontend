@@ -26,14 +26,19 @@ export default function UserTableRow({
           href={`/admin/users/${user._id}`}
           className="flex min-w-0 items-center gap-3"
         >
-          <Avatar name={user.name} />
+                            <Avatar
+           name={user.name}
+           size="sm"
+           variant="dark"
+           paletteIndex={index}
+         />
 
           <div className="min-w-0 flex-1">
             <p
               className="truncate text-sm font-semibold
                          text-[#2f3a36]
-                         transition-colors duration-200
-                         group-hover:text-[#1d6d45]"
+                          transition-colors duration-200
+                          group-hover:text-[#1a7a4c]"
             >
               {user.name}
             </p>
@@ -73,9 +78,9 @@ export default function UserTableRow({
 >
   <span
     className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-      user.availability === "available"
-        ? "bg-[#e7f8ef] text-[#1d7a46]"
-        : "bg-[#fdf0f0] text-[#c03d3d]"
+               user.availability === "available"
+                 ? "bg-[#e7f5ee] text-[#1a7a4c]"
+                 : "bg-[#fdf0f0] text-[#c03d3d]"
     }`}
   >
     {user.availability === "available"

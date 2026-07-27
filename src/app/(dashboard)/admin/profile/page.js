@@ -29,7 +29,7 @@ export default function AdminProfilePage() {
           <section className="rounded-2xl border border-[#d0e8dc] bg-linear-to-b from-[#f0faf4] to-white p-6 shadow-[0_1px_2px_rgba(16,24,20,0.04)] transition-all duration-300 hover:shadow-[0_4px_20px_rgba(15,82,56,0.12)] hover:border-[#40916c]/30 animate-green-glow">
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="relative">
-                <div className="absolute inset-0 rounded-full bg-[#0f5238] opacity-10 blur-lg scale-125 animate-pulse" />
+                <div className="absolute inset-0 rounded-full bg-[#1a7a4c] opacity-10 blur-lg scale-125 animate-pulse" />
                 <div className="scale-125 relative">
                   <Avatar name={user.name} size="lg" variant="dark" />
                 </div>
@@ -95,7 +95,7 @@ export default function AdminProfilePage() {
             <div className="absolute top-0 left-0 w-1 h-full bg-linear-to-b from-[#0f5238] to-[#40916c] rounded-l-2xl" />
 
             <h3 className="text-base font-semibold text-[#05110a] mb-4 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#0f5238] animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#1a7a4c] animate-pulse" />
               Account Details
             </h3>
 

@@ -10,7 +10,12 @@ export default function UserProfileCard({ user }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="scale-125">
-            <Avatar name={user.name} />
+                               <Avatar
+              name={user.name}
+              size="sm"
+              variant="dark"
+              paletteIndex={index}
+            />
           </div>
           <div className="flex flex-col gap-1">
             <h1 className="text-lg font-semibold text-[#05110a] sm:text-xl">
@@ -24,10 +29,10 @@ export default function UserProfileCard({ user }) {
           <RoleBadge role={user.role} />
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
-              isAvailable ? "bg-[#e7f5ee] text-[#1d6d45]" : "bg-[#f4eaea] text-[#8a3b3b]"
+              isAvailable ? "bg-[#e7f5ee]                text-[#1a7a4c]" : "bg-[#f4eaea] text-[#8a3b3b]"
             }`}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${isAvailable ? "bg-[#1d6d45]" : "bg-[#8a3b3b]"}`} />
+            <span className={`h-1.5 w-1.5 rounded-full ${isAvailable ? "bg-[#1a7a4c]" : "bg-[#8a3b3b]"}`} />
             {isAvailable ? "Available" : "Not Available"}
           </span>
         </div>

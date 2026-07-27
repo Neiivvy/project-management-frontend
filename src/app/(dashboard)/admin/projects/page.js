@@ -104,7 +104,7 @@ export default function ProjectsPage() {
       {/* Header */}
       <div ref={headerRef}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f5238]/10 text-[#0f5238]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a7a4c]/10 text-[#1a7a4c]">
             <span className="text-lg">📁</span>
           </div>
           <div>
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
 
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-100 border-t-[#0f5238]" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-100 border-t-[#1a7a4c]" />
             <p className="text-sm text-slate-500 mt-3">Loading projects...</p>
           </div>
         ) : error ? (

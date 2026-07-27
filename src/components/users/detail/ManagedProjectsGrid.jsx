@@ -28,7 +28,7 @@ function ProjectCard({ project }) {
       href={`/admin/projects/${project._id}`}
       className="group flex flex-col gap-3 rounded-2xl border border-[#e3ece8] bg-[#f5faf7] p-4
                  transition-all duration-300 ease-out
-                 hover:-translate-y-1 hover:border-[#c9e3d4] hover:bg-[#eef8f2] hover:shadow-[0_8px_24px_-8px_rgba(29,109,69,0.25)]
+                 hover:-translate-y-1                  hover:border-[#b8d9c0] hover:bg-[#eef8f2] hover:shadow-[0_8px_24px_-8px_rgba(26,122,76,0.25)]
                  sm:flex-row sm:items-center sm:justify-between"
     >
       <div className="flex min-w-0 flex-col gap-1">
@@ -44,16 +44,21 @@ function ProjectCard({ project }) {
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
-        <div className="flex -space-x-2">
-          {(project.teamMembers || []).slice(0, 4).map((member) => (
-            <div
-              key={member._id}
-              className="rounded-full ring-2 ring-white transition-transform duration-300 group-hover:scale-105"
-            >
-              <Avatar name={member.name} />
-            </div>
-          ))}
-        </div>
+       <div className="flex -space-x-2">
+  {(project.teamMembers || []).slice(0, 4).map((member, index) => (
+    <div
+      key={member._id}
+      className="rounded-full ring-2 ring-white transition-transform duration-300 group-hover:scale-105"
+    >
+      <Avatar
+        name={member.name}
+        size="sm"
+        variant="dark"
+        paletteIndex={index}
+      />
+    </div>
+  ))}
+</div>
         {project.teamMembers?.length > 4 && (
           <span className="text-xs text-[#6b7b74]">+{project.teamMembers.length - 4}</span>
         )}
