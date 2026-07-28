@@ -177,7 +177,7 @@ export default function ReportsPage() {
           </section>
 
           <section>
-            <TopPMTable data={overview.topProjectManagers} />
+            <TopPMTable topProjectManagers={overview.topProjectManagers} />
           </section>
         </>
       )}

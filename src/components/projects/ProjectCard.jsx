@@ -61,21 +61,14 @@ export default function ProjectCard({ project, index = 0 }) {
         "
       />
 
-      <div className="relative flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">
-            {project.id}
-          </p>
+      <div className="relative min-w-0 flex-1">
+        <p className="mb-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">
+          {project.id}
+        </p>
 
-          <h3 className="truncate text-sm font-semibold text-[#181d19] transition-colors group-hover:text-[#0f5238]">
-            {project.name}
-          </h3>
-        </div>
-
-        {/* Progress percentage text instead of ring */}
-        <span className="text-lg font-bold text-[#0f5238]">
-          {project.progress}%
-        </span>
+        <h3 className="truncate text-sm font-semibold text-[#181d19] transition-colors group-hover:text-[#0f5238]">
+          {project.name}
+        </h3>
       </div>
 
       <p className="relative line-clamp-2 text-xs leading-relaxed text-slate-500">

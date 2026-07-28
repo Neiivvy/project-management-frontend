@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Calendar } from "lucide-react";
 import StatusBadge from "@/components/shared/StatusBadge";
-import ProgressRing from "@/components/projects/ProgressRing";
 import TeamAvatarStack from "@/components/projects/TeamAvatarStack";
 
 function formatDueDate(dateStr) {
@@ -37,12 +36,6 @@ export default function ProjectListRow({ project, index = 0 }) {
         sm:p-4
       "
     >
-      <ProgressRing
-        progress={project.progress}
-        size={38}
-        strokeWidth={3.5}
-      />
-
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-[#181d19] transition-colors group-hover:text-[#0f5238]">
           {project.name}

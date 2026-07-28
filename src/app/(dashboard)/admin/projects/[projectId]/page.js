@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FolderKanban, Loader2, Users, ClipboardList, CheckCircle2, Clock } from "lucide-react";
 
@@ -24,7 +24,6 @@ export default function ProjectDetailPage() {
     fetchProjectTasks,
   } = useProjectStore();
 
-  const contentRef = useRef(null);
   const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
@@ -37,22 +36,6 @@ export default function ProjectDetailPage() {
       clearCurrentProject();
     };
   }, [projectId, fetchProjectById, fetchProjectTasks, clearCurrentProject]);
-
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-
-    el.style.opacity = "0";
-    el.style.transform = "translateY(20px)";
-
-    const timeout = setTimeout(() => {
-      el.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0)";
-    }, 100);
-
-    return () => clearTimeout(timeout);
-  }, [currentProject]);
 
   if (isLoadingProject) {
     return (
@@ -121,8 +104,8 @@ export default function ProjectDetailPage() {
 
   return (
     <div
-      ref={contentRef}
-      className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 sm:p-6 lg:p-8"
+      key={project.id}
+      className="mx-auto flex w-full max-w-7xl animate-[fadeSlide_0.5s_ease-out_backwards] flex-col gap-6 p-4 sm:p-6 lg:p-8"
     >
       {/* Hero Header */}
       <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-[#0f5238] to-[#2d6a4f] p-6 sm:p-8 text-white shadow-lg">
