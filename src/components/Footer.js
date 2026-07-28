@@ -36,7 +36,7 @@ export default function Footer() {
                 <FaGithubSquare size={16} className="text-[#0f5238]" />
               </span>
               <span className="text-base font-semibold text-[#181d19]">
-                Project Clarity
+                Co-Work
               </span>
             </div>
 
@@ -95,7 +95,7 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[#bfc9c1] pt-6 sm:flex-row">
           <p className="text-xs text-[#404943]">
-            © {new Date().getFullYear()} Project Clarity, Inc. All rights
+            © {new Date().getFullYear()} Co-Work, Inc. All rights
             reserved.
           </p>
         </div>

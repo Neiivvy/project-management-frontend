@@ -91,7 +91,7 @@ export default function HowItWorksPage() {
           <span className="text-[#498f70]">Simplify Every Step.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-500">
-          Project Clarity is designed to fit the way your team actually works.
+          Co-Work is designed to fit the way your team actually works.
           Set up in minutes, collaborate in real time, and manage projects
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">

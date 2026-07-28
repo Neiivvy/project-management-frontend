@@ -5,7 +5,10 @@ export const Contact_route = "/contact";
 export const Login_route = "/login";
 export const Register_route = "/register";
 export const Forgot_password_route = "/forgot-password";
+export const AddProject_route = "/project-manager/projects/add";
 
+
+//public nav
 export const navMenu = [
   {
     label: "Home",
@@ -26,6 +29,7 @@ export const navMenu = [
   },
 ];
 
+//auth routes
 export const authRoute = [
   {
     label: "Login",
@@ -40,3 +44,5 @@ export const authRoute = [
     route: Forgot_password_route,
   },
 ];
+
+

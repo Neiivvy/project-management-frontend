@@ -1,4 +1,16 @@
 import { ROLE } from "@/constants/roles";
+import {
+  FaHome,
+  FaFolderOpen,
+  FaTasks,
+  FaUsers,
+  FaUserFriends,
+  FaChartLine,
+  FaChartBar,
+  FaCog,
+  FaUserShield,
+  FaHistory,
+} from "react-icons/fa";
 
 export const getDashboardRoute = (role) => {
   switch (role) {
@@ -32,30 +44,67 @@ export const getSidebarItems = (role) => {
   switch (role) {
     case ROLE.ADMIN:
       return [
-        { label: "Dashboard", route: "/admin" },
-        { label: "Users", route: "/admin/users" },
-        { label: "Projects", route: "/admin/projects" },
-        { label: "Settings", route: "/admin/settings" },
+        { label: "Dashboard", route: "/admin", icon: <FaHome /> },
+        { label: "Users", route: "/admin/users", icon: <FaUsers /> },
+        {
+          label: "Roles & Permissions",
+          route: "/admin/roles",
+          icon: <FaUserShield />,
+        },
+        {
+          label: "Projects",
+          route: "/admin/projects",
+          icon: <FaFolderOpen />,
+        },
+        {
+          label: "Activity",
+          route: "/admin/activity",
+          icon: <FaHistory />,
+        },
+        {
+          label: "Reports",
+          route: "/admin/reports",
+          icon: <FaChartBar />,
+        },
       ];
 
     case ROLE.PROJECT_MANAGER:
       return [
-        { label: "Dashboard", route: "/project-manager" },
-        { label: "Projects", route: "/project-manager/projects" },
-        { label: "Tasks", route: "/project-manager/tasks" },
-        { label: "Team", route: "/project-manager/team" },
-        { label: "Reports", route: "/project-manager/reports" },
-        { label: "Settings", route: "/project-manager/settings" },
+        { label: "Dashboard", route: "/project-manager", icon: <FaHome /> },
+        {
+          label: "Projects",
+          route: "/project-manager/projects",
+          icon: <FaFolderOpen />,
+        },
+        { label: "Tasks", route: "/project-manager/tasks", icon: <FaTasks /> },
+        {
+          label: "Members",
+          route: "/project-manager/members",
+          icon: <FaUserFriends />,
+        },
+        {
+          label: "Task Progress",
+          route: "/project-manager/progress",
+          icon: <FaChartLine />,
+        },
+        {
+          label: "Reports",
+          route: "/project-manager/report",
+          icon: <FaChartBar />,
+        },
       ];
-
     case ROLE.MEMBER:
     default:
       return [
-        { label: "Dashboard", route: "/member" },
-        { label: "Projects", route: "/member/projects" },
-        { label: "Tasks", route: "/member/tasks" },
-        { label: "Team", route: "/member/team" },
-        { label: "Settings", route: "/member/settings" },
+        { label: "Dashboard", route: "/member", icon: <FaHome /> },
+        {
+          label: "Projects",
+          route: "/member/projects",
+          icon: <FaFolderOpen />,
+        },
+        { label: "Tasks", route: "/member/tasks", icon: <FaTasks /> },
+        { label: "Team", route: "/member/team", icon: <FaUsers /> },
+        { label: "Settings", route: "/member/settings", icon: <FaCog /> },
       ];
   }
 };
