@@ -23,6 +23,7 @@ export default function TaskModal({
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -33,6 +34,22 @@ export default function TaskModal({
       priority: "Medium",
       deadline: "",
     },
+  });
+
+  const selectedProjectId = watch("projectId");
+
+  const selectedProject = projects.find(
+    (project) => project._id === selectedProjectId,
+  );
+
+  const projectMembers = users.filter((user) => {
+    return (
+      user.role === "member" &&
+      selectedProject?.teamMembers?.some((member) => {
+        const memberId = member._id || member;
+        return memberId.toString() === user._id.toString();
+      })
+    );
   });
 
   useEffect(() => {
@@ -78,6 +95,7 @@ export default function TaskModal({
     setShow(false);
   };
   const onSubmit = async (data) => {
+    console.log("Sending task:", data);
     let success = false;
 
     if (mode === "create") {
@@ -87,7 +105,7 @@ export default function TaskModal({
 
       success = await editTask(task._id, data);
     }
-
+    console.log("Success:", success);
     if (success) {
       toast.success(
         mode === "create"
@@ -212,13 +230,15 @@ export default function TaskModal({
             >
               <option value="">Assign Member</option>
 
-              {(users || [])
-                .filter((user) => user.role === "member")
-                .map((user) => (
+              {projectMembers.length > 0 ? (
+                projectMembers.map((user) => (
                   <option key={user._id} value={user._id}>
                     {user.name}
                   </option>
-                ))}
+                ))
+              ) : (
+                <option disabled>No team members in this project</option>
+              )}
             </select>
 
             {errors.assignedTo && (

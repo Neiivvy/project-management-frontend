@@ -69,38 +69,30 @@ export const getSidebarItems = (role) => {
       ];
 
     case ROLE.PROJECT_MANAGER:
-  return [
-    {
-      label: "Dashboard",
-      route: "/project-manager",
-      icon: <FaHome />,
-    },
-    {
-      label: "Projects",
-      route: "/project-manager/projects",
-      icon: <FaFolderOpen />,
-    },
-    {
-      label: "Tasks",
-      route: "/project-manager/tasks",
-      icon: <FaTasks />,
-    },
-    {
-      label: "Team",
-      route: "/project-manager/team",
-      icon: <FaUserFriends />,
-    },
-    {
-      label: "Reports",
-      route: "/project-manager/reports",
-      icon: <FaChartLine />,
-    },
-    {
-      label: "Settings",
-      route: "/project-manager/settings",
-      icon: <FaCog />,
-    },
-  ];
+      return [
+        { label: "Dashboard", route: "/project-manager", icon: <FaHome /> },
+        {
+          label: "Projects",
+          route: "/project-manager/projects",
+          icon: <FaFolderOpen />,
+        },
+        { label: "Tasks", route: "/project-manager/tasks", icon: <FaTasks /> },
+        {
+          label: "Members",
+          route: "/project-manager/members",
+          icon: <FaUserFriends />,
+        },
+        {
+          label: "Task Progress",
+          route: "/project-manager/progress",
+          icon: <FaChartLine />,
+        },
+        {
+          label: "Reports",
+          route: "/project-manager/report",
+          icon: <FaChartBar />,
+        },
+      ];
     case ROLE.MEMBER:
     default:
       return [

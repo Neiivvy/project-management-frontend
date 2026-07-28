@@ -18,75 +18,6 @@ import { FaUserFriends } from "react-icons/fa";
 import { getTasks } from "@/api/taskApi";
 import { getUsers } from "@/api/userApi";
 
-const PENDING_TASKS = [
-  {
-    title: "Review API ",
-    project: "PMS API",
-    due: "Today",
-    priority: "High",
-  },
-  {
-    title: "Landing page",
-    project: "E-Commerce",
-    due: "Tomorrow",
-    priority: "Medium",
-  },
-  {
-    title: "Writting Project Report",
-    project: "Co-Work App",
-    due: "Jul 10",
-    priority: "Medium",
-  },
-  {
-    title: "Payment Integration",
-    project: "Esewa",
-    due: "Jul 12",
-    priority: "Low",
-  },
-  {
-    title: "Set up MongoDB replica set locally",
-    project: "MongoDB Integration",
-    due: "Jul 13",
-    priority: "Low",
-  },
-];
-
-const OVERDUE_TASKS = [
-  {
-    title: "Fix bug on Project Clarity",
-    project: "Project Clarity",
-    assignee: "Nikita D.",
-    daysOverdue: 3,
-  },
-  {
-    title: "Review API",
-    project: "PMS API",
-    assignee: "Sagar S.",
-    daysOverdue: 1,
-  },
-  {
-    title: "Writting Project Report",
-    project: "Project Clarity App",
-    assignee: "Shovit R.",
-    daysOverdue: 5,
-  },
-];
-
-const TEAM_PROGRESS = [
-  { name: "Sagar Shrestha", role: "Designer", completed: 42, assigned: 48 },
-  { name: "Nikita Dangal", role: "Engineer", completed: 35, assigned: 50 },
-  { name: "Shovit Regmi", role: "Engineer", completed: 51, assigned: 55 },
-  { name: "Pankaj Rajbanshi", role: "PM", completed: 28, assigned: 30 },
-  { name: "Sumana Ranjit", role: "QA", completed: 33, assigned: 40 },
-];
-
-const TASK_BREAKDOWN = [
-  { label: "Completed", value: 96, tone: "bg-emerald-500", hex: "#10b981" },
-  { label: "Pending", value: 42, tone: "bg-amber-400", hex: "#fbbf24" },
-  { label: "Overdue", value: 12, tone: "bg-rose-500", hex: "#f43f5e" },
-];
-const TASK_TOTAL = TASK_BREAKDOWN.reduce((sum, t) => sum + t.value, 0);
-
 const statusStyles = {
   planning: "bg-amber-50 text-amber-700 ring-amber-600/20",
   active: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
@@ -188,40 +119,106 @@ export default function DashboardPage() {
 
     loadMembers();
   }, []);
+
+  const completedTasks = tasks.filter((t) => t.status === "Completed").length;
+
   const totalMembers = users.filter((user) => user.role === "member").length;
 
-  const teamAvg = Math.round(
-    (TEAM_PROGRESS.reduce((sum, m) => sum + m.completed / m.assigned, 0) /
-      TEAM_PROGRESS.length) *
-      100,
+  const pendingTasks = tasks
+    .filter((t) => t.status !== "Completed")
+    .slice(0, 5);
+
+  const teamProgress = users
+    .filter((u) => u.role === "member")
+    .map((member) => {
+      const assigned = tasks.filter(
+        (t) => t.assignedTo?._id === member._id,
+      ).length;
+
+      const completed = tasks.filter(
+        (t) => t.assignedTo?._id === member._id && t.status === "Completed",
+      ).length;
+
+      return {
+        ...member,
+        assigned,
+        completed,
+      };
+    });
+  const teamAvg =
+    teamProgress.length > 0
+      ? Math.round(
+          (teamProgress.reduce(
+            (sum, m) => sum + (m.assigned > 0 ? m.completed / m.assigned : 0),
+            0,
+          ) /
+            teamProgress.length) *
+            100,
+        )
+      : 0;
+
+  const inProgressTasks = tasks.filter(
+    (t) => t.status === "In Progress",
+  ).length;
+
+  const todoTasks = tasks.filter((t) => t.status === "To Do").length;
+
+  const overdue = tasks.filter(
+    (task) =>
+      task.status !== "completed" &&
+      task.deadline &&
+      new Date(task.deadline) < new Date(),
   );
+
+  const TASK_BREAKDOWN = [
+    {
+      label: "Completed",
+      value: completedTasks,
+      tone: "bg-emerald-500",
+      hex: "#10b981",
+    },
+    {
+      label: "In Progress",
+      value: inProgressTasks,
+      tone: "bg-amber-500",
+      hex: "#f59e0b",
+    },
+    {
+      label: "To Do",
+      value: todoTasks,
+      tone: "bg-slate-500",
+      hex: "#64748b",
+    },
+  ];
 
   const summary = [
     {
-      label: "My projects",
+      label: "My Projects",
       value: totalProjects,
       icon: FiFolder,
       tone: "green",
     },
     {
-      label: "Pending tasks",
+      label: "Total Tasks",
       value: totalTasks,
       icon: FiClock,
       tone: "amber",
     },
     {
-      label: "Total Members",
-      value: totalMembers,
-      icon: FaUserFriends,
-      tone: "rose",
-    },
-    {
-      label: "Team progress",
-      value: `${teamAvg}%`,
-      icon: FiUsers,
+      label: "Completed",
+      value: completedTasks,
+      icon: FiCheckCircle,
       tone: "emerald",
     },
+    {
+      label: "Overdue",
+      value: overdue.length,
+      icon: FiAlertTriangle,
+      tone: "rose",
+    },
   ];
+
+  const TASK_TOTAL = TASK_BREAKDOWN.reduce((sum, t) => sum + t.value, 0);
 
   return (
     <div>
@@ -326,7 +323,14 @@ export default function DashboardPage() {
                   </span>
                 </div>
                 <div className="mt-1.5 flex items-center gap-3 text-xs text-slate-400">
-                  <span>Due {p.deadline}</span>
+                  <span>
+                    Due{": "}
+                    {new Date(p.deadline).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                   <span>&middot;</span>
                   <span>
                     {p.tasksLeft} task{p.tasksLeft === 1 ? "" : "s"} left
@@ -361,18 +365,24 @@ export default function DashboardPage() {
             </span>
           </div>
           <div className="divide-y divide-slate-100">
-            {TEAM_PROGRESS.map((m) => {
-              const rate = Math.round((m.completed / m.assigned) * 100);
+            {teamProgress.map((member) => {
+              const rate =
+                member.assigned > 0
+                  ? Math.round((member.completed / member.assigned) * 100)
+                  : 0;
               return (
-                <div key={m.name} className="flex items-center gap-4 px-5 py-4">
+                <div
+                  key={member.name}
+                  className="flex items-center gap-4 px-5 py-4"
+                >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
-                    {m.name[0]}
+                    {member.name[0]}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-slate-900">
-                      {m.name}
+                      {member.name}
                     </p>
-                    <p className="text-xs text-slate-400">{m.role}</p>
+                    <p className="text-xs text-slate-400">{member.role}</p>
                   </div>
                   <div className="hidden w-32 sm:block">
                     <div className="h-1.5 w-full rounded-full bg-slate-100">
@@ -383,7 +393,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <span className="w-16 shrink-0 text-right text-xs text-slate-500 tabular-nums">
-                    {m.completed}/{m.assigned}
+                    {member.completed}/{member.assigned}
                   </span>
                 </div>
               );
@@ -395,12 +405,15 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold">Pending tasks</h2>
             <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">
-              {PENDING_TASKS.length}
+              {pendingTasks.length}
             </span>
           </div>
           <ul className="mt-3 divide-y divide-slate-100">
-            {PENDING_TASKS.map((t, i) => (
-              <li key={i} className="flex items-start gap-2.5 py-3 first:pt-3">
+            {pendingTasks.map((t) => (
+              <li
+                key={t._id}
+                className="flex items-start gap-2.5 py-3 first:pt-3"
+              >
                 <span
                   className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${priorityStyles[t.priority]}`}
                 />
@@ -409,7 +422,12 @@ export default function DashboardPage() {
                     {t.title}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-400">
-                    {t.project} &middot; {t.due}
+                    {t.projectId?.title || "No Project"} &middot;{" "}
+                    {new Date(t.deadline).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
                   </p>
                 </div>
                 <FiChevronRight className="mt-1 h-3.5 w-3.5 shrink-0 text-slate-300" />
@@ -419,35 +437,52 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6 rounded-xl border border-rose-100 bg-white">
+      <div className="mt-6 rounded-xl border border-rose-100 bg-white max-w-190">
         <div className="flex items-center justify-between border-b border-rose-50 px-5 py-4">
           <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <FiFlag className="h-4 w-4 text-rose-500" />
-            Overdue tasks
+            Overdue Tasks
           </h2>
+
           <span className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-600">
-            {OVERDUE_TASKS.length} need attention
+            {overdue.length} need attention
           </span>
         </div>
+
         <div className="divide-y divide-slate-100">
-          {OVERDUE_TASKS.map((t, i) => (
-            <div
-              key={i}
-              className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
-            >
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-900">{t.title}</p>
-                <p className="mt-0.5 text-xs text-slate-400">
-                  {t.project} &middot; assigned to {t.assignee}
-                </p>
+          {overdue.map((task) => {
+            const daysOverdue = Math.max(
+              0,
+              Math.floor(
+                (new Date() - new Date(task.deadline)) / (1000 * 60 * 60 * 24),
+              ),
+            );
+
+            return (
+              <div
+                key={task._id}
+                className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-900">
+                    {task.title}
+                  </p>
+
+                  <p className="mt-0.5 text-xs text-slate-400">
+                    {task.projectId?.title || "No Project"} &middot; assigned to{" "}
+                    {task.assignedTo?.name || "Unassigned"}
+                  </p>
+                </div>
+
+                <span className="flex shrink-0 items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">
+                  <FiAlertTriangle className="h-3 w-3" />
+                  {daysOverdue} day{daysOverdue !== 1 ? "s" : ""} overdue
+                </span>
               </div>
-              <span className="flex shrink-0 items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-600">
-                <FiAlertTriangle className="h-3 w-3" />
-                {t.daysOverdue}d overdue
-              </span>
-            </div>
-          ))}
-          {OVERDUE_TASKS.length === 0 && (
+            );
+          })}
+
+          {overdue.length === 0 && (
             <div className="flex items-center gap-2 px-5 py-8 text-sm text-slate-400">
               <FiCheckCircle className="h-4 w-4 text-emerald-500" />
               Nothing overdue — great work.
@@ -475,15 +510,18 @@ function DonutChart({ segments, total }) {
           strokeWidth={stroke}
         />
         {segments.map((seg, index) => {
-          const fraction = seg.value / total;
-          const dash = fraction * circumference;
+          const fraction = total > 0 ? seg.value / total : 0;
+          const dash = total > 0 ? fraction * circumference : 0;
           const gap = circumference - dash;
-          const offset = segments
-            .slice(0, index)
-            .reduce(
-              (sum, item) => sum + (item.value / total) * circumference,
-              0,
-            );
+          const offset =
+            total > 0
+              ? segments
+                  .slice(0, index)
+                  .reduce(
+                    (sum, item) => sum + (item.value / total) * circumference,
+                    0,
+                  )
+              : 0;
 
           return (
             <circle

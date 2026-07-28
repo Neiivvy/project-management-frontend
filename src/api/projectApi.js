@@ -28,3 +28,13 @@ export const getUsers = async () => {
   const { data } = await axiosInstance.get("/users");
   return data;
 };
+
+export const assignMembersToProject = async (projectId, memberIds) => {
+  const ids = Array.isArray(memberIds) ? memberIds : [memberIds];
+
+  const res = await axiosInstance.post(`/projects/${projectId}/members`, {
+    memberIds: ids,
+  });
+
+  return res.data;
+};

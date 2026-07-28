@@ -2,10 +2,14 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { MdDescription } from "react-icons/md";
 
 export const metadata = {
-  title: "Co-Work",
-  description: "Collaborative Project Management Hub",
+  title: {
+    default: "Co-Work ",
+    template: "%s | Co-Work",
+    description: "This is the project management system built with MERN.",
+  },
 };
 
 const inter = Inter({

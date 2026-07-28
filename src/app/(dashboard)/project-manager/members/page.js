@@ -7,11 +7,14 @@ import MemberTable from "./components/MemberTable";
 import Pagination from "../projects/components/Pagination";
 
 import useUserStore from "@/store/useUserStore";
+import AssignMemberModal from "./components/AssignMemberModal";
 
 export default function MembersPage() {
   const { loading } = useUserStore();
   const users = useUserStore((state) => state.users);
   const fetchUsers = useUserStore((state) => state.fetchUsers);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   console.log(users);
 
@@ -22,12 +25,18 @@ export default function MembersPage() {
     fetchUsers();
   }, [fetchUsers]);
 
+  const handleAssign = (member) => {
+    setSelectedMember(member);
+    setShowAssignModal(true);
+  };
+
   const members = useMemo(() => {
     return (users || []).filter(
       (user) =>
         user.role?.toLowerCase() === "member" &&
         (user.name.toLowerCase().includes(search.toLowerCase()) ||
-          user.email.toLowerCase().includes(search.toLowerCase())),
+          user.email.toLowerCase().includes(search.toLowerCase()) ||
+          user.availability.toLowerCase().includes(search.toLowerCase())),
     );
   }, [users, search]);
   console.log(members);
@@ -44,7 +53,9 @@ export default function MembersPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Members</h1>
 
-        <p className="text-gray-500">Available users and team assignments.</p>
+        <p className="text-gray-500">
+          Available users and Project assignments.
+        </p>
       </div>
 
       <div className="mb-6">
@@ -70,7 +81,14 @@ export default function MembersPage() {
         </div>
       ) : (
         <>
-          <MemberTable members={currentMembers} />
+          <MemberTable members={currentMembers} onAssign={handleAssign} />
+
+          <AssignMemberModal
+            key={selectedMember?._id}
+            show={showAssignModal}
+            setShow={setShowAssignModal}
+            member={selectedMember}
+          />
           <Pagination
             totalItems={members.length}
             itemsPerPage={membersPerPage}
