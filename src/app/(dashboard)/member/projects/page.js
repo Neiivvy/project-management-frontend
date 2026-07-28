@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Navbar from "@/components/dashboard/Navbar";
 import { getMyProjects } from "@/api/projects";
 
 const statusColor = {
@@ -25,10 +23,7 @@ export default function MemberProjectsPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-[#f7f6f6]">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Navbar />
+    
         <main className="flex-1 p-8">
           <h1 className="text-2xl font-bold text-[#181d19] mb-6">My Projects</h1>
 
@@ -38,7 +33,7 @@ export default function MemberProjectsPage() {
           {!loading && !error && (
             <div className="grid md:grid-cols-2 gap-6">
               {projects.length === 0 && (
-                <p className="text-[#404943]">You're not assigned to any projects yet.</p>
+                <p className="text-[#404943]">You&apos;re not assigned to any projects yet.</p>
               )}
 
               {projects.map((project) => (
@@ -83,7 +78,5 @@ export default function MemberProjectsPage() {
             </div>
           )}
         </main>
-      </div>
-    </div>
   );
 }

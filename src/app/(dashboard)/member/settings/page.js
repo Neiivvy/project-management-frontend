@@ -1,19 +1,11 @@
 "use client";
 
 import useAuthStore from "@/store/useAuthStore";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Navbar from "@/components/dashboard/Navbar";
 
 export default function MemberSettingsPage() {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <div className="flex min-h-screen bg-[#f7f6f6]">
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col">
-        <Navbar />
-
         <main className="flex-1 p-8 max-w-xl">
           <h1 className="text-2xl font-bold text-[#181d19] mb-6">Settings</h1>
 
@@ -38,7 +30,5 @@ export default function MemberSettingsPage() {
             Profile editing isn&apos;t available yet — the update endpoint on the backend is currently admin-only.
           </p>
         </main>
-      </div>
-    </div>
   );
 }

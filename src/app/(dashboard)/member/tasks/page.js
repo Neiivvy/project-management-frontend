@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Navbar from "@/components/dashboard/Navbar";
 import { getMyTasks, updateTaskStatus } from "@/api/tasks";
 
 const statusColor = {
@@ -27,9 +25,19 @@ export default function MemberTasksPage() {
     setLoading(false);
   };
 
-  useEffect(() => {
-    load();
-  }, []);
+ useEffect(() => {
+  const fetchTasks = async () => {
+    setLoading(true);
+    try {
+      const res = await getMyTasks();
+      setTasks(res.data.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchTasks();
+}, []);
 
   const changeStatus = async (task, newStatus) => {
     setBusyId(task._id);
@@ -46,10 +54,7 @@ export default function MemberTasksPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#f7f6f6]">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Navbar />
+
         <main className="flex-1 p-8">
           <h1 className="text-2xl font-bold text-[#181d19] mb-6">My Tasks</h1>
 
@@ -113,7 +118,5 @@ export default function MemberTasksPage() {
             </div>
           )}
         </main>
-      </div>
-    </div>
   );
 }

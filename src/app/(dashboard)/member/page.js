@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Sidebar from "@/components/dashboard/Sidebar";
-import Navbar from "@/components/dashboard/Navbar";
+
 import { getMyTasks } from "@/api/tasks";
 import useAuthStore from "@/store/useAuthStore";
 import { FaTasks, FaCheckCircle, FaHourglassHalf, FaExclamationTriangle } from "react-icons/fa";
@@ -77,11 +76,6 @@ export default function MemberDashboardPage() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-[#f7f6f6]">
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col">
-        <Navbar />
 
         <main className="flex-1 p-8">
           {/* Hero */}
@@ -202,7 +196,5 @@ export default function MemberDashboardPage() {
             </div>
           )}
         </main>
-      </div>
-    </div>
   );
 }
