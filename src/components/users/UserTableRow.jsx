@@ -58,38 +58,36 @@ export default function UserTableRow({
       </td>
 
 {/* Projects */}
-<td
-  className="hidden whitespace-nowrap
-             px-3 py-3
-             text-center
-             text-sm
-             font-medium
-             text-[#394640]
-             lg:table-cell"
->
-  {user.projectCount ?? "—"}
-</td>
+ <td
+   className="hidden whitespace-nowrap
+              px-3 py-3
+              text-center
+              text-sm
+              font-medium
+              text-[#394640]
+              lg:table-cell"
+ >
+   {user.projectCount ?? "—"}
+ </td>
 
-    {/* Availability */}
-<td
-  className="hidden whitespace-nowrap
-             px-3 py-3
-             xl:table-cell"
->
-  <span
-    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
-               user.availability === "available"
-                 ? "bg-[#e7f5ee] text-[#1a7a4c]"
-                 : "bg-[#fdf0f0] text-[#c03d3d]"
-    }`}
-  >
-    {user.availability === "available"
-      ? "Available"
-      : "Unavailable"}
-  </span>
-</td>
+ {/* Joined Date */}
+ <td
+   className="hidden whitespace-nowrap
+              px-3 py-3
+              xl:table-cell
+              text-sm
+              text-[#394640]"
+ >
+   {user.createdAt
+     ? new Date(user.createdAt).toLocaleDateString("en-US", {
+         month: "short",
+         day: "numeric",
+         year: "numeric",
+       })
+     : "—"}
+ </td>
 
-      {/* Actions */}
+       {/* Actions */}
       <td className="py-3 pl-3 pr-4 text-right sm:pr-5">
         <UserActionsMenu
           onEdit={() => onEdit?.(user)}

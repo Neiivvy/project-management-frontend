@@ -6,14 +6,14 @@ const useActivityStore = create((set) => ({
   isLoading: false,
   error: null,
 
-  fetchActivities: async (days = 30, limit = 50) => {
+  fetchActivities: async (days = 30, limit = 50, category = "all") => {
     set({
       isLoading: true,
       error: null,
     });
 
     try {
-      const data = await fetchActivitiesApi(days, limit);
+      const data = await fetchActivitiesApi({ days, limit, category });
 
       set({
         activities: data.data || [],

@@ -37,24 +37,28 @@ export default function UserStatsBar({ users }) {
         icon={Users}
         label="Total Users"
         value={total}
+        color="#800000"
       />
 
       <StatCard
         icon={ShieldCheck}
         label="Admins"
         value={admins}
+        color="#0f5238"
       />
 
       <StatCard
         icon={ClipboardList}
         label="Project Managers"
         value={projectManagers}
+        color="#0d7377"
       />
 
       <StatCard
         icon={User}
         label="Members"
         value={members}
+        color="#b8960f"
       />
     </div>
   );

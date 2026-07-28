@@ -20,14 +20,14 @@ const COLUMNS = [
   },
 
   {
-    key: "availability",
-    label: "Availability",
+    key: "joinedDate",
+    label: "Joined Date",
     cellClass: "hidden xl:table-cell",
   },
 
   {
     key: "actions",
-    label: "",
+    label: "Actions",
     cellClass: "text-right",
   },
 ];

@@ -7,6 +7,7 @@ export default function StatCard({
   label,
   value,
   trend,
+  color = "#0f5238",
 }) {
   const isUp = typeof trend === "number" && trend >= 0;
 
@@ -59,23 +60,22 @@ export default function StatCard({
         </div>
 
         {Icon && (
-          <div
-            className="
-              flex
-              h-10
-              w-10
-              shrink-0
-              items-center
-              justify-center
-              rounded-xl
-              bg-[#0f5238]
-              ring-1
-              ring-[#40916c]/20
-            "
-          >
+        <div
+          className="
+            flex
+            h-10
+            w-10
+            shrink-0
+            items-center
+            justify-center
+            rounded-xl
+            ring-1
+            ring-[#40916c]/20
+          "
+          style={{ backgroundColor: `${color}1a`, color }}
+        >
             <Icon
               size={18}
-              className="text-white"
               strokeWidth={1.75}
             />
           </div>

@@ -9,6 +9,7 @@ import ActivityTimeline from "@/components/dashboard/admin/ActivityTimeline";
 
 export default function ActivityPage() {
   const [days, setDays] = useState(30);
+  const [category, setCategory] = useState("all");
 
   const {
     activities,
@@ -18,11 +19,11 @@ export default function ActivityPage() {
   } = useActivityStore();
 
   useEffect(() => {
-    fetchActivities(days, 50);
-  }, [days, fetchActivities]);
+    fetchActivities(days, 50, category);
+  }, [days, category, fetchActivities]);
 
   const handleRefresh = () => {
-    fetchActivities(days, 50);
+    fetchActivities(days, 50, category);
   };
 
   return (
@@ -46,6 +47,8 @@ export default function ActivityPage() {
         <ActivityFilters
           days={days}
           setDays={setDays}
+          category={category}
+          setCategory={setCategory}
           refresh={handleRefresh}
           loading={isLoading}
         />
