@@ -34,7 +34,7 @@ export default function Pagination({
           {indexOfFirst}-{indexOfLast}
         </span>{" "}
         of <span className="font-semibold text-[#0f5238]">{totalItems}</span>{" "}
-        projects
+        items
       </p>
 
       <div className="flex items-center gap-2">

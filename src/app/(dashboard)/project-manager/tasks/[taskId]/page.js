@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useTaskStore from "@/store/useTaskStore";
+import CommentSection from "@/components/tasks/CommentSection";
 
 import {
   FaArrowLeft,
@@ -233,6 +234,7 @@ export default function TaskDetailsPage() {
           </MetaCard>
         </div>
       </div>
+      <CommentSection taskId={taskId} />
     </div>
   );
 }

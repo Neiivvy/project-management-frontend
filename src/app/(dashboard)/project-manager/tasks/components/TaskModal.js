@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import useTaskStore from "@/store/useTaskStore";
@@ -23,7 +23,7 @@ export default function TaskModal({
     register,
     handleSubmit,
     reset,
-    watch,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -36,8 +36,10 @@ export default function TaskModal({
     },
   });
 
-  const selectedProjectId = watch("projectId");
-
+  const selectedProjectId = useWatch({
+    control,
+    name: "projectId",
+  });
   const selectedProject = projects.find(
     (project) => project._id === selectedProjectId,
   );

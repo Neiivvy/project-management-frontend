@@ -41,7 +41,7 @@ export default function MembersPage() {
   }, [users, search]);
   console.log(members);
 
-  const membersPerPage = 8;
+  const membersPerPage = 6;
 
   const indexOfLast = currentPage * membersPerPage;
   const indexOfFirst = indexOfLast - membersPerPage;
@@ -82,7 +82,6 @@ export default function MembersPage() {
       ) : (
         <>
           <MemberTable members={currentMembers} onAssign={handleAssign} />
-
           <AssignMemberModal
             key={selectedMember?._id}
             show={showAssignModal}

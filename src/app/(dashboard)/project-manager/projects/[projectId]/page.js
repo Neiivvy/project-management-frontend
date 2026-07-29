@@ -228,9 +228,9 @@ export default function ProjectDetailsPage() {
 
             {project.teamMembers?.length ? (
               <div className="space-y-4">
-                {project.teamMembers.map((member) => (
+                {project.teamMembers.map((member, index) => (
                   <div
-                    key={member._id}
+                    key={index}
                     className="flex items-center justify-between border rounded-lg p-3 hover:bg-gray-50 transition"
                   >
                     <div className="flex items-center gap-3">
