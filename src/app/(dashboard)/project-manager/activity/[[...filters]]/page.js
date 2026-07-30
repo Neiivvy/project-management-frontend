@@ -8,6 +8,7 @@ import ActivityFilters from "@/components/dashboard/admin/ActivityFilters";
 import ActivityTimeline from "@/components/dashboard/admin/ActivityTimeline";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Pagination from "../../projects/components/Pagination";
 
 export default function ActivityPage() {
   const [days, setDays] = useState(30);
@@ -20,9 +21,23 @@ export default function ActivityPage() {
     fetchActivities(days, 50, category);
   }, [days, category, fetchActivities]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const handleRefresh = () => {
+    if (currentPage > 1 && activities.length <= itemsPerPage) {
+      setCurrentPage(1);
+    }
+
     fetchActivities(days, 50, category);
   };
+
+  const totalItems = activities.length;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const currentActivities = activities.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="space-y-6">
@@ -53,9 +68,15 @@ export default function ActivityPage() {
       <div className="bg-white rounded-2xl border border-[#e3e8e4] shadow-sm p-4 lg:p-5 animate-fade-in-up">
         <ActivityFilters
           days={days}
-          setDays={setDays}
+          setDays={(value) => {
+            setCurrentPage(1);
+            setDays(value);
+          }}
           category={category}
-          setCategory={setCategory}
+          setCategory={(value) => {
+            setCurrentPage(1);
+            setCategory(value);
+          }}
           refresh={handleRefresh}
           loading={isLoading}
         />
@@ -106,7 +127,20 @@ export default function ActivityPage() {
             </p>
           </div>
         ) : (
-          <ActivityTimeline activities={activities} />
+          <>
+            <ActivityTimeline activities={currentActivities} />
+
+            {totalItems > itemsPerPage && (
+              <div className="mt-6">
+                <Pagination
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

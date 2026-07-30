@@ -10,10 +10,10 @@ import {
 } from "recharts";
 
 const STATUS_COLORS = {
-  Completed: "#0f5238",
-  "In Progress": "#c98a3a",
-  Review: "#5b5fa8",
-  "To Do": "#c7c9c4",
+  Completed: "#0F5238",
+  "In Progress": "#D97706",
+  Review: "#4F46E5",
+  "To Do": "#94A3B8",
 };
 
 export default function TaskStatusChart({ report }) {
@@ -46,7 +46,7 @@ export default function TaskStatusChart({ report }) {
 
       {data.length === 0 ? (
         <div className=" flex flex-col items-center justify-center text-center py-16 ">
-          <p className="text-gray-400 text-sm">No task data available yet</p>
+          <p className="text-gray-500 text-sm">No task data available yet</p>
         </div>
       ) : (
         <div className=" relative h-75 ">
@@ -86,7 +86,7 @@ export default function TaskStatusChart({ report }) {
                 iconType="circle"
                 iconSize={8}
                 formatter={(value) => (
-                  <span className="text-sm text-gray-600">{value}</span>
+                  <span className="text-sm text-gray-800">{value}</span>
                 )}
               />
             </PieChart>
@@ -96,7 +96,7 @@ export default function TaskStatusChart({ report }) {
             <p className="text-2xl font-bold text-[#10231b] tabular-nums">
               {total}
             </p>
-            <p className="text-xs text-gray-400">tasks</p>
+            <p className="text-2xs text-gray-700">Tasks</p>
           </div>
         </div>
       )}

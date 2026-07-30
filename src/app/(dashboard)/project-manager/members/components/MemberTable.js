@@ -11,15 +11,7 @@ const AVATAR_COLORS = [
 ];
 
 export default function MemberTable({ members = [], onAssign }) {
-  const getInitials = (name = "") => {
-    return name
-      .trim()
-      .split(" ")
-      .map((word) => word[0])
-      .join("")
-      .substring(0, 2)
-      .toUpperCase();
-  };
+  const getInitials = (name = "") => name.trim().substring(0, 2).toUpperCase();
 
   const getAvatarColor = (name = "") => {
     const sum = name

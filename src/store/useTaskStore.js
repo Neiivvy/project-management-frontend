@@ -81,6 +81,7 @@ const useTaskStore = create((set, get) => ({
       return false;
     }
   },
+
   fetchTaskById: async (id) => {
     try {
       set({ loading: true, error: null });

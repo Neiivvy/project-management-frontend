@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
 import MemberTable from "./components/MemberTable";
-import Pagination from "../projects/components/Pagination";
 
 import useUserStore from "@/store/useUserStore";
 import AssignMemberModal from "./components/AssignMemberModal";
+import Pagination from "../projects/components/Pagination";
 
 export default function MembersPage() {
   const { loading } = useUserStore();

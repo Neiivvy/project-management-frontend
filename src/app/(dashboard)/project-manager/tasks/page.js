@@ -5,9 +5,9 @@ import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import TaskTable from "./components/TaskTable";
 import TaskModal from "./components/TaskModal";
-import Pagination from "../projects/components/Pagination";
 
 import useTaskStore from "@/store/useTaskStore";
+import Pagination from "../projects/components/Pagination";
 
 export default function TasksPage() {
   const [showModal, setShowModal] = useState(false);

@@ -96,8 +96,12 @@ export default function TaskTable({
                           {task.title}
                         </h3>
 
-                        <p className="mt-1 max-w-xs text-xs text-slate-500 line-clamp-2">
-                          {task.description || "No description"}
+                        <p className="mt-1 max-w-xs text-xs text-slate-500 wrap-break-word">
+                          {task.description
+                            ? task.description.length > 40
+                              ? task.description.slice(0, 15) + "..."
+                              : task.description
+                            : "No description"}
                         </p>
                       </div>
                     </div>

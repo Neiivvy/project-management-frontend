@@ -71,7 +71,7 @@ export default function TaskModal({
         projectId: task.projectId?._id || "",
         assignedTo: task.assignedTo?._id || "",
         deadline: task.deadline
-          ? new Date(task.deadline).toISOString().split("T")[0]
+          ? new Date(task.deadline).toLocaleDateString("en-CA")
           : "",
         priority: task.priority || "Medium",
         status: task.status || "To Do",
@@ -96,6 +96,7 @@ export default function TaskModal({
     setSelectedTask(null);
     setShow(false);
   };
+
   const onSubmit = async (data) => {
     console.log("Sending task:", data);
     let success = false;
@@ -125,7 +126,7 @@ export default function TaskModal({
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const minDate = tomorrow.toISOString().split("T")[0];
+  const minDate = tomorrow.toLocaleDateString("en-CA");
 
   return (
     <div className="fixed inset-0 z-50  flex items-center justify-center bg-black/40 backdrop-blur-sm">

@@ -7,8 +7,8 @@ import ProjectTable from "./components/ProjectTable";
 import ProjectModal from "./components/ProjectModal";
 
 import useProjectStore from "@/store/useProjectStore";
-import Pagination from "./components/Pagination";
 import { toast } from "react-toastify";
+import Pagination from "./components/Pagination";
 
 export default function ProjectsPage() {
   const fetchProjects = useProjectStore((state) => state.fetchProjects);
