@@ -13,3 +13,13 @@ export const getTask = (id) => {
 export const updateTaskStatus = (id, status) => {
   return api.put(`/tasks/${id}`, { status });
 };
+
+export const addTaskComment = (id, text) => {
+  return api.post(`/tasks/${id}/comments`, { text });
+};
+
+export const uploadTaskFile = (id, formData) => {
+  return api.post(`/tasks/${id}/attachments`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};

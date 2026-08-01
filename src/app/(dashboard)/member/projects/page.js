@@ -57,7 +57,7 @@ export default function MemberProjectsPage() {
                   <div className="mb-4">
                     <div className="flex justify-between text-xs text-[#404943] mb-1">
                       <span>Progress</span>
-                      <span>{project.progress}10%</span>
+                      <span>{project.progress}%</span>
                     </div>
                     <div className="h-2 rounded-full bg-[#eef2ee]">
                       <div className="h-2 rounded-full bg-[#2d6a4f]" style={{ width: `${project.progress}%` }} />

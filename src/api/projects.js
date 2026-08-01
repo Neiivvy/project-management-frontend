@@ -8,3 +8,4 @@ export const getMyProjects = () => {
 export const getProject = (id) => {
   return api.get(`/projects/${id}`);
 };
+
