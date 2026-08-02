@@ -6,10 +6,12 @@ import {
   updateTask,
   deleteTask,
   getTaskById,
+  getTaskProgress,
 } from "@/api/taskApi";
 const useTaskStore = create((set, get) => ({
   tasks: [],
   task: null,
+  progress: null,
   loading: false,
   error: null,
 
@@ -121,6 +123,14 @@ const useTaskStore = create((set, get) => ({
 
       return false;
     }
+  },
+
+  fetchTaskProgress: async (projectId) => {
+    const res = await getTaskProgress(projectId);
+
+    set({
+      taskProgress: res.data,
+    });
   },
 }));
 

@@ -24,3 +24,11 @@ export const deleteTask = async (id) => {
   const res = await axiosInstance.delete(`/tasks/${id}`);
   return res.data;
 };
+
+export const getTaskProgress = async (projectId) => {
+  const response = await axiosInstance.get(
+    `/tasks/progress/by-status?projectId=${projectId}`,
+  );
+
+  return response.data;
+};
