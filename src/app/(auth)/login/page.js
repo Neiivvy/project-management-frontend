@@ -99,14 +99,14 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="w-full py-2.5 bg-[#0f5238] text-white rounded-lg"
+          className="w-full py-2.5 bg-[#0f5238] text-white rounded-lg cursor-pointer transition-all duration-200 hover:bg-[#0b402c] active:scale-95"
         >
           Login
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm">
-        Don&apos;t have an account? <Link href="/register">Register</Link>
+        Don&apos;t have an account? <Link href="/register" className="text-[#0f5238] font-medium hover:underline transition">Register</Link>
       </p>
     </div>
   );

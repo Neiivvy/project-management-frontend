@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { MdDescription } from "react-icons/md";
-
+import AuthInitializer from "@/components/AuthInitializer";
 export const metadata = {
   title: {
     default: "Co-Work ",
@@ -26,12 +26,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className="bg-slate-50 text-gray-900 min-h-screen flex flex-col {`${inter.variable} ${jakarta.variable}`}"
-        style={{
-          background:
-            "linear-gradient(180deg, #EAF3FF 0%, #F5F9FF 50%, #FFFFFF 100%)",
-        }}
+        className={`${inter.variable} ${jakarta.variable} bg-slate-50 text-gray-900 min-h-screen flex flex-col`}
       >
+        <AuthInitializer />
         {children}
         <ToastContainer
           position="top-right"

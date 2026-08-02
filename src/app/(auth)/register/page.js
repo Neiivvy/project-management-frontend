@@ -114,14 +114,14 @@ export default function RegisterPage() {
 
         <button
           type="submit"
-          className="w-full py-2.5 bg-[#0f5238] text-white rounded-lg"
+          className="w-full py-2.5 bg-[#0f5238] text-white rounded-lg cursor-pointer transition-all duration-200 hover:bg-[#0b402c] active:scale-95"
         >
           Create Account
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm">
-        Already have an account? <Link href="/login">Login</Link>
+        Already have an account? <Link href="/login" className="text-[#0f5238] font-medium hover:underline transition">Login</Link>
       </p>
     </div>
   );
