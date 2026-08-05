@@ -1,13 +1,19 @@
 import Hero from "@/components/Hero";
-import Features from "@/components/Features";
+import CoreCapabilities from "@/components/CoreCapabilities";
+import Workflow from "@/components/Workflow";
 import Solutions from "@/components/Solutions";
+import PlatformHighlights from "@/components/PlatformHighlights";
+import FinalCTA from "@/components/FinalCTA";
 
 export default function Home() {
   return (
-    <div className="pt-28">
+    <div>
       <Hero />
-      <Features />
+      <CoreCapabilities />
+      <Workflow />
       <Solutions />
+      <PlatformHighlights />
+      <FinalCTA />
     </div>
   );
 }
