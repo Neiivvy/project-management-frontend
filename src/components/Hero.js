@@ -34,7 +34,7 @@ export default function Hero() {
     // Auto-advance slides every 2 seconds
     intervalRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 2000);
+    }, 4000);
 
     return () => clearInterval(intervalRef.current);
   }, [isFirstLoad]);
