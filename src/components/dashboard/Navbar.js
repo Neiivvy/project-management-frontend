@@ -23,7 +23,7 @@ export default function Navbar({ setIsOpen }) {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  const { isNotificationOpen, setIsNotificationOpen } = useNotificationStore();
+  const { isNotificationOpen, setIsNotificationOpen, unreadCount } = useNotificationStore();
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -105,7 +105,9 @@ export default function Navbar({ setIsOpen }) {
             >
               <FaBell className="text-slate-600" />
 
-              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
+              {unreadCount > 0 && (
+                <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
+              )}
             </button>
 
             <NotificationPanel />
@@ -139,7 +141,7 @@ export default function Navbar({ setIsOpen }) {
           </button>
 
           {open && (
-            <div className="absolute right-0 mt-3 w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+            <div className="absolute right-0 mt-3 w-56 sm:w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
               <div className="border-b bg-slate-50 p-5">
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0f5238] text-white">

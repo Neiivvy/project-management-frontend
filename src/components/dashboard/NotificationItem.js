@@ -108,7 +108,7 @@ export default function NotificationItem({ notification, onNavigate }) {
   return (
     <div
       onClick={handleClick}
-      className={`group relative flex gap-3 rounded-xl border p-3 transition-all cursor-pointer ${
+      className={`group relative flex gap-2 sm:gap-3 rounded-xl border p-2 sm:p-3 transition-all cursor-pointer ${
         notification.isRead
           ? "bg-white border-slate-100 hover:border-slate-200"
           : `${config.bg} ${config.border}`
@@ -116,12 +116,12 @@ export default function NotificationItem({ notification, onNavigate }) {
     >
       {/* Icon */}
       <div
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+        className={`flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg ${
           notification.isRead ? "bg-slate-100" : config.bg
         }`}
       >
         <Icon
-          className={`text-lg ${notification.isRead ? "text-slate-400" : config.iconColor}`}
+          className={`text-base sm:text-lg ${notification.isRead ? "text-slate-400" : config.iconColor}`}
         />
       </div>
 
@@ -130,7 +130,7 @@ export default function NotificationItem({ notification, onNavigate }) {
         <div className="flex items-start justify-between gap-2">
           <div>
             <p
-              className={`text-sm font-medium truncate ${
+              className={`text-xs sm:text-sm font-medium truncate ${
                 notification.isRead ? "text-slate-600" : config.text
               }`}
             >
@@ -138,12 +138,12 @@ export default function NotificationItem({ notification, onNavigate }) {
             </p>
 
             {notification.message && (
-              <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+              <p className="text-xs text-slate-500 mt-0.5 line-clamp-2 hidden sm:block">
                 {notification.message}
               </p>
             )}
 
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-400 mt-0.5 sm:mt-1">
               {timeAgo(notification.createdAt)}
             </p>
           </div>
@@ -155,8 +155,8 @@ export default function NotificationItem({ notification, onNavigate }) {
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Actions - hover on desktop, hidden on mobile to keep layout clean */}
+      <div className="hidden sm:flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         {!notification.isRead && (
           <button
             onClick={(e) => {

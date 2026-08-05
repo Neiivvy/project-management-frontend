@@ -190,12 +190,12 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
   const Icon = config.icon;
 
   return (
-    <div className="relative flex gap-4 group">
+    <div className="relative flex gap-3 sm:gap-4 group">
       {/* Timeline */}
       {!isLast && (
         <div
           className="
-            absolute left-5 top-10 bottom-0
+            absolute left-3.5 sm:left-5 top-8 sm:top-10 bottom-0
             w-px
             bg-linear-to-b
             from-[#e3e8e4]
@@ -208,17 +208,17 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
       <div className="relative z-10">
         <div
           className={`
-            flex h-10 w-10
+            flex h-8 w-8 sm:h-10 sm:w-10
             items-center justify-center
             rounded-full
             ${config.bgColor}
-            ring-4 ring-white
+            ring-2 sm:ring-4 ring-white
             transition
             group-hover:scale-110
           `}
         >
           <Icon
-            size={18}
+            size={16}
             style={{
               color: config.color,
             }}
@@ -227,28 +227,28 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
       </div>
 
       {/* Activity Card */}
-      <div className="flex-1 pb-5">
+      <div className="flex-1 pb-4 sm:pb-5">
         <div
           className="
             rounded-2xl
             border
             border-[#e3e8e4]
             bg-white
-            p-2
+            p-2 sm:p-3
             shadow-sm
             transition
             hover:shadow-md
           "
         >
-          <div className="flex justify-between gap-3">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-3">
             {/* User Info */}
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               <div
                 className={`
-                  flex h-9 w-9
+                  flex h-8 w-8 sm:h-9 sm:w-9
                   items-center justify-center
                   rounded-full
-                  text-xs
+                  text-[10px] sm:text-xs
                   font-semibold
                   text-white
                   ${getAvatarColor(paletteIndex)}
@@ -258,8 +258,8 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
               </div>
 
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-[#181d19]">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  <span className="font-semibold text-[#181d19] text-sm sm:text-base">
                     {activity.userId?.name || "User"}
                   </span>
 
@@ -267,9 +267,8 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
                     <span
                       className={`
                         rounded-full
-                        px-2
-                        py-0.5
-                        text-xs
+                        px-1.5 py-0.5
+                        text-[10px] sm:text-xs
                         ${config.tagColor}
                       `}
                     >
@@ -278,7 +277,7 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
                   )}
                 </div>
 
-                <p className="mt-1 text-sm font-medium">{config.label}</p>
+                <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-medium">{config.label}</p>
               </div>
             </div>
 
@@ -286,7 +285,8 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
             <div
               className="
                 flex items-center gap-1
-                text-xs text-slate-400
+                text-[10px] sm:text-xs text-slate-400
+                sm:shrink-0
               "
             >
               <FiClock size={12} />
@@ -297,22 +297,22 @@ export default function ActivityCard({ activity, isLast, paletteIndex = 0 }) {
 
           {/* Description */}
           {activity.description && (
-            <p className=" mt-3 text-sm leading-relaxed text-slate-600">
+            <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-slate-600">
               {activity.description}
             </p>
           )}
 
           {/* Activity Tag */}
-          <div className="mt-4">
+          <div className="mt-3 sm:mt-4">
             <span
               className={`
                 inline-flex
                 items-center
-                gap-2
+                gap-1.5 sm:gap-2
                 rounded-lg
-                px-3
-                py-1.5
-                text-xs
+                px-2 sm:px-3
+                py-1 sm:py-1.5
+                text-[10px] sm:text-xs
                 ${config.tagColor}
               `}
             >

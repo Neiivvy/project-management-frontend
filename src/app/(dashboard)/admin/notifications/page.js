@@ -40,11 +40,11 @@ export default function AdminNotificationsPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto px-4 sm:px-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#181d19]">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#181d19]">
             Notifications
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -54,7 +54,7 @@ export default function AdminNotificationsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Filter */}
           <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1">
             <button
@@ -117,7 +117,7 @@ export default function AdminNotificationsPage() {
             {filteredNotifications.map((notification) => (
               <div
                 key={notification._id}
-                className="p-4 hover:bg-slate-50 transition"
+                className="p-3 sm:p-4 hover:bg-slate-50 transition"
               >
                 <NotificationItem
                   notification={notification}

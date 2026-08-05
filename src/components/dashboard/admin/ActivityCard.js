@@ -161,53 +161,53 @@ export default function ActivityCard({
  const avatarColor = getAvatarColor(paletteIndex);
 
   return (
-    <div className="relative flex gap-4 group">
+    <div className="relative flex gap-3 sm:gap-4 group">
       {/* Timeline Line */}
       {!isLast && (
-        <div className="absolute left-4.75 top-10 bottom-0 w-px bg-linear-to-b from-[#e3e8e4] to-transparent" />
+        <div className="absolute left-3.5 sm:left-4.75 top-8 sm:top-10 bottom-0 w-px bg-linear-to-b from-[#e3e8e4] to-transparent" />
       )}
 
       {/* Timeline Dot */}
       <div className="relative z-10 shrink-0">
         <div
-          className={`flex h-10 w-10 items-center justify-center rounded-full ${config.bgColor} ring-4 ring-white group-hover:scale-110 transition-transform duration-300`}
+          className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full ${config.bgColor} ring-2 sm:ring-4 ring-white group-hover:scale-110 transition-transform duration-300`}
         >
-          <Icon size={18} style={{ color: config.color }} />
+          <Icon size={16} style={{ color: config.color }} />
         </div>
       </div>
 
       {/* Card Content */}
-      <div className="flex-1 min-w-0 pb-6">
-        <div className="bg-white rounded-2xl border border-[#e3e8e4] shadow-sm p-5 hover:shadow-md hover:border-[#0f5238]/20 transition-all duration-300 group-hover:-translate-y-0.5">
+      <div className="flex-1 min-w-0 pb-4 sm:pb-6">
+        <div className="bg-white rounded-2xl border border-[#e3e8e4] shadow-sm p-3 sm:p-5 hover:shadow-md hover:border-[#0f5238]/20 transition-all duration-300 group-hover:-translate-y-0.5">
           {/* Header */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Avatar */}
               <div
-                className={`flex h-9 w-9 items-center justify-center rounded-full ${avatarColor} text-white text-xs font-semibold`}
+                className={`flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full ${avatarColor} text-white text-[10px] sm:text-xs font-semibold`}
               >
                 {getInitials(activity.userId?.name)}
               </div>
 
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-semibold text-[#181d19] truncate">
+                  <span className="font-semibold text-[#181d19] text-sm sm:text-base truncate">
                     {activity.userId?.name}
                   </span>
                   <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${config.tagColor}`}
+                    className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${config.tagColor}`}
                   >
                     {activity.userId?.role?.replace("_", " ")}
                   </span>
                 </div>
-                <p className="text-sm font-medium text-[#181d19] mt-1">
+                <p className="text-xs sm:text-sm font-medium text-[#181d19] mt-0.5 sm:mt-1">
                   {config.label}
                 </p>
               </div>
             </div>
 
             {/* Time Badge */}
-            <div className="flex items-center gap-1 text-xs text-[#8a938c] shrink-0">
+            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-[#8a938c] sm:shrink-0">
               <FiClock size={12} />
               <span>{formatTime(activity.createdAt)}</span>
             </div>
@@ -215,15 +215,15 @@ export default function ActivityCard({
 
           {/* Description */}
           {activity.description && (
-            <p className="mt-3 text-sm text-[#697268] leading-relaxed">
+            <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-[#697268] leading-relaxed">
               {activity.description}
             </p>
           )}
 
           {/* Action Tag */}
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-3 sm:mt-4 flex items-center gap-2">
             <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium ${config.tagColor}`}
+              className={`inline-flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-medium ${config.tagColor}`}
             >
               <Icon size={12} />
               {config.label}

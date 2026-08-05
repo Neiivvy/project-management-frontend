@@ -28,8 +28,8 @@ export default function AdminProfilePage() {
           <section className="rounded-2xl border border-[#d0e8dc] bg-linear-to-b from-[#f0faf4] to-white p-6 shadow-[0_1px_2px_rgba(16,24,20,0.04)] transition-all duration-300 hover:shadow-[0_4px_20px_rgba(15,82,56,0.12)] hover:border-[#40916c]/30 animate-green-glow">
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="relative">
-                <div className="absolute inset-0 rounded-full bg-[#1a7a4c] opacity-10 blur-lg scale-125 animate-pulse" />
-                <div className="scale-125 relative">
+                <div className="absolute inset-0 rounded-full bg-[#1a7a4c] opacity-10 blur-lg scale-100 sm:scale-125 animate-pulse" />
+                <div className="relative">
                   <Avatar name={user.name} size="lg" variant="dark" />
                 </div>
               </div>
