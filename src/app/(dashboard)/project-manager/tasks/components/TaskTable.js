@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 
 export default function TaskTable({
   tasks = [],
+  totalTasks = 0,
   currentPage = 1,
   tasksPerPage = 5,
   onEdit,
@@ -48,7 +49,7 @@ export default function TaskTable({
           <h2 className="text-xl font-bold text-slate-800">Task List</h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            {tasks.length} {tasks.length === 1 ? "Task" : "Tasks"} available
+            {totalTasks} {totalTasks === 1 ? "Task" : "Tasks"} available
           </p>
         </div>
 
@@ -96,8 +97,12 @@ export default function TaskTable({
                           {task.title}
                         </h3>
 
-                        <p className="mt-1 max-w-xs text-xs text-slate-500 line-clamp-2">
-                          {task.description || "No description"}
+                        <p className="mt-1 max-w-xs text-xs text-slate-500 wrap-break-word">
+                          {task.description
+                            ? task.description.length > 40
+                              ? task.description.slice(0, 15) + "..."
+                              : task.description
+                            : "No description"}
                         </p>
                       </div>
                     </div>
