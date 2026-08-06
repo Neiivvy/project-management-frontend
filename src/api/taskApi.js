@@ -1,7 +1,10 @@
 import axiosInstance from "./axios";
 
-export const getTasks = async () => {
-  const res = await axiosInstance.get("/tasks");
+export const getTasks = async (filters = {}) => {
+  const res = await axiosInstance.get("/tasks", {
+    params: filters,
+  });
+
   return res.data.data;
 };
 
