@@ -43,8 +43,9 @@ export default function TaskTable({
   const currentTasks = tasks;
 
   return (
-    <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-100 transition-all duration-300">
-      <div className="flex items-center py-2 px-4 justify-between border-b border-slate-200">
+    <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-lg shadow-slate-200/50 ring-1 ring-slate-100">
+      {/* Header */}
+      <div className="flex flex-col gap-4 border-b border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-bold text-slate-800">Task List</h2>
 
@@ -53,23 +54,161 @@ export default function TaskTable({
           </p>
         </div>
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0f5238]/10 text-[#0f5238]">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0f5238]/10 text-[#0f5238]">
           <FaTasks size={20} />
         </div>
       </div>
 
-      <div className="max-h-150 overflow-auto">
-        <table className="min-w-full">
-          <thead className="sticky top-0 z-10 border-b border-slate-200 bg-linear-to-r from-slate-50 via-white to-slate-50 backdrop-blur-sm">
+      {/* ================= MOBILE VIEW ================= */}
+
+      <div className="space-y-4 p-4 md:hidden">
+        {currentTasks.length > 0 ? (
+          currentTasks.map((task, index) => (
+            <div
+              key={task._id}
+              className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
+            >
+              {/* Top */}
+
+              <div className="flex items-start justify-between">
+                <div className="flex gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0f5238] text-white">
+                    <FaTasks />
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-slate-800">
+                      {task.title}
+                    </h3>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      {task.description
+                        ? task.description.length > 50
+                          ? task.description.slice(0, 50) + "..."
+                          : task.description
+                        : "No description"}
+                    </p>
+                  </div>
+                </div>
+
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold">
+                  #{(currentPage - 1) * tasksPerPage + index + 1}
+                </span>
+              </div>
+
+              {/* Information */}
+
+              <div className="mt-5 space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Project</span>
+
+                  <span className="font-medium">
+                    {task.projectId?.title || "-"}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Assigned To</span>
+
+                  <span className="font-medium">
+                    {task.assignedTo?.name || "Unassigned"}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Deadline</span>
+
+                  <span>
+                    {task.deadline
+                      ? new Date(task.deadline).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })
+                      : "-"}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500">Priority</span>
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      priorityColor[task.priority]
+                    }`}
+                  >
+                    {task.priority}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500">Status</span>
+
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                      statusColor[task.status]
+                    }`}
+                  >
+                    {task.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Actions */}
+
+              <div className="mt-5 flex justify-end gap-2">
+                <button
+                  onClick={() =>
+                    router.push(`/project-manager/tasks/${task._id}`)
+                  }
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-700 transition hover:bg-green-700 hover:text-white"
+                >
+                  <FaEye />
+                </button>
+
+                <button
+                  onClick={() => onEdit(task)}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-700 transition hover:bg-blue-700 hover:text-white"
+                >
+                  <FaEdit />
+                </button>
+
+                <button
+                  onClick={() => onDelete?.(task)}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-100 text-red-700 transition hover:bg-red-700 hover:text-white"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="py-16 text-center">
+            <FaTasks className="mx-auto text-5xl text-[#0f5238]" />
+
+            <h2 className="mt-5 text-xl font-bold">No Tasks Yet</h2>
+
+            <p className="mt-2 text-slate-500">
+              Your tasks will appear here once created.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* ================= DESKTOP TABLE ================= */}
+
+      <div className="hidden max-h-150 overflow-auto md:block">
+        <table className="min-w-275 w-full">
+          <thead className="sticky top-0 z-10 border-b border-slate-200 bg-linear-to-r from-slate-50 via-white to-slate-50">
             <tr className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              <th className="px-2 py-3 text-center">SN</th>
-              <th className="px-2 py-3">Task</th>
-              <th className="px-2 py-3">Project</th>
-              <th className="px-2 py-3">Assigned To</th>
-              <th className="px-2 py-3">Deadline</th>
-              <th className="px-2 py-3">Priority</th>
-              <th className="px-2 py-3">Status</th>
-              <th className="px-2 py-3 text-center">Actions</th>
+              <th className="px-3 py-3 text-center">SN</th>
+              <th className="px-3 py-3">Task</th>
+              <th className="px-3 py-3">Project</th>
+              <th className="px-3 py-3">Assigned To</th>
+              <th className="px-3 py-3">Deadline</th>
+              <th className="px-3 py-3">Priority</th>
+              <th className="px-3 py-3">Status</th>
+              <th className="px-3 py-3 text-center">Actions</th>
             </tr>
           </thead>
 
@@ -77,30 +216,30 @@ export default function TaskTable({
             {currentTasks.length > 0 ? (
               currentTasks.map((task, index) => (
                 <tr
-                  key={index}
-                  className="group border-b border-slate-100 last:border-0 transition-all duration-300 hover:bg-emerald-50/60 hover:shadow-inner"
+                  key={task._id || index}
+                  className="group border-b border-slate-100 transition-all duration-300 hover:bg-emerald-50/60"
                 >
-                  <td className="px-3 py-2 text-center">
+                  <td className="whitespace-nowrap px-3 py-3 text-center">
                     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
                       {(currentPage - 1) * tasksPerPage + index + 1}
                     </span>
                   </td>
 
-                  <td className="px-2 py-2">
-                    <div className="flex items-start gap-4 max-w-50">
-                      <div className="flex h-8 sm:min-w-8 mt-3 items-center justify-center rounded-2xl bg-linear-to-br from-[#0f5238] to-emerald-500 text-white shadow-md transition-transform duration-300 group-hover:scale-110">
-                        <FaTasks className="text-lg" />
+                  <td className="px-2 py-3">
+                    <div className="flex min-w-55 items-start gap-3">
+                      <div className="mt-1 flex h-10 w-10  items-center justify-center rounded-xl bg-linear-to-br from-[#0f5238] to-emerald-500 text-white shadow">
+                        <FaTasks />
                       </div>
 
-                      <div>
-                        <h3 className="font-bold text-slate-800 transition group-hover:text-[#0f5238]">
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-slate-800 group-hover:text-[#0f5238]">
                           {task.title}
                         </h3>
 
-                        <p className="mt-1 max-w-xs text-xs text-slate-500 wrap-break-word">
+                        <p className="mt-1 max-w-45 break-all text-xs text-slate-500 lg:max-w-70">
                           {task.description
-                            ? task.description.length > 40
-                              ? task.description.slice(0, 15) + "..."
+                            ? task.description.length > 20
+                              ? task.description.slice(0, 20) + "..."
                               : task.description
                             : "No description"}
                         </p>
@@ -108,27 +247,26 @@ export default function TaskTable({
                     </div>
                   </td>
 
-                  <td className="px-2 py-2">
-                    <div className="inline-flex items-center gap-1 rounded-full  bg-emerald-100 px-3 py-2 text-emerald-700">
+                  <td className="whitespace-nowrap px-2 py-3">
+                    <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-2 text-emerald-700">
                       <FaFolderOpen className="text-[#0f5238]" />
 
-                      <span className="text-[13.5px] font-semibold">
+                      <span className="text-sm font-semibold">
                         {task.projectId?.title || "-"}
                       </span>
                     </div>
                   </td>
 
-                  <td className="px-2 py-2">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[13px] font-medium text-slate-700">
-                        {task.assignedTo?.name || "Unassigned"}
-                      </span>
-                    </div>
+                  <td className="whitespace-nowrap px-2 py-3">
+                    <span className="font-medium text-slate-700">
+                      {task.assignedTo?.name || "Unassigned"}
+                    </span>
                   </td>
 
-                  <td className="px-2 py-2">
+                  <td className="whitespace-nowrap px-2 py-3">
                     <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-emerald-700">
                       <FaCalendarAlt className="text-[#0f5238]" />
+
                       <span className="text-sm">
                         {task.deadline
                           ? new Date(task.deadline).toLocaleDateString(
@@ -144,39 +282,40 @@ export default function TaskTable({
                     </div>
                   </td>
 
-                  <td className="px-2 py-2">
+                  <td className="whitespace-nowrap px-2 py-3">
                     <span
-                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold ring-1 ${
+                      className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ring-1 ${
                         priorityColor[task.priority] ||
-                        "bg-slate-100 text-slate-700"
+                        "bg-slate-100 text-slate-700 ring-slate-200"
                       }`}
                     >
-                      <div className="h-2 w-2 rounded-full bg-current opacity-80"></div>
+                      <div className="h-2 w-2 rounded-full bg-current"></div>
+
                       {task.priority}
                     </span>
                   </td>
 
-                  <td className="px-2 py-2">
+                  <td className="whitespace-nowrap px-2 py-3">
                     <span
-                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold ring-1 ${
+                      className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold ring-1 ${
                         statusColor[task.status] ||
                         "bg-slate-100 text-slate-700 ring-slate-200"
                       }`}
                     >
-                      <div className="h-2 w-2 rounded-full bg-current opacity-80"></div>
+                      <div className="h-2 w-2 rounded-full bg-current"></div>
 
                       {task.status}
                     </span>
                   </td>
 
-                  <td className="px-2 py-2">
-                    <div className="flex justify-center gap-2 opacity-90 transition-all group-hover:opacity-100">
+                  <td className="whitespace-nowrap px-2 py-3">
+                    <div className="flex justify-center gap-2">
                       <button
                         title="View"
                         onClick={() =>
                           router.push(`/project-manager/tasks/${task._id}`)
                         }
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-green-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-green-700 hover:text-white"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-green-600 transition hover:bg-green-700 hover:text-white"
                       >
                         <FaEye />
                       </button>
@@ -184,7 +323,7 @@ export default function TaskTable({
                       <button
                         title="Edit"
                         onClick={() => onEdit(task)}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-blue-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-blue-700 hover:text-white"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-blue-600 transition hover:bg-blue-700 hover:text-white"
                       >
                         <FaEdit />
                       </button>
@@ -192,7 +331,7 @@ export default function TaskTable({
                       <button
                         title="Delete"
                         onClick={() => onDelete?.(task)}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-red-600 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#0f5238] hover:bg-red-600 hover:text-white"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-red-600 transition hover:bg-red-600 hover:text-white"
                       >
                         <FaTrash />
                       </button>
@@ -202,7 +341,7 @@ export default function TaskTable({
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="py-24 text-center">
+                <td colSpan={8} className="py-20 text-center">
                   <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-50">
                     <FaTasks className="text-5xl text-[#0f5238]" />
                   </div>
