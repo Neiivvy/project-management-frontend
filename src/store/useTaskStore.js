@@ -15,11 +15,14 @@ const useTaskStore = create((set, get) => ({
   loading: false,
   error: null,
 
-  fetchTasks: async () => {
+  fetchTasks: async (filters = {}) => {
     try {
-      set({ loading: true });
+      set({
+        loading: true,
+        error: null,
+      });
 
-      const tasks = await getTasks();
+      const tasks = await getTasks(filters);
 
       set({
         tasks,
@@ -32,7 +35,6 @@ const useTaskStore = create((set, get) => ({
       });
     }
   },
-
   addTask: async (data) => {
     try {
       set({ loading: true });
@@ -81,6 +83,7 @@ const useTaskStore = create((set, get) => ({
       return false;
     }
   },
+
   fetchTaskById: async (id) => {
     try {
       set({ loading: true, error: null });
