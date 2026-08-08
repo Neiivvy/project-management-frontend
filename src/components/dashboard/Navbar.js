@@ -23,7 +23,8 @@ export default function Navbar({ setIsOpen }) {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  const { isNotificationOpen, setIsNotificationOpen, unreadCount } = useNotificationStore();
+  const { isNotificationOpen, setIsNotificationOpen, unreadCount } =
+    useNotificationStore();
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -37,6 +38,22 @@ export default function Navbar({ setIsOpen }) {
       .join("")
       .toUpperCase() || "U";
 
+  const getProfileRoute = () => {
+    switch (user?.role) {
+      case ROLE.ADMIN:
+        return "/admin/profile";
+
+      case ROLE.PROJECT_MANAGER:
+        return "/project-manager/profile";
+
+      case ROLE.MEMBER:
+        return "/member/profile";
+
+      default:
+        return "/";
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -46,8 +63,7 @@ export default function Navbar({ setIsOpen }) {
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -77,7 +93,7 @@ export default function Navbar({ setIsOpen }) {
 
         {/* Search */}
 
-       <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-md">
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
           <input
@@ -161,7 +177,7 @@ export default function Navbar({ setIsOpen }) {
               <button
                 onClick={() => {
                   setOpen(false);
-                  router.push("/admin/profile");
+                  router.push(getProfileRoute());
                 }}
                 className="flex w-full items-center gap-3 px-5 py-4 transition hover:bg-slate-100"
               >
