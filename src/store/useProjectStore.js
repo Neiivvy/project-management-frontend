@@ -7,6 +7,7 @@ import {
   getProjectById,
   removeProject,
   assignMembersToProject,
+  assignManagerToProject,
 } from "@/api/projectApi";
 
 const useProjectStore = create(
@@ -125,6 +126,34 @@ const useProjectStore = create(
           return true;
         } catch (error) {
           console.log(error.response?.data);
+          return false;
+        }
+      },
+
+      assignManager: async (projectId, managerId) => {
+        try {
+          set({ loading: true, error: null });
+
+          const updatedProject = await assignManagerToProject(
+            projectId,
+            managerId,
+          );
+
+          set((state) => ({
+            project: updatedProject,
+            projects: state.projects.map((project) =>
+              project._id === projectId ? updatedProject : project,
+            ),
+            loading: false,
+          }));
+
+          return true;
+        } catch (error) {
+          set({
+            loading: false,
+            error:
+              error.response?.data?.message || "Failed to reassign manager",
+          });
           return false;
         }
       },

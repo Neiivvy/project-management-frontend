@@ -2,12 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { FolderKanban, Loader2, Users, ClipboardList, CheckCircle2, Clock } from "lucide-react";
+import {
+  FolderKanban,
+  Loader2,
+  Users,
+  ClipboardList,
+  CheckCircle2,
+  Clock,
+  Pencil,
+} from "lucide-react";
 
 import EmptyState from "@/components/shared/EmptyState";
 import Avatar from "@/components/shared/Avatar";
+import ReassignManagerModal from "@/components/projects/ReassignManagerModal";
 
 import useProjectStore from "@/store/admin/useProjectStore";
+import useAuthStore from "@/store/useAuthStore";
+import axiosInstance from "@/api/axios";
 import { mapProjectDetail } from "@/lib/mappers/project";
 
 export default function ProjectDetailPage() {
@@ -24,7 +35,13 @@ export default function ProjectDetailPage() {
     fetchProjectTasks,
   } = useProjectStore();
 
+  const authUser = useAuthStore((state) => state.user);
+
   const [activeTab, setActiveTab] = useState("overview");
+
+  const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [isReassigning, setIsReassigning] = useState(false);
 
   useEffect(() => {
     if (!projectId) return;
@@ -36,6 +53,29 @@ export default function ProjectDetailPage() {
       clearCurrentProject();
     };
   }, [projectId, fetchProjectById, fetchProjectTasks, clearCurrentProject]);
+
+  useEffect(() => {
+    if (!isReassignModalOpen) return;
+    axiosInstance.get("/users").then((res) => {
+      const pmsOnly = res.data.data.filter((u) => u.role === "project_manager");
+      setProjectManagers(pmsOnly);
+    });
+  }, [isReassignModalOpen]);
+
+  const handleReassignManager = async (newManagerId) => {
+    setIsReassigning(true);
+    try {
+      await axiosInstance.put(`/projects/${projectId}/assign-manager`, {
+        managerId: newManagerId,
+      });
+      setIsReassignModalOpen(false);
+      await fetchProjectById(projectId);
+    } catch (error) {
+      console.error("Failed to reassign manager:", error);
+    } finally {
+      setIsReassigning(false);
+    }
+  };
 
   if (isLoadingProject) {
     return (
@@ -56,9 +96,7 @@ export default function ProjectDetailPage() {
               "
             />
           </div>
-          <p className="text-sm text-slate-500">
-            Loading project details...
-          </p>
+          <p className="text-sm text-slate-500">Loading project details...</p>
         </div>
       </div>
     );
@@ -92,9 +130,10 @@ export default function ProjectDetailPage() {
 
   const tasksTotal = projectTasks.length;
   const tasksDone = projectTasks.filter(
-    (task) => task.status === "Completed"
+    (task) => task.status === "Completed",
   ).length;
-  const progress = tasksTotal === 0 ? 0 : Math.round((tasksDone / tasksTotal) * 100);
+  const progress =
+    tasksTotal === 0 ? 0 : Math.round((tasksDone / tasksTotal) * 100);
 
   const tabs = [
     { key: "overview", label: "Overview" },
@@ -118,9 +157,7 @@ export default function ProjectDetailPage() {
               {project.name?.charAt(0)?.toUpperCase() || "P"}
             </div>
             <div>
-              <h1 className="text-2xl font-bold sm:text-3xl">
-                {project.name}
-              </h1>
+              <h1 className="text-2xl font-bold sm:text-3xl">{project.name}</h1>
               <p className="mt-1 text-sm text-white/70">
                 {project.manager?.name || "No manager assigned"}
               </p>
@@ -128,13 +165,15 @@ export default function ProjectDetailPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
-              project.status === "active"
-                ? "bg-emerald-400/20 text-emerald-100"
-                : project.status === "completed"
-                ? "bg-blue-400/20 text-blue-100"
-                : "bg-amber-400/20 text-amber-100"
-            }`}>
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+                project.status === "active"
+                  ? "bg-emerald-400/20 text-emerald-100"
+                  : project.status === "completed"
+                    ? "bg-blue-400/20 text-blue-100"
+                    : "bg-amber-400/20 text-amber-100"
+              }`}
+            >
               {project.status}
             </span>
           </div>
@@ -142,10 +181,30 @@ export default function ProjectDetailPage() {
 
         {/* Quick Stats */}
         <div className="relative mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <QuickStat icon={ClipboardList} label="Total Tasks" value={tasksTotal} color="bg-white/20" />
-          <QuickStat icon={CheckCircle2} label="Completed" value={tasksDone} color="bg-emerald-400/30" />
-          <QuickStat icon={Clock} label="Remaining" value={tasksTotal - tasksDone} color="bg-amber-400/30" />
-          <QuickStat icon={Users} label="Progress" value={`${progress}%`} color="bg-blue-400/30" />
+          <QuickStat
+            icon={ClipboardList}
+            label="Total Tasks"
+            value={tasksTotal}
+            color="bg-white/20"
+          />
+          <QuickStat
+            icon={CheckCircle2}
+            label="Completed"
+            value={tasksDone}
+            color="bg-emerald-400/30"
+          />
+          <QuickStat
+            icon={Clock}
+            label="Remaining"
+            value={tasksTotal - tasksDone}
+            color="bg-amber-400/30"
+          />
+          <QuickStat
+            icon={Users}
+            label="Progress"
+            value={`${progress}%`}
+            color="bg-blue-400/30"
+          />
         </div>
       </div>
 
@@ -212,15 +271,21 @@ export default function ProjectDetailPage() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 text-center">
-                  <p className="text-2xl font-bold text-[#6366f1]">{tasksTotal}</p>
+                  <p className="text-2xl font-bold text-[#6366f1]">
+                    {tasksTotal}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">Total</p>
                 </div>
                 <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 text-center">
-                  <p className="text-2xl font-bold text-emerald-600">{tasksDone}</p>
+                  <p className="text-2xl font-bold text-emerald-600">
+                    {tasksDone}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">Done</p>
                 </div>
                 <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 text-center">
-                  <p className="text-2xl font-bold text-amber-600">{tasksTotal - tasksDone}</p>
+                  <p className="text-2xl font-bold text-amber-600">
+                    {tasksTotal - tasksDone}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">Remaining</p>
                 </div>
               </div>
@@ -248,12 +313,16 @@ export default function ProjectDetailPage() {
                           {member.email || "No email"}
                         </p>
                       </div>
-                      <span className={`rounded-full px-2.5 py-1 text-[10px] font-medium ${
-                        member.availability === "available"
-                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                          : "bg-amber-50 text-amber-700 border border-amber-200"
-                      }`}>
-                        {member.availability === "available" ? "Available" : "Busy"}
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-[10px] font-medium ${
+                          member.availability === "available"
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                            : "bg-amber-50 text-amber-700 border border-amber-200"
+                        }`}
+                      >
+                        {member.availability === "available"
+                          ? "Available"
+                          : "Busy"}
                       </span>
                     </div>
                   ))}
@@ -271,13 +340,25 @@ export default function ProjectDetailPage() {
         <div className="space-y-6">
           {/* Manager Card */}
           <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563eb]/10 text-[#2563eb]">
-                <span className="text-sm font-bold">👤</span>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563eb]/10 text-[#2563eb]">
+                  <span className="text-sm font-bold">👤</span>
+                </div>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                  Manager
+                </h2>
               </div>
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-                Manager
-              </h2>
+
+              {authUser?.role === "admin" && (
+                <button
+                  onClick={() => setIsReassignModalOpen(true)}
+                  className="flex items-center gap-1 text-xs font-medium text-[#0f5238] hover:underline"
+                >
+                  <Pencil size={12} />
+                  Reassign
+                </button>
+              )}
             </div>
 
             <div className="flex items-center gap-3">
@@ -313,6 +394,15 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </div>
+
+      <ReassignManagerModal
+        isOpen={isReassignModalOpen}
+        onClose={() => setIsReassignModalOpen(false)}
+        currentManagerId={project.manager?.id}
+        availableManagers={projectManagers}
+        onConfirm={handleReassignManager}
+        isSubmitting={isReassigning}
+      />
     </div>
   );
 }
@@ -333,7 +423,9 @@ function MetaRow({ label, value }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-slate-50 last:border-none">
       <span className="text-sm text-slate-500">{label}</span>
-      <span className="text-sm font-medium text-[#181d19] capitalize">{value || "—"}</span>
+      <span className="text-sm font-medium text-[#181d19] capitalize">
+        {value || "—"}
+      </span>
     </div>
   );
 }

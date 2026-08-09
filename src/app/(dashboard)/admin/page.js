@@ -4,12 +4,7 @@ import { useEffect } from "react";
 import useAuthStore from "@/store/useAuthStore";
 import useDashboardStore from "@/store/admin/useDashboardStore";
 
-import {
-  FiUsers,
-  FiFolder,
-  FiUserCheck,
-  FiCheckCircle,
-} from "react-icons/fi";
+import { FiUsers, FiFolder, FiUserCheck, FiCheckCircle } from "react-icons/fi";
 
 import StatCard from "@/components/dashboard/admin/StatCard";
 import RecentActivity from "@/components/dashboard/admin/RecentActivity";
@@ -19,22 +14,14 @@ import RoleDistribution from "@/components/dashboard/admin/RoleDistribution";
 export default function AdminPage() {
   const user = useAuthStore((state) => state.user);
 
-  const {
-    summary,
-    fetchSummary,
-    isLoading,
-  } = useDashboardStore();
+  const { summary, fetchSummary, isLoading } = useDashboardStore();
 
   useEffect(() => {
     fetchSummary();
   }, [fetchSummary]);
 
   if (isLoading || !summary) {
-    return (
-      <div className="p-8 text-gray-500">
-        Loading Dashboard...
-      </div>
-    );
+    return <div className="p-8 text-gray-500">Loading Dashboard...</div>;
   }
 
   return (

@@ -23,12 +23,11 @@ export default function Navbar({ setIsOpen }) {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  const { isNotificationOpen, setIsNotificationOpen, unreadCount } = useNotificationStore();
+  const { isNotificationOpen, setIsNotificationOpen, unreadCount } =
+    useNotificationStore();
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-
-  const isAdmin = user?.role === ROLE.ADMIN;
 
   const initials =
     user?.name
@@ -46,8 +45,7 @@ export default function Navbar({ setIsOpen }) {
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -77,7 +75,7 @@ export default function Navbar({ setIsOpen }) {
 
         {/* Search */}
 
-       <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-md">
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
           <input
@@ -95,24 +93,22 @@ export default function Navbar({ setIsOpen }) {
           <p className="text-sm font-medium text-slate-700">{today}</p>
         </div>
 
-        {/* Notification - Admin only */}
+        {/* Notification — available to all roles */}
 
-        {isAdmin && (
-          <div className="relative">
-            <button
-              onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-              className="relative rounded-xl bg-slate-100 p-3 transition hover:bg-slate-200"
-            >
-              <FaBell className="text-slate-600" />
+        <div className="relative">
+          <button
+            onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+            className="relative rounded-xl bg-slate-100 p-3 transition hover:bg-slate-200"
+          >
+            <FaBell className="text-slate-600" />
 
-              {unreadCount > 0 && (
-                <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
-              )}
-            </button>
+            {unreadCount > 0 && (
+              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
+            )}
+          </button>
 
-            <NotificationPanel />
-          </div>
-        )}
+          <NotificationPanel />
+        </div>
 
         {/* Profile */}
 
