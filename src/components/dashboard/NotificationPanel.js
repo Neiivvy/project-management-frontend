@@ -2,18 +2,18 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import {
-  FaCheckDouble,
-  FaExternalLinkAlt,
-  FaBellSlash,
-} from "react-icons/fa";
+import { FaCheckDouble, FaExternalLinkAlt, FaBellSlash } from "react-icons/fa";
 
 import useNotificationStore from "@/store/admin/useNotificationStore";
+import useAuthStore from "@/store/useAuthStore";
+import { getDashboardRoute } from "@/utils/auth";
 import NotificationItem from "./NotificationItem";
 
 export default function NotificationPanel() {
   const router = useRouter();
   const panelRef = useRef(null);
+
+  const user = useAuthStore((state) => state.user);
 
   const {
     notifications,
@@ -49,18 +49,20 @@ export default function NotificationPanel() {
 
   const handleViewAll = () => {
     setIsNotificationOpen(false);
-    router.push("/admin/notifications");
+    const base = getDashboardRoute(user?.role);
+    router.push(`${base}/notifications`);
   };
 
   const handleNavigate = (notification) => {
     setIsNotificationOpen(false);
+    const base = getDashboardRoute(user?.role);
 
     if (notification.relatedEntityType === "project") {
-      router.push(`/admin/projects/${notification.relatedEntityId}`);
+      router.push(`${base}/projects/${notification.relatedEntityId}`);
     } else if (notification.relatedEntityType === "task") {
-      router.push(`/project-manager/tasks/${notification.relatedEntityId}`);
+      router.push(`${base}/tasks/${notification.relatedEntityId}`);
     } else if (notification.relatedEntityType === "user") {
-      router.push(`/admin/users/${notification.relatedEntityId}`);
+      router.push(`${base}/users/${notification.relatedEntityId}`);
     }
   };
 
@@ -116,9 +118,7 @@ export default function NotificationPanel() {
             </h3>
 
             {unreadCount > 0 && (
-              <p className="text-xs text-slate-500">
-                {unreadCount} unread
-              </p>
+              <p className="text-xs text-slate-500">{unreadCount} unread</p>
             )}
           </div>
 
@@ -128,9 +128,7 @@ export default function NotificationPanel() {
               className="flex items-center gap-1.5 text-xs font-medium text-[#0f5238] hover:text-[#0a3d2a] transition"
             >
               <FaCheckDouble className="text-sm" />
-              <span className="hidden sm:inline">
-                Mark all read
-              </span>
+              <span className="hidden sm:inline">Mark all read</span>
             </button>
           )}
         </div>
@@ -147,9 +145,7 @@ export default function NotificationPanel() {
                 <FaBellSlash className="text-xl" />
               </div>
 
-              <p className="text-sm text-slate-500">
-                No notifications yet
-              </p>
+              <p className="text-sm text-slate-500">No notifications yet</p>
 
               <p className="mt-1 text-xs text-slate-400">
                 You&apos;re all caught up!

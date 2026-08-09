@@ -38,3 +38,10 @@ export const assignMembersToProject = async (projectId, memberIds) => {
 
   return res.data;
 };
+export const assignManagerToProject = async (projectId, managerId) => {
+  const { data } = await axiosInstance.put(
+    `/projects/${projectId}/assign-manager`,
+    { managerId },
+  );
+  return data.data; // matches your backend's { success, message, data: project } shape
+};

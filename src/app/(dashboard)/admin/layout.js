@@ -5,8 +5,6 @@ import { ROLE } from "@/constants/roles";
 
 export default function AdminLayout({ children }) {
   return (
-    <ProtectedRoute allowedRoles={[ROLE.ADMIN]}>
-      {children}
-    </ProtectedRoute>
+    <ProtectedRoute allowedRoles={[ROLE.ADMIN]}>{children}</ProtectedRoute>
   );
 }
