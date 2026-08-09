@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import useNotificationStore from "@/store/admin/useNotificationStore";
+import useUsersStore from "@/store/admin/useUsersStore";
+import useProjectStore from "@/store/admin/useProjectStore";
 import { ROLE } from "@/constants/roles";
 
 import {
@@ -19,6 +22,7 @@ import NotificationPanel from "./NotificationPanel";
 
 export default function Navbar({ setIsOpen }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -26,8 +30,16 @@ export default function Navbar({ setIsOpen }) {
   const { isNotificationOpen, setIsNotificationOpen, unreadCount } =
     useNotificationStore();
 
+  const { users, fetchUsers } = useUsersStore();
+  const { projects, fetchProjects } = useProjectStore();
+
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  const isAdminRoute = pathname?.startsWith("/admin");
 
   const initials =
     user?.name
@@ -57,12 +69,26 @@ export default function Navbar({ setIsOpen }) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
+      if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
+        setIsSearchOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (isAdminRoute) {
+      if (users.length === 0) {
+        fetchUsers();
+      }
+      if (projects.length === 0) {
+        fetchProjects();
+      }
+    }
+  }, [isAdminRoute, users.length, projects.length, fetchUsers, fetchProjects]);
 
   const handleLogout = () => {
     logout();
@@ -74,6 +100,49 @@ export default function Navbar({ setIsOpen }) {
     month: "short",
     day: "numeric",
   });
+
+  const filteredUsers = useMemo(() => {
+    if (!isAdminRoute || !searchQuery.trim()) return [];
+    const query = searchQuery.trim().toLowerCase();
+    return users.filter(
+      (u) =>
+        u.name?.toLowerCase().includes(query) ||
+        u.email?.toLowerCase().includes(query)
+    );
+  }, [isAdminRoute, searchQuery, users]);
+
+  const filteredProjects = useMemo(() => {
+    if (!isAdminRoute || !searchQuery.trim()) return [];
+    const query = searchQuery.trim().toLowerCase();
+    return projects.filter((p) => p.title?.toLowerCase().includes(query));
+  }, [isAdminRoute, searchQuery, projects]);
+
+  const hasResults = filteredUsers.length > 0 || filteredProjects.length > 0;
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setIsSearchOpen(value.trim().length > 0);
+  };
+
+  const handleUserClick = (userId) => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    router.push(`/admin/users/${userId}`);
+  };
+
+  const handleProjectClick = (projectId) => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    router.push(`/admin/projects/${projectId}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setIsSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white px-4 md:px-8 shadow-sm">
@@ -91,14 +160,73 @@ export default function Navbar({ setIsOpen }) {
 
         {/* Search */}
 
-        <div className="relative flex-1 max-w-md">
+        <div className="relative flex-1 max-w-md" ref={searchInputRef}>
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
           <input
             type="text"
             placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+            onFocus={() => {
+              if (isAdminRoute && searchQuery.trim().length > 0) {
+                setIsSearchOpen(true);
+              }
+            }}
             className="w-full rounded-lg border border-[#bfc9c1] bg-white py-2 pl-11 pr-4 focus:border-[#0f5238] focus:outline-none focus:ring-2 focus:ring-[#0f5238]/20 transition-all"
           />
+
+          {isAdminRoute && isSearchOpen && (
+            <div className="absolute top-full left-0 right-0 mt-2 max-h-80 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl z-50">
+              {!hasResults ? (
+                <div className="p-4 text-sm text-slate-500 text-center">
+                  No results found
+                </div>
+              ) : (
+                <div className="p-2">
+                  {filteredUsers.length > 0 && (
+                    <div className="mb-2">
+                      <p className="px-3 py-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        Users
+                      </p>
+                      {filteredUsers.slice(0, 5).map((u) => (
+                        <button
+                          key={u._id}
+                          onClick={() => handleUserClick(u._id)}
+                          className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors"
+                        >
+                          <p className="text-sm font-medium text-[#181d19]">
+                            {u.name}
+                          </p>
+                          <p className="text-xs text-slate-500">{u.email}</p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {filteredProjects.length > 0 && (
+                    <div>
+                      <p className="px-3 py-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        Projects
+                      </p>
+                      {filteredProjects.slice(0, 5).map((p) => (
+                        <button
+                          key={p._id}
+                          onClick={() => handleProjectClick(p._id)}
+                          className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-50 transition-colors"
+                        >
+                          <p className="text-sm font-medium text-[#181d19]">
+                            {p.title}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
