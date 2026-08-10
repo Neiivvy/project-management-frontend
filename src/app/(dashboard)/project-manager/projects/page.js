@@ -20,6 +20,7 @@ export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [statusFilter, setStatusFilter] = useState("All");
   const { deleteProject } = useProjectStore();
+  const [deadlineFilter, setDeadlineFilter] = useState("All");
 
   const handleEdit = (project) => {
     setSelectedProject(project);
@@ -49,6 +50,9 @@ export default function ProjectsPage() {
   ];
 
   const filteredProjects = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     return (projects || []).filter((project) => {
       const matchesSearch = project.title
         .toLowerCase()
@@ -57,9 +61,18 @@ export default function ProjectsPage() {
       const matchesStatus =
         statusFilter === "All" || project.status === statusFilter;
 
-      return matchesSearch && matchesStatus;
+      const projectDeadline = new Date(project.deadline);
+      projectDeadline.setHours(0, 0, 0, 0);
+
+      const isOverdue =
+        projectDeadline < today && project.status !== "completed";
+
+      const matchesDeadline =
+        deadlineFilter === "All" || (deadlineFilter === "Overdue" && isOverdue);
+
+      return matchesSearch && matchesStatus && matchesDeadline;
     });
-  }, [projects, search, statusFilter]);
+  }, [projects, search, statusFilter, deadlineFilter]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -127,6 +140,19 @@ export default function ProjectsPage() {
               </option>
             ))}
           </select>
+          <div className="flex items-center gap-3 px-4 py-1">
+            <select
+              value={deadlineFilter}
+              onChange={(e) => {
+                setDeadlineFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="min-w-30 cursor-pointer rounded-xl border border-gray-100 bg-white px-4 py-2 text-sm font-medium"
+            >
+              <option value="All">All Deadlines</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
         </div>
       </div>
 
