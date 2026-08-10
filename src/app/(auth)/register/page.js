@@ -117,9 +117,6 @@ export default function RegisterPage() {
     <div className="w-full max-w-sm">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold">Create your account</h1>
-        <p className="text-sm text-[#404943] mt-1">
-          Start managing projects with your team.
-        </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
