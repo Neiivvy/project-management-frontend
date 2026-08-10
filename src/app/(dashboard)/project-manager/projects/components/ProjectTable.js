@@ -124,7 +124,11 @@ export default function ProjectTable({
                             </h3>
 
                             <p className="mt-1 max-w-xs text-xs text-slate-500 line-clamp-2">
-                              {project.description || "No description"}
+                              {project.description
+                                ? project.description.length > 40
+                                  ? project.description.slice(0, 40) + "..."
+                                  : project.description
+                                : "No description"}
                             </p>
                           </div>
                         </div>
