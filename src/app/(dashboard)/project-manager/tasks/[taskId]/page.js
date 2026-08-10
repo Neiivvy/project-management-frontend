@@ -119,9 +119,14 @@ export default function TaskDetailsPage() {
       <div className="overflow-hidden rounded-3xl border border-[#e4e9e6] bg-white shadow-[0_1px_3px_rgba(15,23,20,0.05),0_8px_24px_-12px_rgba(15,23,20,0.08)]">
         {/* Description + priority */}
         <div className="flex flex-col gap-4 border-b border-[#eef1ef] px-6 py-6 sm:flex-row sm:items-start sm:justify-between sm:px-8">
-          <p className="max-w-2xl text-[15px] leading-7 text-slate-600">
-            {task.description || "No description provided."}
-          </p>
+          <div className="flex flex-col">
+            <h3 className="flex-1 font-semibold text-sm mb-2">
+              Project Description:
+            </h3>
+            <p className="max-w-2xl text-[15px]  text-slate-600">
+              {task.description || "No description provided."}
+            </p>
+          </div>
           <span
             className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-1.5 text-[13px] font-semibold ring-1 ${priorityStyle.bg} ${priorityStyle.text} ${priorityStyle.ring}`}
           >
