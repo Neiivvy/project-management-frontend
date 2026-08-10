@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { FaPlus, FaTimes, FaSearch } from "react-icons/fa";
+import { FaPlus, FaTimes, FaSearch, FaFilter } from "react-icons/fa";
 import { toast } from "react-toastify";
 import TaskTable from "./components/TaskTable";
 import TaskModal from "./components/TaskModal";
@@ -18,6 +18,7 @@ export default function TasksPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [priorityFilter, setPriorityFilter] = useState("All");
   const [projectFilter, setProjectFilter] = useState("All");
+  const [deadlineFilter, setDeadlineFilter] = useState("All");
 
   const removeTask = useTaskStore((state) => state.removeTask);
   const fetchTasks = useTaskStore((state) => state.fetchTasks);
@@ -85,6 +86,9 @@ export default function TasksPage() {
   ].filter(Boolean);
 
   const filteredTasks = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     return (tasks || [])
       .filter((task) => {
         const matchesSearch = task.title
@@ -100,12 +104,36 @@ export default function TasksPage() {
         const matchesProject =
           projectFilter === "All" || task.projectId?.title === projectFilter;
 
+        const taskDeadline = task.deadline ? new Date(task.deadline) : null;
+
+        if (taskDeadline) {
+          taskDeadline.setHours(0, 0, 0, 0);
+        }
+
+        const isOverdue =
+          taskDeadline && taskDeadline < today && task.status !== "Completed";
+
+        const matchesDeadline =
+          deadlineFilter === "All" ||
+          (deadlineFilter === "Overdue" && isOverdue);
+
         return (
-          matchesSearch && matchesStatus && matchesPriority && matchesProject
+          matchesSearch &&
+          matchesStatus &&
+          matchesPriority &&
+          matchesProject &&
+          matchesDeadline
         );
       })
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  }, [tasks, search, statusFilter, priorityFilter, projectFilter]);
+  }, [
+    tasks,
+    search,
+    statusFilter,
+    priorityFilter,
+    projectFilter,
+    deadlineFilter,
+  ]);
 
   const indexOfLastTask = currentPage * tasksPerPage;
   const indexOfFirstTask = indexOfLastTask - tasksPerPage;
@@ -128,8 +156,8 @@ export default function TasksPage() {
         </button>
       </div>
 
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-        <div className="relative w-full max-w-md">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
+        <div className="relative w-full max-w-md mb-3">
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
 
           <input
@@ -140,12 +168,12 @@ export default function TasksPage() {
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full rounded-lg border border-[#bfc9c1] py-3 pl-11 pr-4 transition focus:border-[#0f5238] focus:outline-none focus:ring-2 focus:ring-[#0f5238]/20"
+            className="w-full rounded-lg border border-[#bfc9c1] py-2 pl-11 pr-4 transition focus:border-[#0f5238] focus:outline-none focus:ring-2 focus:ring-[#0f5238]/20"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-semibold">Filter by:</span>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <span className="text-sm font-semibold">Filter By:</span>
 
           <select
             value={statusFilter}
@@ -153,7 +181,7 @@ export default function TasksPage() {
               setStatusFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="min-w-30 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm"
+            className="min-w-25 cursor-pointer rounded-xl border border-gray-200 bg-white px-2 py-2 text-sm"
           >
             {statusFilters.map((status) => (
               <option key={status} value={status}>
@@ -168,7 +196,7 @@ export default function TasksPage() {
               setPriorityFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="min-w-30 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm"
+            className="min-w-30 cursor-pointer rounded-xl border border-gray-200 bg-white px-2 py-2 text-sm"
           >
             {priorityFilters.map((priority) => (
               <option key={priority} value={priority}>
@@ -183,7 +211,7 @@ export default function TasksPage() {
               setProjectFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="min-w-35 cursor-pointer rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm"
+            className="min-w-20 cursor-pointer rounded-xl border border-gray-200 bg-white px-2 py-2 text-sm"
           >
             {projectFilters.map((project) => (
               <option key={project} value={project}>
@@ -192,17 +220,30 @@ export default function TasksPage() {
             ))}
           </select>
 
+          <select
+            value={deadlineFilter}
+            onChange={(e) => {
+              setDeadlineFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="min-w-20 cursor-pointer rounded-xl border border-gray-200 bg-white px-2 py-2 text-sm"
+          >
+            <option value="All">All Deadlines</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+
           <button
             onClick={() => {
               setSearch("");
               setStatusFilter("All");
               setPriorityFilter("All");
               setProjectFilter("All");
+              setDeadlineFilter("All");
               setCurrentPage(1);
             }}
-            className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+            className="rounded-lg border border-red-200 bg-red-50 px-2 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
           >
-            Clear
+            ❌
           </button>
         </div>
       </div>
