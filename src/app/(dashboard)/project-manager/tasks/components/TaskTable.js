@@ -201,7 +201,7 @@ export default function TaskTable({
         <table className="min-w-275 w-full">
           <thead className="sticky top-0 z-10 border-b border-slate-200 bg-linear-to-r from-slate-50 via-white to-slate-50">
             <tr className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              <th className="px-3 py-3 text-center">SN</th>
+              <th className="px-2 py-3 text-center">SN</th>
               <th className="px-3 py-3">Task</th>
               <th className="px-3 py-3">Project</th>
               <th className="px-3 py-3">Assigned To</th>
@@ -236,7 +236,7 @@ export default function TaskTable({
                           {task.title}
                         </h3>
 
-                        <p className="mt-1 max-w-45 break-all text-xs text-slate-500 lg:max-w-70">
+                        <p className="mt-1 max-w-45 break-all text-[10px] text-slate-500 lg:max-w-70">
                           {task.description
                             ? task.description.length > 20
                               ? task.description.slice(0, 20) + "..."
@@ -252,7 +252,11 @@ export default function TaskTable({
                       <FaFolderOpen className="text-[#0f5238]" />
 
                       <span className="text-sm font-semibold">
-                        {task.projectId?.title || "-"}
+                        {task.projectId?.title
+                          ? task.projectId.title.length > 20
+                            ? task.projectId.title.slice(0, 20) + "..."
+                            : task.projectId.title
+                          : "-"}{" "}
                       </span>
                     </div>
                   </td>
@@ -315,7 +319,7 @@ export default function TaskTable({
                         onClick={() =>
                           router.push(`/project-manager/tasks/${task._id}`)
                         }
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-green-600 transition hover:bg-green-700 hover:text-white"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-green-600 transition-all duration-200 hover:-translate-y-1 hover:bg-green-700 hover:text-white"
                       >
                         <FaEye />
                       </button>
@@ -323,7 +327,7 @@ export default function TaskTable({
                       <button
                         title="Edit"
                         onClick={() => onEdit(task)}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-blue-600 transition hover:bg-blue-700 hover:text-white"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-blue-600 transition-all duration-200 hover:-translate-y-1 hover:bg-blue-700 hover:text-white"
                       >
                         <FaEdit />
                       </button>
@@ -331,7 +335,7 @@ export default function TaskTable({
                       <button
                         title="Delete"
                         onClick={() => onDelete?.(task)}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-red-600 transition hover:bg-red-600 hover:text-white"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-red-600 transition-all duration-200 hover:-translate-y-1 hover:bg-red-600 hover:text-white"
                       >
                         <FaTrash />
                       </button>
