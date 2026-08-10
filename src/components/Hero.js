@@ -23,7 +23,6 @@ export default function Hero() {
   const intervalRef = useRef(null);
 
   useEffect(() => {
-    // On first load, show the first image instantly without animation
     if (isFirstLoad) {
       const timer = setTimeout(() => {
         setIsFirstLoad(false);
@@ -31,7 +30,6 @@ export default function Hero() {
       return () => clearTimeout(timer);
     }
 
-    // Auto-advance slides every 2 seconds
     intervalRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 4000);
@@ -156,7 +154,7 @@ export default function Hero() {
           >
             <Link
               href="/register"
-              className="group inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-[#0f5238] shadow-lg hover:bg-[#F7FAF8] transition-all hover:shadow-xl"
+              className="group inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-[#498f70] shadow-lg hover:bg-[#F7FAF8] transition-all hover:shadow-xl"
             >
               Get Started
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

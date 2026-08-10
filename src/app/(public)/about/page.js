@@ -1,43 +1,37 @@
 import {
-  FiBarChart2,
-  FiZap,
   FiLock,
+  FiUserPlus,
+  FiActivity,
   FiTarget,
   FiHeart,
   FiSend,
 } from "react-icons/fi";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 
-const stats = [
-  { value: "5+", label: "Projects Delivered" },
-  { value: "10+", label: "Enterprise Clients" },
-  { value: "98.5%", label: "On-time Delivery Rate" },
-];
-
 const features = [
   {
-    icon: FiBarChart2,
+    icon: FiLock,
     iconBg: "bg-green-100",
     iconColor: "text-green-600",
-    title: "Project Dashboard",
+    title: "Role-based Access",
     description:
-      "Get a bird's-eye view of every project — timelines, task completion, team workload, and blockers in one place.",
+      "Assign permissions by role : admins, project managers, and contributors each see exactly what they need.",
   },
   {
-    icon: FiZap,
-    iconBg: "bg-amber-100",
-    iconColor: "text-amber-600",
-    title: "Smart Task Automation",
-    description:
-      "Automate recurring tasks, deadline reminders, and status updates so your team stays focused on real work.",
-  },
-  {
-    icon: FiLock,
+    icon: FiUserPlus,
     iconBg: "bg-emerald-100",
     iconColor: "text-emerald-600",
-    title: "Role-based Access Control",
+    title: "Project Assignment",
     description:
-      "Assign permissions by role — admins, project managers, and contributors each see exactly what they need.",
+      "Streamline project creation and member allocation with intuitive assignment tools and clear ownership.",
+  },
+  {
+    icon: FiActivity,
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-600",
+    title: "Activity & Reports Tracking",
+    description:
+      "Monitor real-time activity feeds and generate comprehensive reports to keep stakeholders informed.",
   },
 ];
 const values = [
@@ -80,26 +74,31 @@ const team = [
     initials: "SA",
     name: "Sagar Shrestha",
     role: "Frontend Developer",
+    bio: "Passionate about building intuitive user experiences with modern web technologies.",
   },
   {
     initials: "NI",
     name: "Nitika Dangal",
     role: "Frontend Developer",
+    bio: "Dedicated to creating clean, responsive interfaces that users love.",
   },
   {
     initials: "PA",
     name: "Pankaj Kumar Rajbanshi",
     role: "Frontend Developer",
+    bio: "Focused on delivering pixel-perfect designs with robust functionality.",
   },
   {
     initials: "SH",
     name: "Shovit Regmi",
     role: "MERN Developer",
+    bio: "Full-stack enthusiast building scalable applications from ground up.",
   },
   {
     initials: "SU",
     name: "Sumana Ranjit",
     role: "MERN Developer",
+    bio: "Problem solver who turns complex requirements into elegant solutions.",
   },
 ];
 
@@ -123,41 +122,31 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-20 sm:px-10">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
+          <div className="animate-fade-in-up">
             <h2 className="text-3xl font-extrabold text-slate-900">
               Our Mission is Simple
             </h2>
-            <p className="mt-5 text-slate-500">
-              Too many projects fail not because of bad ideas, but because of
-              poor coordination missed handoffs, unclear ownership, and no
-              single source of truth. Co-Work fixes that by giving every
-              team member a clear picture of what needs to happen and when.
-            </p>
-            <p className="mt-4 text-slate-500">
-              Founded in 2026, Co-Work was built by project managers for
-              project managers. Whether you&apos;re running a two-week sprint or
-              a year-long enterprise rollout, our platform adapts to your
-              process not the other way around.
-            </p>
-
-            <div className="mt-10 flex gap-10">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-3xl font-extrabold text-green-600">
-                    {stat.value}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500">{stat.label}</p>
-                </div>
-              ))}
-            </div>
+           <p className="mt-5 text-slate-500">
+  Co-Work is a collaborative project management platform built to help teams
+  organize projects, manage tasks, and track progress in one place. It brings
+  project managers and team members together with clear responsibilities,
+  organized workflows, and easy access to important project information.
+</p>
+<p className="mt-4 text-slate-500">
+  From creating projects and assigning tasks to monitoring progress and
+  managing team members, Co-Work provides the tools teams need to stay
+  organized and work efficiently. It simplifies project management by keeping
+  everything connected in one platform.
+</p>
           </div>
 
           <div className="flex flex-col gap-5">
             {features.map(
-              ({ icon: Icon, iconBg, iconColor, title, description }) => (
+              ({ icon: Icon, iconBg, iconColor, title, description }, index) => (
                 <div
                   key={title}
-                  className="flex gap-4 rounded-xl bg-slate-50 p-5 shadow-sm hover:scale-105"
+                  className="animate-fade-in-up flex gap-4 rounded-xl bg-slate-50 p-5 shadow-sm hover:scale-105"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span
                     className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg ${iconBg}`}
@@ -187,10 +176,11 @@ export default function AboutPage() {
 
           <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {values.map(
-              ({ icon: Icon, iconBg, iconColor, title, description }) => (
+              ({ icon: Icon, iconBg, iconColor, title, description }, index) => (
                 <div
                   key={title}
-                  className="rounded-xl bg-white p-7 text-left shadow-sm hover:scale-105"
+                  className="animate-fade-in-up rounded-xl bg-white p-7 text-left shadow-sm hover:scale-105"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span
                     className={`flex h-12 w-12 items-center justify-center rounded-xl ${iconBg}`}
@@ -218,9 +208,9 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-20 sm:grid-cols-3 lg:grid-cols-5">
-          {team.map((member) => (
-            <div key={member.name} className="text-center">
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#498f70] text-lg font-bold text-white shadow-md shadow-green-200">
+          {team.map((member, index) => (
+            <div key={member.name} className="animate-fade-in-up text-center" style={{ animationDelay: `${index * 100}ms` }}>
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-green-800 text-lg font-bold text-white shadow-md shadow-green-200">
                 {member.initials}
               </div>
               <h3 className="mt-4 font-semibold text-slate-900">
@@ -228,9 +218,6 @@ export default function AboutPage() {
               </h3>
               <p className="mt-0.5 text-sm font-medium text-green-600">
                 {member.role}
-              </p>
-              <p className="mx-auto mt-2 max-w-xs text-sm text-slate-500">
-                {member.bio}
               </p>
             </div>
           ))}

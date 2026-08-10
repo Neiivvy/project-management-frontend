@@ -58,7 +58,7 @@ export default function Solutions() {
     <section className="bg-white px-6 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-14">
-          <span className="text-sm font-bold tracking-widest uppercase text-[#0f5238]">
+          <span className="text-sm font-bold tracking-widest uppercase text-[#498f70]">
             Solutions
           </span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-semibold text-[#111827] tracking-tight">
@@ -82,7 +82,7 @@ export default function Solutions() {
                 role="button"
                 className={`group relative flex gap-4 p-5 rounded-xl cursor-pointer transition-all duration-300 outline-none ${
                   hovered === index
-                    ? "bg-[#F7FAF8] border border-[#0f5238]/20 shadow-sm"
+                    ? "bg-[#F7FAF8] border border-[#498f70]/20 shadow-sm"
                     : "bg-transparent border border-transparent hover:bg-[#F7FAF8]/50"
                 }`}
               >
@@ -91,8 +91,8 @@ export default function Solutions() {
                   <div
                     className={`w-1 rounded-full transition-all duration-300 ${
                       hovered === index
-                        ? "h-8 bg-[#0f5238]"
-                        : "h-4 bg-[#D8E5DD] group-hover:h-6 group-hover:bg-[#0f5238]/40"
+                        ? "h-8 bg-[#498f70]"
+                        : "h-4 bg-[#D8E5DD] group-hover:h-6 group-hover:bg-[#498f70]/40"
                     }`}
                   />
                 </div>
@@ -101,8 +101,8 @@ export default function Solutions() {
                   <h4
                     className={`text-sm font-bold tracking-wide transition-colors duration-300 ${
                       hovered === index
-                        ? "text-[#0f5238]"
-                        : "text-[#374151] group-hover:text-[#0f5238]"
+                        ? "text-[#498f70]"
+                        : "text-[#374151] group-hover:text-[#498f70]"
                     }`}
                   >
                     {item.label}
@@ -127,7 +127,7 @@ export default function Solutions() {
                   }`}
                 >
                   <svg
-                    className="h-4 w-4 text-[#0f5238]"
+                    className="h-4 w-4 text-[#498f70]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"

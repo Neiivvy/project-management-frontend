@@ -68,7 +68,7 @@ export default function Workflow() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-sm font-bold tracking-widest uppercase text-[#0f5238]">
+          <span className="text-sm font-bold tracking-widest uppercase text-[#498f70]">
             How It Works
           </span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-semibold text-[#111827] tracking-tight">
@@ -96,7 +96,7 @@ export default function Workflow() {
                   className="relative w-full"
                 >
                   <div className="flex flex-col items-center text-center">
-                    <div className="h-14 w-14 rounded-2xl bg-[#0f5238] text-white flex items-center justify-center shadow-lg shadow-[#0f5238]/20 mb-4">
+                    <div className="h-14 w-14 rounded-2xl bg-[#498f70] text-white flex items-center justify-center shadow-lg shadow-[#498f70]/20 mb-4">
                       <step.icon className="h-6 w-6" />
                     </div>
                     <h3 className="text-sm font-semibold text-[#111827] mb-1">
@@ -136,7 +136,7 @@ export default function Workflow() {
                 className="flex gap-4"
               >
                 <div className="flex flex-col items-center">
-                  <div className="h-12 w-12 rounded-xl bg-[#0f5238] text-white flex items-center justify-center shadow-lg shadow-[#0f5238]/20 shrink-0">
+                  <div className="h-12 w-12 rounded-xl bg-[#498f70] text-white flex items-center justify-center shadow-lg shadow-[#498f70]/20 shrink-0">
                     <step.icon className="h-5 w-5" />
                   </div>
                   {index < steps.length - 1 && (

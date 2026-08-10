@@ -45,17 +45,17 @@ const highlights = [
 
 function LogsVisual() {
   const logs = [
-    { action: "Task #142 created", user: "Projet Manager.", time: "2m ago", type: "create" },
-    { action: "Status changed to In Progress", user: "Nitka", time: "5m ago", type: "update" },
+    { action: "Task #142 created", user: "Project Manager.", time: "2m ago", type: "create" },
+    { action: "Status changed to In Progress", user: "Nitika", time: "5m ago", type: "update" },
     { action: "Comment added on Project Co-Work", user: "Sagar", time: "8m ago", type: "comment" },
     { action: "File uploaded to Docs", user: "Shovit", time: "12m ago", type: "upload" },
   ];
 
   const typeColors = {
-    create: "bg-[#0f5238]",
+    create: "bg-[#498f70]",
     update: "bg-[#2d6a4f]",
     comment: "bg-[#3a7d5d]",
-    upload: "bg-[#0f5238]/70",
+    upload: "bg-[#498f70]/70",
   };
 
   return (
@@ -84,12 +84,12 @@ function ReportsVisual() {
           <div className="text-2xl font-bold text-[#111827]">87%</div>
           <div className="text-xs text-[#6B7280]">On-time delivery</div>
         </div>
-        <div className="h-10 w-10 rounded-lg bg-[#0f5238]/10 flex items-center justify-center">
-          <CheckCircle className="h-5 w-5 text-[#0f5238]" />
+        <div className="h-10 w-10 rounded-lg bg-[#498f70]/10 flex items-center justify-center">
+          <CheckCircle className="h-5 w-5 text-[#498f70]" />
         </div>
       </div>
       <div className="h-2 w-full rounded-full bg-[#EEF5F1] overflow-hidden">
-        <div className="h-full w-[87%] rounded-full bg-linear-to-r from-[#0f5238] to-[#3a7d5d]" />
+        <div className="h-full w-[87%] rounded-full bg-linear-to-r from-[#498f70] to-[#3a7d5d]" />
       </div>
       <div className="grid grid-cols-3 gap-3">
         {[
@@ -98,7 +98,7 @@ function ReportsVisual() {
           { label: "Overdue", value: "3", icon: AlertTriangle },
         ].map((stat) => (
           <div key={stat.label} className="p-3 rounded-lg bg-[#F7FAF8] border border-[#D8E5DD]/60">
-            <stat.icon className="h-4 w-4 text-[#0f5238] mb-1.5" />
+            <stat.icon className="h-4 w-4 text-[#498f70] mb-1.5" />
             <div className="text-lg font-semibold text-[#111827]">{stat.value}</div>
             <div className="text-[10px] text-[#6B7280] uppercase tracking-wider">{stat.label}</div>
           </div>
@@ -110,7 +110,7 @@ function ReportsVisual() {
 
 function RolesVisual() {
   const roles = [
-    { name: "Admin", color: "bg-[#0f5238]", access: "Full access" },
+    { name: "Admin", color: "bg-[#498f70]", access: "Full access" },
     { name: "Project Manager", color: "bg-[#2d6a4f]", access: "Manage projects" },
     { name: "Member", color: "bg-[#3a7d5d]", access: "Assigned tasks" },
   ];
@@ -129,7 +129,7 @@ function RolesVisual() {
             <div className="text-sm font-medium text-[#374151]">{role.name}</div>
             <div className="text-xs text-[#6B7280]">{role.access}</div>
           </div>
-          <div className="h-2 w-2 rounded-full bg-[#0f5238]" />
+          <div className="h-2 w-2 rounded-full bg-[#498f70]" />
         </div>
       ))}
     </div>
@@ -147,7 +147,7 @@ export default function PlatformHighlights() {
     <section className="py-24 bg-[#F7FAF8] px-6">
       <div className="mx-auto max-w-7xl">
         <div className="text-center mb-20">
-          <span className="text-sm font-bold tracking-widest uppercase text-[#0f5238]">
+          <span className="text-sm font-bold tracking-widest uppercase text-[#498f70]">
             Platform Highlights
           </span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-semibold text-[#111827] tracking-tight">
@@ -170,9 +170,9 @@ export default function PlatformHighlights() {
               >
                 {/* Text content */}
                 <div className={isReversed ? "lg:col-start-2" : ""}>
-                  <div className="inline-flex items-center gap-2 rounded-lg bg-[#0f5238]/5 px-3 py-1.5 mb-4">
-                    <Icon className="h-4 w-4 text-[#0f5238]" />
-                    <span className="text-xs font-semibold text-[#0f5238] uppercase tracking-wider">
+                  <div className="inline-flex items-center gap-2 rounded-lg bg-[#498f70]/5 px-3 py-1.5 mb-4">
+                    <Icon className="h-4 w-4 text-[#498f70]" />
+                    <span className="text-xs font-semibold text-[#498f70] uppercase tracking-wider">
                       {highlight.subtitle}
                     </span>
                   </div>
@@ -185,9 +185,9 @@ export default function PlatformHighlights() {
                   <ul className="space-y-2.5">
                     {highlight.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-2.5">
-                        <div className="h-5 w-5 rounded-full bg-[#0f5238]/10 flex items-center justify-center shrink-0">
+                        <div className="h-5 w-5 rounded-full bg-[#498f70]/10 flex items-center justify-center shrink-0">
                           <svg
-                            className="h-3 w-3 text-[#0f5238]"
+                            className="h-3 w-3 text-[#498f70]"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -204,7 +204,7 @@ export default function PlatformHighlights() {
 
                 {/* Visual */}
                 <div className={isReversed ? "lg:col-start-1 lg:row-start-1" : ""}>
-                  <div className="rounded-2xl bg-white border border-[#D8E5DD] p-6 shadow-lg shadow-[#0f5238]/5">
+                  <div className="rounded-2xl bg-white border border-[#D8E5DD] p-6 shadow-lg shadow-[#498f70]/5">
                     <VisualComponent />
                   </div>
                 </div>

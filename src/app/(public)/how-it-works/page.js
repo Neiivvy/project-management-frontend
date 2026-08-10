@@ -6,13 +6,8 @@ import {
   FiCheckSquare,
   FiTrendingUp,
   FiArrowRight,
-  FiPlay,
-  FiLayers,
-  FiCalendar,
-  FiBell,
-  FiPieChart,
-  FiShield,
-  FiRepeat,
+  FiUserPlus,
+  FiBarChart2,
 } from "react-icons/fi";
 import { HiOutlineSparkles, HiOutlineRocketLaunch } from "react-icons/hi2";
 
@@ -22,60 +17,71 @@ const steps = [
     icon: FiClipboard,
     color: "text-green-600",
     bg: "bg-green-50",
-    title: "Create Your Project",
+    title: "Create Project",
     description:
-      "Set up a workspace with a name, goal, and deadline. Start from scratch.",
+      "Set up a new project with a name, description, and deadline. Choose visibility and start building your workspace.",
   },
   {
     number: "02",
     icon: FiUsers,
     color: "text-violet-600",
     bg: "bg-violet-50",
-    title: "Invite Your Team",
+    title: "Collaborate",
     description:
-      "Add members by email and assign roles — Admin, Manager and User",
+      "Invite team members, assign roles, and keep everyone aligned with shared goals and real-time updates.",
   },
   {
     number: "03",
     icon: FiCheckSquare,
     color: "text-amber-600",
     bg: "bg-amber-50",
-    title: "Plan & Assign Tasks",
+    title: "Track Tasks",
     description:
-      "Break projects into simple tasks, set priorities, and organize your workflow with easy sprint planning.",
+      "Break work into tasks, set priorities, assign owners, and monitor progress with intuitive dashboards.",
   },
   {
     number: "04",
-    icon: FiTrendingUp,
+    icon: FiBarChart2,
     color: "text-emerald-600",
     bg: "bg-emerald-50",
-    title: "Track Progress",
+    title: "Create Reports",
     description:
-      "Monitor live dashboards, burndown charts, and team workload as work gets done.",
+      "Generate detailed reports on project performance, team productivity, and milestone completion.",
   },
 ];
 
-const capabilities = [
-  { icon: FiLayers, label: "Organize Tasks" },
-  { icon: FiCalendar, label: "Plan Sprints" },
-  { icon: FiPieChart, label: "Track Progress" },
-  { icon: FiShield, label: "Manage Access" },
-  { icon: FiRepeat, label: "Repeat Tasks" },
-];
-
-const faqs = [
+const flow = [
   {
-    q: "What types of projects can I manage?",
-    a: "You can manage software projects, marketing campaigns, team tasks, and any work that needs planning and collaboration.",
+    icon: FiUserPlus,
+    color: "text-green-600",
+    bg: "bg-green-50",
+    title: "Create Your Account",
+    description:
+      "Sign up as a team member. Once registered, an Admin or Project Manager can assign you the Project Manager role.",
   },
   {
-    q: "Can I move my projects from another tool?",
-    a: "Yes. You can easily import your tasks and project data from other tools or files.",
+    icon: FiClipboard,
+    color: "text-violet-600",
+    bg: "bg-violet-50",
+    title: "Start Creating Projects",
+    description:
+      "As a Project Manager, create new projects, set goals, define deadlines, and organize your workspace.",
   },
-
   {
-    q: "Can clients view project updates?",
-    a: "Yes. You can invite clients to view project progress, milestones, and updates easily.",
+    icon: FiUsers,
+    color: "text-amber-600",
+    bg: "bg-amber-50",
+    title: "Build Your Team",
+    description:
+      "Invite members to your project, assign roles, and ensure everyone knows their responsibilities.",
+  },
+  {
+    icon: FiCheckSquare,
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
+    title: "Assign & Track Tasks",
+    description:
+      "Break projects into tasks, assign them to team members, set priorities, and track progress in real time.",
   },
 ];
 
@@ -87,34 +93,27 @@ export default function HowItWorksPage() {
           How It Works
         </span>
         <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-          From Ideas to Execution {" "}
+          From Ideas to Execution{" "}
           <span className="text-[#498f70]">Simplify Every Step.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-500">
           Co-Work is designed to fit the way your team actually works.
           Set up in minutes, collaborate in real time, and manage projects
+          with clarity.
         </p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href="/demo"
-            className="inline-flex items-center gap-2 rounded-lg border bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700"
-          >
-            <FiPlay size={14} />
-            Watch Demo
-          </a>
-        </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-20 sm:px-10">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step) => {
+          {steps.map((step, index) => {
             const Icon = step.icon;
             return (
               <div
                 key={step.number}
-                className="relative rounded-2xl border border-slate-100 bg-white p-6"
+                className="animate-fade-in-up relative rounded-2xl border border-slate-100 bg-white p-6"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <span className="absolute right-5 top-4 text-5xl font-extrabold text-gray-300 select-none">
+                <span className="absolute right-5 top-4 text-5xl font-extrabold text-gray-300 select-none sm:text-6xl">
                   {step.number}
                 </span>
                 <span
@@ -134,67 +133,63 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      <section className="border-y border-slate-100 bg-slate-50 px-6 py-14 sm:px-10">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-center text-sm font-semibold uppercase tracking-widest text-slate-400">
-            Everything you need in one platform
+      <section className="border-y border-slate-100 bg-slate-50 px-6 py-20 sm:px-10">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="text-center text-3xl font-extrabold text-slate-900">
+            Your Workflow, Simplified
+          </h2>
+          <p className="mt-4 text-center text-slate-500">
+            Here is how Co-Work helps you move from sign-up to delivery.
           </p>
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {capabilities.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex flex-col items-center gap-2 rounded-xl bg-white px-3 py-5 text-center shadow-sm hover:scale-105"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
-                  <Icon size={18} className="text-green-600" />
-                </span>
-                <span className="text-xs font-medium text-slate-600">
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section className="mx-auto max-w-3xl px-6 py-20 sm:px-10">
-        <h2 className="text-center text-3xl font-extrabold text-slate-900">
-          Common Questions
-        </h2>
-        <p className="mt-3 text-center text-slate-500">
-          Everything you need to know before getting started.
-        </p>
-        <div className="mt-10 flex flex-col gap-4">
-          {faqs.map((faq) => (
-            <div
-              key={faq.q}
-              className="rounded-xl border border-slate-100 bg-slate-50 p-6"
-            >
-              <h3 className="font-semibold text-slate-900">{faq.q}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                {faq.a}
-              </p>
+          <div className="relative mt-14">
+            <div className="absolute left-6 top-0 h-full w-0.5 bg-green-200 sm:left-8" />
+
+            <div className="flex flex-col gap-10">
+              {flow.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="animate-slide-in-left relative flex gap-6 sm:gap-8"
+                    style={{ animationDelay: `${index * 150}ms` }}
+                  >
+                    <div
+                      className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${item.bg} ${item.color} shadow-lg sm:h-14 sm:w-14`}
+                    >
+                      <Icon size={22} />
+                    </div>
+                    <div className="flex-1 pt-2">
+                      <h3 className="text-lg font-bold text-slate-900 sm:text-xl">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
       <section
         className="px-6 py-20 text-center sm:px-10"
-      
       >
         <h2 className="text-3xl font-extrabold text-slate-900">
           Ready to run better projects?
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-slate-500">
-          Trusted by teams worldwide to plan, collaborate, and complete projects
-          successfully. No credit card required.
+         Plan projects, assign tasks, track progress, and keep your team connected
+  with everything organized in one place.
         </p>
         <Link
           href={Register_route}
           className="mt-8 inline-flex items-center gap-2 rounded-lg bg-green-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-green-700"
         >
-          Start for Free <FiArrowRight size={15} />
+          Get Started <FiArrowRight size={15} />
         </Link>
       </section>
     </main>
