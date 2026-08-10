@@ -6,8 +6,8 @@ import useAuthStore from "@/store/useAuthStore";
 import useDashboardStore from "@/store/admin/useDashboardStore";
 
 import { getProjects } from "@/api/projectApi";
-import { getTasks } from "@/api/taskApi";
 import { getActivities } from "@/api/activityApi";
+import { getTasks, deleteTask } from "@/api/taskApi";
 
 import DashboardStats from "@/components/dashboard/project_manager/DashboardStats";
 import TaskBreakdown from "@/components/dashboard/project_manager/TaskBreakdown";
@@ -90,6 +90,16 @@ export default function DashboardPage() {
     return task.status?.toLowerCase() !== "completed" && deadline < new Date();
   });
 
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+
+      setTasks((prev) => prev.filter((task) => task._id !== taskId));
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
+  };
+
   const taskBreakdown = [
     {
       label: "Completed",
@@ -153,7 +163,7 @@ export default function DashboardPage() {
 
       {/* Overdue Tasks */}
       <div className="mt-6">
-        <OverdueTasks tasks={overdue} />
+        <OverdueTasks tasks={overdue} onDelete={handleDeleteTask} />
       </div>
     </div>
   );
