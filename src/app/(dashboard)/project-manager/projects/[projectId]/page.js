@@ -223,18 +223,17 @@ export default function ProjectDetailsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-6">
-            <h2 className="text-xl font-bold mb-5">Team Members</h2>
-
+          <div className="bg-white rounded-xl shadow p-2">
+            <h2 className="text-xl font-bold mb-4">Team Members</h2>
             {project.teamMembers?.length ? (
-              <div className="space-y-4">
+              <div className="max-h-90 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
                 {project.teamMembers.map((member, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between border rounded-lg p-3 hover:bg-gray-50 transition"
+                    className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:bg-gray-50"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-full  bg-[#2d6a4f] text-white flex items-center justify-center font-semibold">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] font-semibold text-white">
                         {member.name
                           ?.split(" ")
                           .map((n) => n[0])
@@ -242,21 +241,25 @@ export default function ProjectDetailsPage() {
                           .toUpperCase()}
                       </div>
 
-                      <div>
-                        <h3 className="font-semibold">{member.name}</h3>
+                      <div className="min-w-0">
+                        <h3 className="truncate font-semibold text-gray-800">
+                          {member.name}
+                        </h3>
 
-                        <p className="text-sm text-gray-500">{member.email}</p>
+                        <p className="truncate text-sm text-gray-500">
+                          {member.email}
+                        </p>
                       </div>
                     </div>
 
-                    <span className="text-xs px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium capitalize">
+                    <span className="shrink-0 rounded-full bg-blue-100 px-3 py-1 text-xs font-medium capitalize text-blue-700">
                       {member.role}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-6 text-gray-500">
+              <div className="py-6 text-center text-gray-500">
                 No team members assigned.
               </div>
             )}
