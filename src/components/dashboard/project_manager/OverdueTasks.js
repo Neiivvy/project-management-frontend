@@ -1,7 +1,7 @@
 import React from "react";
 import { FiAlertTriangle, FiCheckCircle, FiTrash2 } from "react-icons/fi";
 
-const OverdueTasks = ({ tasks = [], onDelete }) => {
+const OverdueTasks = ({ tasks = [] }) => {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
       {/* Header */}
