@@ -113,7 +113,7 @@ export default function Navbar({ setIsOpen }) {
 
         {/* Notification - Admin only */}
 
-        {isAdmin && (
+       
           <div className="relative">
             <button
               onClick={() => setIsNotificationOpen(!isNotificationOpen)}
@@ -128,7 +128,7 @@ export default function Navbar({ setIsOpen }) {
 
             <NotificationPanel />
           </div>
-        )}
+        
 
         {/* Profile */}
 
