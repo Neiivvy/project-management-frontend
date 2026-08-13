@@ -90,7 +90,7 @@ export default function ProjectDetailsPage() {
 
   if (!project) {
     return (
-      <div className="p-8">
+      <div className="min-h-screen bg-[#eaf7ef] p-8">
         <p className="text-red-600">
           Project not found.
         </p>
@@ -106,7 +106,7 @@ export default function ProjectDetailsPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="min-h-screen bg-[#eaf7ef] p-8">
 
       {/* Back button */}
       <button
@@ -117,15 +117,15 @@ export default function ProjectDetailsPage() {
       </button>
 
       {/* Project Header */}
-      <div className="bg-white rounded-2xl shadow-sm border p-8">
+      <div className="bg-[#f4fbf6] rounded-2xl shadow-[0_4px_12px_rgba(30,90,55,0.08)] border border-[#c7e3d1] p-8">
 
         <div className="flex justify-between items-start mb-8">
           <div>
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-3xl font-bold text-[#123524]">
               {project.name}
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-[#527565] mt-2">
               Project Details
             </p>
           </div>
@@ -133,52 +133,55 @@ export default function ProjectDetailsPage() {
           <span
             className={`px-4 py-2 rounded-full font-medium ${
               project.status === "completed"
-                ? "bg-green-100 text-green-700"
+                ? "bg-[#c9f4d9] text-[#087443]"
                 : project.status === "planning"
-                ? "bg-gray-100 text-gray-700"
-                : "bg-blue-100 text-blue-700"
+                ? "bg-[#fff0cf] text-[#986000]"
+                : "bg-[#dcecff] text-[#175cd3]"
             }`}
           >
             {project.status}
           </span>
         </div>
 
-        
         {/* Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 
-          <div className="bg-gray-50 p-5 rounded-xl">
-            <p className="text-gray-500">
+          <div className="bg-[#eaf7ef] border border-[#d5e9dc] p-5 rounded-xl">
+            <p className="text-[#5c7d6b]">
               Deadline
             </p>
-            <p className="font-semibold text-lg">
+
+            <p className="font-semibold text-lg text-[#294c39]">
               {project.deadline}
             </p>
           </div>
 
-          <div className="bg-gray-50 p-5 rounded-xl">
-            <p className="text-gray-500">
+          <div className="bg-[#eaf7ef] border border-[#d5e9dc] p-5 rounded-xl">
+            <p className="text-[#5c7d6b]">
               Manager
             </p>
-            <p className="font-semibold text-lg">
+
+            <p className="font-semibold text-lg text-[#294c39]">
               {project.manager}
             </p>
           </div>
 
-          <div className="bg-gray-50 p-5 rounded-xl">
-            <p className="text-gray-500">
+          <div className="bg-[#eaf7ef] border border-[#d5e9dc] p-5 rounded-xl">
+            <p className="text-[#5c7d6b]">
               Team Size
             </p>
-            <p className="font-semibold text-lg">
+
+            <p className="font-semibold text-lg text-[#294c39]">
               {project.teamSize} members
             </p>
           </div>
 
-          <div className="bg-gray-50 p-5 rounded-xl">
-            <p className="text-gray-500">
+          <div className="bg-[#eaf7ef] border border-[#d5e9dc] p-5 rounded-xl">
+            <p className="text-[#5c7d6b]">
               Status
             </p>
-            <p className="font-semibold text-lg">
+
+            <p className="font-semibold text-lg text-[#294c39]">
               {project.status}
             </p>
           </div>
@@ -187,18 +190,18 @@ export default function ProjectDetailsPage() {
 
         {/* Description */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold mb-3">
+          <h2 className="text-xl font-bold mb-3 text-[#123524]">
             Description
           </h2>
 
-          <p className="text-gray-600 leading-7">
+          <p className="text-[#527565] leading-7">
             {project.description}
           </p>
         </div>
 
         {/* Tasks */}
         <div>
-          <h2 className="text-xl font-bold mb-4">
+          <h2 className="text-xl font-bold mb-4 text-[#123524]">
             Project Tasks
           </h2>
 
@@ -206,13 +209,15 @@ export default function ProjectDetailsPage() {
             {project.tasks.map((task, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg"
+                className="flex items-center gap-3 p-4 bg-[#eaf7ef] border border-[#d5e9dc] rounded-lg"
               >
-                <div className="w-6 h-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[#c9f4d9] text-[#087443] flex items-center justify-center">
                   ✓
                 </div>
 
-                <span>{task}</span>
+                <span className="text-[#294c39]">
+                  {task}
+                </span>
               </div>
             ))}
           </div>
