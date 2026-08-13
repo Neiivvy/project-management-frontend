@@ -143,28 +143,7 @@ export default function ProjectDetailsPage() {
           </span>
         </div>
 
-        {/* Progress */}
-        <div className="mb-8">
-          <div className="flex justify-between mb-2">
-            <span className="font-medium">
-              Project Progress
-            </span>
-
-            <span>
-              {project.progress}%
-            </span>
-          </div>
-
-          <div className="w-full bg-gray-200 h-3 rounded-full">
-            <div
-              className="bg-green-700 h-3 rounded-full"
-              style={{
-                width: `${project.progress}%`,
-              }}
-            />
-          </div>
-        </div>
-
+        
         {/* Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 

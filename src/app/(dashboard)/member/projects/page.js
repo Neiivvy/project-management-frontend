@@ -59,10 +59,10 @@ export default function ProjectsPage() {
   useEffect(() => {
     const fetchProgress = async () => {
       try {
-        // Get REAL projects from database
+        // Get real projects from database
         const projectsResponse = await getMyProjects();
 
-        // Get REAL tasks assigned to logged-in member
+        // Get real tasks assigned to logged-in member
         const tasksResponse = await getMyTasks();
 
         const myProjects =
@@ -77,8 +77,8 @@ export default function ProjectsPage() {
         const progress = {};
 
         /*
-         * Match our static project name
-         * with the real MongoDB project.
+         * Match static projects with
+         * real MongoDB projects.
          */
         projects.forEach((staticProject) => {
           const realProject = myProjects.find((dbProject) => {
@@ -94,22 +94,22 @@ export default function ProjectsPage() {
             );
           });
 
-          // If project is not found in database
+          // Project doesn't exist in database
           if (!realProject) {
             progress[staticProject.id] = 0;
             return;
           }
 
-          // REAL MongoDB project ID
+          // Get real MongoDB project ID
           const realProjectId =
             realProject._id || realProject.id;
 
           /*
-           * Find all tasks belonging to this
-           * MongoDB project.
+           * Find tasks belonging to this project.
            */
           const projectTasks = myTasks.filter((task) => {
-            const taskProject = task.projectId || task.project;
+            const taskProject =
+              task.projectId || task.project;
 
             if (!taskProject) {
               return false;
@@ -126,11 +126,10 @@ export default function ProjectsPage() {
             );
           });
 
+          // Total tasks for this project
           const totalTasks = projectTasks.length;
 
-          /*
-           * Count ONLY completed tasks.
-           */
+          // Completed tasks
           const completedTasks = projectTasks.filter(
             (task) =>
               String(task.status)
@@ -139,10 +138,10 @@ export default function ProjectsPage() {
           ).length;
 
           /*
-           * Accurate percentage
+           * Calculate accurate percentage.
            *
            * Example:
-           * 4 completed / 5 total = 80%
+           * 3 completed / 5 total = 60%
            */
           const percentage =
             totalTasks > 0
@@ -178,7 +177,9 @@ export default function ProjectsPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8">My Projects</h1>
+      <h1 className="text-3xl font-bold mb-8">
+        My Projects
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {projects.map((project) => (
@@ -188,7 +189,8 @@ export default function ProjectsPage() {
             className="block"
           >
             <div className="bg-white rounded-2xl p-8 shadow-sm border hover:shadow-lg transition cursor-pointer">
-              
+
+              {/* Project name and status */}
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-semibold">
                   {project.name}
@@ -207,36 +209,20 @@ export default function ProjectsPage() {
                 </span>
               </div>
 
-              <div className="mb-6">
-                <div className="flex justify-between mb-2">
-                  <span>Progress</span>
-
-                  <span>
-                    {projectProgress[project.id] ?? 0}%
-                  </span>
-                </div>
-
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div
-                    className="bg-green-700 h-3 rounded-full"
-                    style={{
-                      width: `${
-                        projectProgress[project.id] ?? 0
-                      }%`,
-                    }}
-                  />
-                </div>
-              </div>
-
+              {/* Project information */}
               <div className="space-y-3 text-gray-700">
                 <p>
                   Deadline:{" "}
-                  <strong>{project.deadline}</strong>
+                  <strong>
+                    {project.deadline}
+                  </strong>
                 </p>
 
                 <p>
                   Manager:{" "}
-                  <strong>{project.manager}</strong>
+                  <strong>
+                    {project.manager}
+                  </strong>
                 </p>
 
                 <p>
@@ -244,9 +230,11 @@ export default function ProjectsPage() {
                 </p>
               </div>
 
+              {/* Project details link */}
               <div className="mt-6 text-green-700 font-medium">
                 Click to view project details →
               </div>
+
             </div>
           </Link>
         ))}
