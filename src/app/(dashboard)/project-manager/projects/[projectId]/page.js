@@ -9,19 +9,28 @@ import {
   FaUsers,
   FaCalendarAlt,
   FaSpinner,
+  FaTasks,
+  FaCheckCircle,
 } from "react-icons/fa";
+
 import useProjectStore from "@/store/useProjectStore";
+import useReportStore from "@/store/useReportStore";
 
 export default function ProjectDetailsPage() {
   const router = useRouter();
   const { projectId } = useParams();
 
   const { project, loading, error, fetchProjectById } = useProjectStore();
+
+  const report = useReportStore((state) => state.report);
+  const fetchReport = useReportStore((state) => state.fetchReport);
+
   useEffect(() => {
     if (projectId) {
       fetchProjectById(projectId);
+      fetchReport(projectId);
     }
-  }, [projectId, fetchProjectById]);
+  }, [projectId, fetchProjectById, fetchReport]);
 
   const formatDate = (date) => {
     if (!date) return "-";
@@ -101,14 +110,15 @@ export default function ProjectDetailsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow p-6">
-          <div className="flex justify-between">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4 mb-8">
+        {/* Status */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+          <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500">Status</p>
+              <p className="text-sm font-medium text-gray-500">Status</p>
 
               <span
-                className={`inline-block mt-3 px-3 py-1 rounded-full text-sm font-semibold ${statusColor(
+                className={`mt-3 inline-flex rounded-full px-3 py-1.5 text-xs font-semibold capitalize ${statusColor(
                   project.status,
                 )}`}
               >
@@ -116,21 +126,63 @@ export default function ProjectDetailsPage() {
               </span>
             </div>
 
-            <FaFolderOpen className="text-3xl text-green-700" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e8f2ee]">
+              <FaFolderOpen className="text-xl text-[#0f5238]" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-6">
-          <div className="flex justify-between">
+        {/* Team Members */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+          <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-500">Team Members</p>
+              <p className="text-sm font-medium text-gray-500">Team Members</p>
 
-              <h2 className="text-3xl font-bold mt-2">
+              <h2 className="mt-2 text-3xl font-bold text-[#10231b]">
                 {project.teamMembers?.length || 0}
               </h2>
             </div>
 
-            <FaUsers className="text-3xl text-[#2d6a4f]" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100">
+              <FaUsers className="text-xl text-slate-600" />
+            </div>
+          </div>
+        </div>
+
+        {/* Total Tasks */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-500">Total Tasks</p>
+
+              <h2 className="mt-2 text-3xl font-bold text-[#10231b]">
+                {project.tasks?.length || 0}
+              </h2>
+            </div>
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50">
+              <FaTasks className="text-xl text-blue-600" />
+            </div>
+          </div>
+        </div>
+
+        {/* Completed Tasks */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-500">
+                Completed Tasks
+              </p>
+
+              <h2 className="mt-2 text-3xl font-bold text-[#10231b]">
+                {project.tasks?.filter((task) => task.status === "Completed")
+                  .length || 0}
+              </h2>
+            </div>
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50">
+              <FaCheckCircle className="text-xl text-emerald-600" />
+            </div>
           </div>
         </div>
       </div>
