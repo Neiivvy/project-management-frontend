@@ -10,6 +10,7 @@ import {
   FaCog,
   FaUserShield,
   FaHistory,
+  FaEnvelope,
 } from "react-icons/fa";
 
 export const getDashboardRoute = (role) => {
@@ -60,6 +61,11 @@ export const getSidebarItems = (role) => {
           label: "Activity",
           route: "/admin/activity",
           icon: <FaHistory />,
+        },
+        {
+          label: "Contact",
+          route: "/admin/contact",
+          icon: <FaEnvelope />,
         },
         {
           label: "Reports",
