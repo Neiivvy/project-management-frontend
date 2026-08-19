@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#f7f6f6]">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#f0fdf4] via-[#f7fdf8] to-[#ecfdf5]">
       <Sidebar
         isOpen={sidebarOpen}
         setIsOpen={setSidebarOpen}
