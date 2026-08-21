@@ -110,7 +110,7 @@ export const getSidebarItems = (role) => {
         },
         { label: "Tasks", route: "/member/tasks", icon: <FaTasks /> },
         { label: "Team", route: "/member/team", icon: <FaUsers /> },
-        { label: "Settings", route: "/member/settings", icon: <FaCog /> },
+       
       ];
   }
 };
