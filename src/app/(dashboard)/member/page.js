@@ -230,12 +230,10 @@ export default function MemberDashboardPage() {
               </p>
 
               <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
-                Welcome Back,{" "}
+                Welcome,{" "}
                 {user?.name?.split(" ")[0] ||
                   "there"}{" "}
-                <span className="inline-block animate-pulse">
-                  👋
-                </span>
+                
               </h1>
 
               <p className="mt-2 text-sm text-[#b7cec0]">
