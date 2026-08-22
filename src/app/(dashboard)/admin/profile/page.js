@@ -29,7 +29,6 @@ export default function AdminProfilePage() {
   } = useForm({
     defaultValues: {
       name: "",
-      email: "",
       phone: "",
     },
   });
@@ -214,27 +213,6 @@ export default function AdminProfilePage() {
                     />
                     {profileErrors.name && (
                       <p className="mt-1 text-xs text-red-500">{profileErrors.name.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-[#404943] mb-1.5">
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      {...registerProfile("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Invalid email address",
-                        },
-                      })}
-                      className="w-full rounded-xl border border-[#d0e8dc] bg-white px-4 py-2.5 text-sm text-[#181d19] placeholder:text-[#a3b5ab] focus:border-[#0f5238] focus:outline-none focus:ring-2 focus:ring-[#0f5238]/10 transition-all"
-                      placeholder="Enter your email"
-                    />
-                    {profileErrors.email && (
-                      <p className="mt-1 text-xs text-red-500">{profileErrors.email.message}</p>
                     )}
                   </div>
 
