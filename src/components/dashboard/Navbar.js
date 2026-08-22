@@ -10,6 +10,7 @@ import useProjectStore from "@/store/admin/useProjectStore";
 
 import { getMyProjects } from "@/api/projects";
 import { getMyTasks } from "@/api/tasks";
+import { getTasks } from "@/api/taskApi";
 
 import { ROLE } from "@/constants/roles";
 
@@ -20,16 +21,8 @@ import {
   FaUserCircle,
   FaSignOutAlt,
   FaBars,
-  FaHome,
   FaFolder,
   FaTasks,
-  FaUsers,
-  FaUser,
-  FaChartLine,
-  FaFileAlt,
-  FaShieldAlt,
-  FaHistory,
-  FaEnvelope,
 } from "react-icons/fa";
 
 import NotificationPanel from "./NotificationPanel";
@@ -52,7 +45,8 @@ export default function Navbar({ setIsOpen }) {
     useNotificationStore();
 
   /* =====================================================
-     STORES
+     ADMIN STORES
+     ADMIN SEARCH REMAINS UNCHANGED
   ===================================================== */
 
   const { users, fetchUsers } = useUsersStore();
@@ -69,6 +63,10 @@ export default function Navbar({ setIsOpen }) {
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  /*
+   * MEMBER DATA
+   */
+
   const [memberProjects, setMemberProjects] = useState([]);
 
   const [memberTasks, setMemberTasks] = useState([]);
@@ -76,6 +74,18 @@ export default function Navbar({ setIsOpen }) {
   const [memberDataLoading, setMemberDataLoading] = useState(false);
 
   const [memberDataError, setMemberDataError] = useState("");
+
+  /*
+   * PM DATA
+   */
+
+  const [pmProjects, setPmProjects] = useState([]);
+
+  const [pmTasks, setPmTasks] = useState([]);
+
+  const [pmDataLoading, setPmDataLoading] = useState(false);
+
+  const [pmDataError, setPmDataError] = useState("");
 
   /* =====================================================
      REFS
@@ -94,13 +104,6 @@ export default function Navbar({ setIsOpen }) {
   const isProjectManager = user?.role === ROLE.PROJECT_MANAGER;
 
   const isMember = user?.role === ROLE.MEMBER;
-
-  /*
-   * Admin + PM can search users.
-   *
-   * Member cannot search all users.
-   */
-  const canSearchUsers = isAdmin || isProjectManager;
 
   /* =====================================================
      INITIALS
@@ -159,280 +162,34 @@ export default function Navbar({ setIsOpen }) {
   };
 
   /* =====================================================
-     DASHBOARD
-  ===================================================== */
-
-  const getDashboardRoute = () => {
-    switch (user?.role) {
-      case ROLE.ADMIN:
-        return "/admin";
-
-      case ROLE.PROJECT_MANAGER:
-        return "/project-manager";
-
-      case ROLE.MEMBER:
-        return "/member";
-
-      default:
-        return "/";
-    }
-  };
-
-  /* =====================================================
-     PROJECTS
-  ===================================================== */
-
-  const getProjectsRoute = () => {
-    switch (user?.role) {
-      case ROLE.ADMIN:
-        return "/admin/projects";
-
-      case ROLE.PROJECT_MANAGER:
-        return "/project-manager/projects";
-
-      case ROLE.MEMBER:
-        return "/member/projects";
-
-      default:
-        return "/";
-    }
-  };
-
-  /* =====================================================
-     TASKS
-  ===================================================== */
-
-  const getTasksRoute = () => {
-    switch (user?.role) {
-      case ROLE.ADMIN:
-        return "/admin/tasks";
-
-      case ROLE.PROJECT_MANAGER:
-        return "/project-manager/tasks";
-
-      case ROLE.MEMBER:
-        return "/member/tasks";
-
-      default:
-        return "/";
-    }
-  };
-
-  /* =====================================================
-     TEAM / USERS
-  ===================================================== */
-
-  const getTeamRoute = () => {
-    switch (user?.role) {
-      case ROLE.ADMIN:
-        return "/admin/users";
-
-      case ROLE.PROJECT_MANAGER:
-        return "/project-manager/members";
-
-      case ROLE.MEMBER:
-        return "/member/team";
-
-      default:
-        return "/";
-    }
-  };
-
-  /* =====================================================
-     PM TASK PROGRESS
-  ===================================================== */
-
-  const getTaskProgressRoute = () => {
-    if (isProjectManager) {
-      return "/project-manager/progress";
-    }
-
-    return "/";
-  };
-
-  /* =====================================================
-     REPORTS
-  ===================================================== */
-
-  const getReportRoute = () => {
-    switch (user?.role) {
-      case ROLE.ADMIN:
-        return "/admin/reports";
-
-      case ROLE.PROJECT_MANAGER:
-        return "/project-manager/reports";
-
-      default:
-        return "/";
-    }
-  };
-
-  /* =====================================================
-     ADMIN ROLES & PERMISSIONS
-  ===================================================== */
-
-  const getRolesPermissionRoute = () => {
-    if (isAdmin) {
-      return "/admin/roles-permissions";
-    }
-
-    return "/";
-  };
-
-  /* =====================================================
-     ADMIN ACTIVITY
-  ===================================================== */
-
-  const getActivityRoute = () => {
-    if (isAdmin) {
-      return "/admin/activity";
-    }
-
-    return "/";
-  };
-
-  /* =====================================================
-     ADMIN CONTACT
-  ===================================================== */
-
-  const getContactRoute = () => {
-    if (isAdmin) {
-      return "/admin/contact";
-    }
-
-    return "/";
-  };
-
-  /* =====================================================
-     NOTIFICATIONS
-  ===================================================== */
-
-  const getNotificationsRoute = () => {
-    switch (user?.role) {
-      case ROLE.ADMIN:
-        return "/admin/notifications";
-
-      case ROLE.PROJECT_MANAGER:
-        return "/project-manager/notifications";
-
-      case ROLE.MEMBER:
-        return "/member/notifications";
-
-      default:
-        return "/";
-    }
-  };
-
-  /* =====================================================
-     MEMBER PROJECT ROUTE
-  ===================================================== */
-
-  const getMemberProjectRoute = (id) => {
-    return `/member/projects/${id}`;
-  };
-
-  /* =====================================================
-     MEMBER TASK ROUTE
-  ===================================================== */
-
-  const getMemberTaskRoute = (id) => {
-    return `/member/tasks/${id}`;
-  };
-
-  /* =====================================================
-     ADMIN / PM PROJECT ROUTE
-  ===================================================== */
-
-  const getProjectSearchRoute = (id) => {
-    if (isAdmin) {
-      return `/admin/projects/${id}`;
-    }
-
-    if (isProjectManager) {
-      return `/project-manager/projects/${id}`;
-    }
-
-    return "/";
-  };
-
-  /* =====================================================
-     ADMIN / PM USER ROUTE
-  ===================================================== */
-
-  const getUserSearchRoute = (id) => {
-    if (isAdmin) {
-      return `/admin/users/${id}`;
-    }
-
-    if (isProjectManager) {
-      return `/project-manager/team/${id}`;
-    }
-
-    return "/";
-  };
-
-  /* =====================================================
-     CLOSE DROPDOWNS
+     ADMIN LOAD USERS
+     ADMIN ONLY
   ===================================================== */
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-
-      if (
-        searchInputRef.current &&
-        !searchInputRef.current.contains(event.target)
-      ) {
-        setIsSearchOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  /* =====================================================
-     LOAD USERS
-     
-     ADMIN + PM ONLY
-  ===================================================== */
-
-  useEffect(() => {
-    if (!canSearchUsers) return;
+    if (!isAdmin) return;
 
     if (users.length > 0) return;
 
     fetchUsers();
-  }, [canSearchUsers, users.length, fetchUsers]);
+  }, [isAdmin, users.length, fetchUsers]);
 
   /* =====================================================
-     LOAD PROJECTS
-     
-     ADMIN + PM ONLY
-     
-     IMPORTANT:
-     Keep dependency array FIXED.
+     ADMIN LOAD PROJECTS
+     ADMIN ONLY
   ===================================================== */
 
   useEffect(() => {
-    if (!isAdmin && !isProjectManager) {
-      return;
-    }
+    if (!isAdmin) return;
 
-    if (adminProjects.length > 0) {
-      return;
-    }
+    if (adminProjects.length > 0) return;
 
     fetchProjects();
-  }, [isAdmin, isProjectManager, adminProjects.length, fetchProjects]);
+  }, [isAdmin, adminProjects.length, fetchProjects]);
 
   /* =====================================================
      LOAD MEMBER PROJECTS + TASKS
+     MEMBER ONLY
   ===================================================== */
 
   useEffect(() => {
@@ -440,9 +197,10 @@ export default function Navbar({ setIsOpen }) {
 
     let cancelled = false;
 
-    const loadMemberSearchData = async () => {
+    const loadMemberData = async () => {
       try {
         setMemberDataLoading(true);
+
         setMemberDataError("");
 
         const [projectsResponse, tasksResponse] = await Promise.all([
@@ -462,13 +220,14 @@ export default function Navbar({ setIsOpen }) {
       } catch (error) {
         if (cancelled) return;
 
-        console.error("Member search data error:", error);
+        console.error("Member navbar search error:", error);
 
         setMemberDataError(
           error?.response?.data?.message || "Failed to load search data",
         );
 
         setMemberProjects([]);
+
         setMemberTasks([]);
       } finally {
         if (!cancelled) {
@@ -477,12 +236,101 @@ export default function Navbar({ setIsOpen }) {
       }
     };
 
-    loadMemberSearchData();
+    loadMemberData();
 
     return () => {
       cancelled = true;
     };
   }, [isMember]);
+
+  /* =====================================================
+     LOAD PM PROJECTS + TASKS
+
+     IMPORTANT:
+     getMyProjects() = PM projects
+
+     getTasks() = all tasks returned based on PM permission
+
+     Then filter tasks by PM project IDs.
+  ===================================================== */
+
+  useEffect(() => {
+    if (!isProjectManager) return;
+
+    let cancelled = false;
+
+    const loadPmData = async () => {
+      try {
+        setPmDataLoading(true);
+
+        setPmDataError("");
+
+        const [projectsResponse, tasksData] = await Promise.all([
+          getMyProjects(),
+          getTasks(),
+        ]);
+
+        if (cancelled) return;
+
+        const projects = projectsResponse?.data?.data || [];
+
+        const allTasks = Array.isArray(tasksData) ? tasksData : [];
+
+        /*
+         * Get IDs of projects owned by
+         * the logged-in PM.
+         */
+
+        const pmProjectIds = projects.map((project) => String(project._id));
+
+        /*
+         * Keep only tasks whose projectId
+         * belongs to one of PM's projects.
+         */
+
+        const filteredTasks = allTasks.filter((task) => {
+          const taskProjectId =
+            typeof task?.projectId === "object"
+              ? task?.projectId?._id
+              : task?.projectId;
+
+          return pmProjectIds.includes(String(taskProjectId));
+        });
+
+        console.log("PM Projects:", projects);
+
+        console.log("All PM Accessible Tasks:", allTasks);
+
+        console.log("Filtered PM Tasks:", filteredTasks);
+
+        setPmProjects(Array.isArray(projects) ? projects : []);
+
+        setPmTasks(filteredTasks);
+      } catch (error) {
+        if (cancelled) return;
+
+        console.error("PM navbar search error:", error);
+
+        setPmDataError(
+          error?.response?.data?.message || "Failed to load PM search data",
+        );
+
+        setPmProjects([]);
+
+        setPmTasks([]);
+      } finally {
+        if (!cancelled) {
+          setPmDataLoading(false);
+        }
+      }
+    };
+
+    loadPmData();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isProjectManager]);
 
   /* =====================================================
      TODAY
@@ -556,67 +404,135 @@ export default function Navbar({ setIsOpen }) {
   }, [isMember, searchQuery, memberTasks]);
 
   /* =====================================================
-     USER SEARCH
-     
-     ADMIN:
-       admin + pm + member
-
-     PM:
-       pm + member
-
-     MEMBER:
-       none
+     PM PROJECT SEARCH
   ===================================================== */
 
-  const filteredUsers = useMemo(() => {
-    if (!canSearchUsers) return [];
+  const filteredPmProjects = useMemo(() => {
+    if (!isProjectManager) return [];
 
     const query = searchQuery.trim().toLowerCase();
 
     if (!query) return [];
 
-    let allowedRoles = [];
+    return pmProjects.filter((project) => {
+      const title = String(project?.title || "").toLowerCase();
 
-    if (isAdmin) {
-      allowedRoles = [ROLE.ADMIN, ROLE.PROJECT_MANAGER, ROLE.MEMBER];
-    } else if (isProjectManager) {
-      allowedRoles = [ROLE.PROJECT_MANAGER, ROLE.MEMBER];
-    }
+      const description = String(project?.description || "").toLowerCase();
 
-    return users.filter((u) => {
-      if (!allowedRoles.includes(u?.role)) {
-        return false;
+      const status = String(project?.status || "").toLowerCase();
+
+      return (
+        title.includes(query) ||
+        description.includes(query) ||
+        status.includes(query)
+      );
+    });
+  }, [isProjectManager, searchQuery, pmProjects]);
+
+  /* =====================================================
+     PM TASK SEARCH
+
+     Searches:
+     - task title
+     - description
+     - status
+     - priority
+     - project title
+  ===================================================== */
+
+  const filteredPmTasks = useMemo(() => {
+    if (!isProjectManager) return [];
+
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) return [];
+
+    return pmTasks.filter((task) => {
+      const title = String(task?.title || "").toLowerCase();
+
+      const description = String(task?.description || "").toLowerCase();
+
+      const status = String(task?.status || "").toLowerCase();
+
+      const priority = String(task?.priority || "").toLowerCase();
+
+      let projectTitle = "";
+
+      /*
+       * If projectId is populated
+       */
+
+      if (typeof task?.projectId === "object") {
+        projectTitle = String(task?.projectId?.title || "").toLowerCase();
       }
 
+      /*
+       * If projectId is only an ID,
+       * find project from PM projects.
+       */
+
+      if (!projectTitle && task?.projectId) {
+        const projectId =
+          typeof task.projectId === "object"
+            ? task.projectId?._id
+            : task.projectId;
+
+        const project = pmProjects.find(
+          (p) => String(p._id) === String(projectId),
+        );
+
+        projectTitle = String(project?.title || "").toLowerCase();
+      }
+
+      return (
+        title.includes(query) ||
+        description.includes(query) ||
+        status.includes(query) ||
+        priority.includes(query) ||
+        projectTitle.includes(query)
+      );
+    });
+  }, [isProjectManager, searchQuery, pmTasks, pmProjects]);
+
+  /* =====================================================
+     ADMIN USER SEARCH
+     ADMIN ONLY
+  ===================================================== */
+
+  const filteredUsers = useMemo(() => {
+    if (!isAdmin) return [];
+
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) return [];
+
+    return users.filter((u) => {
       const name = String(u?.name || "").toLowerCase();
 
       const email = String(u?.email || "").toLowerCase();
 
       const username = String(u?.username || "").toLowerCase();
 
-      const role = String(u?.role || "").toLowerCase();
-
-      const roleLabel = role.replaceAll("_", " ");
+      const role = String(u?.role || "")
+        .replaceAll("_", " ")
+        .toLowerCase();
 
       return (
         name.includes(query) ||
         email.includes(query) ||
         username.includes(query) ||
-        roleLabel.includes(query)
+        role.includes(query)
       );
     });
-  }, [canSearchUsers, isAdmin, isProjectManager, searchQuery, users]);
+  }, [isAdmin, searchQuery, users]);
 
   /* =====================================================
-     PROJECT SEARCH
-     
-     ADMIN + PM
+     ADMIN PROJECT SEARCH
+     ADMIN ONLY
   ===================================================== */
 
   const filteredAdminProjects = useMemo(() => {
-    if (!isAdmin && !isProjectManager) {
-      return [];
-    }
+    if (!isAdmin) return [];
 
     const query = searchQuery.trim().toLowerCase();
 
@@ -635,229 +551,19 @@ export default function Navbar({ setIsOpen }) {
         status.includes(query)
       );
     });
-  }, [isAdmin, isProjectManager, searchQuery, adminProjects]);
-
-  /* =====================================================
-     NAVIGATION ITEMS
-     
-     IMPORTANT:
-     PAGES ARE ROLE BASED.
-     
-     MEMBER:
-       Dashboard
-       Projects
-       Tasks
-       Team
-       Profile
-
-     PM:
-       Dashboard
-       Projects
-       Tasks
-       Members
-       Task Progress
-       Reports
-       Profile
-
-     ADMIN:
-       Dashboard
-       Users
-       Roles & Permissions
-       Projects
-       Activity
-       Contact
-       Reports
-       Profile
-  ===================================================== */
-
-  const navigationItems = useMemo(() => {
-    if (isMember) {
-      return [
-        {
-          id: "dashboard",
-          title: "Dashboard",
-          description: "Open dashboard",
-          icon: FaHome,
-          route: "/member",
-        },
-        {
-          id: "projects",
-          title: "Projects",
-          description: "View your projects",
-          icon: FaFolder,
-          route: "/member/projects",
-        },
-        {
-          id: "tasks",
-          title: "Tasks",
-          description: "View your tasks",
-          icon: FaTasks,
-          route: "/member/tasks",
-        },
-        {
-          id: "team",
-          title: "Team",
-          description: "View team members",
-          icon: FaUsers,
-          route: "/member/team",
-        },
-        {
-          id: "profile",
-          title: "Profile",
-          description: "View your profile",
-          icon: FaUser,
-          route: "/member/profile",
-        },
-      ];
-    }
-
-    if (isProjectManager) {
-      return [
-        {
-          id: "dashboard",
-          title: "Dashboard",
-          description: "Open dashboard",
-          icon: FaHome,
-          route: "/project-manager",
-        },
-        {
-          id: "projects",
-          title: "Projects",
-          description: "Manage projects",
-          icon: FaFolder,
-          route: "/project-manager/projects",
-        },
-        {
-          id: "tasks",
-          title: "Tasks",
-          description: "Manage tasks",
-          icon: FaTasks,
-          route: "/project-manager/tasks",
-        },
-        {
-          id: "members",
-          title: "Members",
-          description: "Manage project members",
-          icon: FaUsers,
-          route: "/project-manager/members",
-        },
-        {
-          id: "task-progress",
-          title: "Task Progress",
-          description: "View task progress",
-          icon: FaChartLine,
-          route: "/project-manager/progress",
-        },
-        {
-          id: "reports",
-          title: "Reports",
-          description: "View project reports",
-          icon: FaFileAlt,
-          route: "/project-manager/report",
-        },
-        {
-          id: "profile",
-          title: "Profile",
-          description: "View your profile",
-          icon: FaUser,
-          route: "/project-manager/profile",
-        },
-      ];
-    }
-
-    if (isAdmin) {
-      return [
-        {
-          id: "dashboard",
-          title: "Dashboard",
-          description: "Open dashboard",
-          icon: FaHome,
-          route: "/admin",
-        },
-        {
-          id: "users",
-          title: "Users",
-          description: "Manage users",
-          icon: FaUsers,
-          route: "/admin/users",
-        },
-        {
-          id: "roles-permissions",
-          title: "Roles & Permissions",
-          description: "Manage roles and permissions",
-          icon: FaShieldAlt,
-          route: "/admin/roles",
-        },
-        {
-          id: "projects",
-          title: "Projects",
-          description: "Manage all projects",
-          icon: FaFolder,
-          route: "/admin/projects",
-        },
-        {
-          id: "activity",
-          title: "Activity",
-          description: "View system activity",
-          icon: FaHistory,
-          route: "/admin/activity",
-        },
-        {
-          id: "contact",
-          title: "Contact",
-          description: "Manage contact messages",
-          icon: FaEnvelope,
-          route: "/admin/contact",
-        },
-        {
-          id: "reports",
-          title: "Reports",
-          description: "View system reports",
-          icon: FaFileAlt,
-          route: "/admin/reports",
-        },
-        {
-          id: "profile",
-          title: "Profile",
-          description: "View your profile",
-          icon: FaUser,
-          route: "/admin/profile",
-        },
-      ];
-    }
-
-    return [];
-  }, [isAdmin, isProjectManager, isMember]);
-
-  /* =====================================================
-     PAGE SEARCH
-     
-     PAGES COME FIRST.
-  ===================================================== */
-
-  const filteredNavigation = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-
-    if (!query) return [];
-
-    return navigationItems.filter((item) => {
-      return (
-        item.title.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query)
-      );
-    });
-  }, [searchQuery, navigationItems]);
+  }, [isAdmin, searchQuery, adminProjects]);
 
   /* =====================================================
      RESULTS
   ===================================================== */
 
   const hasResults =
-    filteredNavigation.length > 0 ||
     filteredUsers.length > 0 ||
     filteredAdminProjects.length > 0 ||
     filteredMemberProjects.length > 0 ||
-    filteredMemberTasks.length > 0;
+    filteredMemberTasks.length > 0 ||
+    filteredPmProjects.length > 0 ||
+    filteredPmTasks.length > 0;
 
   /* =====================================================
      SEARCH
@@ -873,42 +579,15 @@ export default function Navbar({ setIsOpen }) {
 
   const clearSearch = () => {
     setSearchQuery("");
+
     setIsSearchOpen(false);
   };
 
   /* =====================================================
-     NAVIGATION
+     PROJECT CLICK
   ===================================================== */
 
-  const handleNavigationClick = (route) => {
-    clearSearch();
-    router.push(route);
-  };
-
-  const handleMemberProjectClick = (id) => {
-    clearSearch();
-    router.push(`/member/projects/${id}`);
-  };
-
-  const handleMemberTaskClick = (id) => {
-    clearSearch();
-    router.push(`/member/tasks/${id}`);
-  };
-
-  const handleUserClick = (id) => {
-    clearSearch();
-
-    if (isAdmin) {
-      router.push(`/admin/users/${id}`);
-      return;
-    }
-
-    if (isProjectManager) {
-      router.push(`/project-manager/team/${id}`);
-    }
-  };
-
-  const handleAdminProjectClick = (id) => {
+  const handleProjectClick = (id) => {
     clearSearch();
 
     if (isAdmin) {
@@ -918,7 +597,40 @@ export default function Navbar({ setIsOpen }) {
 
     if (isProjectManager) {
       router.push(`/project-manager/projects/${id}`);
+      return;
     }
+
+    if (isMember) {
+      router.push(`/member/projects/${id}`);
+    }
+  };
+
+  /* =====================================================
+     TASK CLICK
+  ===================================================== */
+
+  const handleTaskClick = (id) => {
+    clearSearch();
+
+    if (isProjectManager) {
+      router.push(`/project-manager/tasks/${id}`);
+      return;
+    }
+
+    if (isMember) {
+      router.push(`/member/tasks/${id}`);
+    }
+  };
+
+  /* =====================================================
+     USER CLICK
+     ADMIN ONLY
+  ===================================================== */
+
+  const handleUserClick = (id) => {
+    clearSearch();
+
+    router.push(`/admin/users/${id}`);
   };
 
   /* =====================================================
@@ -928,6 +640,7 @@ export default function Navbar({ setIsOpen }) {
   const handleKeyDown = (e) => {
     if (e.key === "Escape") {
       clearSearch();
+
       return;
     }
 
@@ -935,43 +648,38 @@ export default function Navbar({ setIsOpen }) {
       return;
     }
 
-    /*
-     * PAGES FIRST
-     */
-    if (filteredNavigation.length === 1) {
-      handleNavigationClick(filteredNavigation[0].route);
-      return;
-    }
-
-    /*
-     * USERS
-     */
     if (filteredUsers.length === 1) {
       handleUserClick(filteredUsers[0]._id);
+
       return;
     }
 
-    /*
-     * PROJECTS
-     */
     if (filteredAdminProjects.length === 1) {
-      handleAdminProjectClick(filteredAdminProjects[0]._id);
+      handleProjectClick(filteredAdminProjects[0]._id);
+
       return;
     }
 
-    /*
-     * MEMBER PROJECT
-     */
+    if (filteredPmProjects.length === 1) {
+      handleProjectClick(filteredPmProjects[0]._id);
+
+      return;
+    }
+
+    if (filteredPmTasks.length === 1) {
+      handleTaskClick(filteredPmTasks[0]._id);
+
+      return;
+    }
+
     if (filteredMemberProjects.length === 1) {
-      handleMemberProjectClick(filteredMemberProjects[0]._id);
+      handleProjectClick(filteredMemberProjects[0]._id);
+
       return;
     }
 
-    /*
-     * MEMBER TASK
-     */
     if (filteredMemberTasks.length === 1) {
-      handleMemberTaskClick(filteredMemberTasks[0]._id);
+      handleTaskClick(filteredMemberTasks[0]._id);
     }
   };
 
@@ -981,6 +689,7 @@ export default function Navbar({ setIsOpen }) {
 
   const handleLogout = () => {
     logout();
+
     router.push("/");
   };
 
@@ -1010,18 +719,37 @@ export default function Navbar({ setIsOpen }) {
   }, []);
 
   /* =====================================================
+     SEARCH PLACEHOLDER
+  ===================================================== */
+
+  const searchPlaceholder = isAdmin
+    ? "Search users and projects..."
+    : isProjectManager
+      ? "Search your projects and tasks..."
+      : "Search your projects and tasks...";
+
+  /* =====================================================
+     LOADING
+  ===================================================== */
+
+  const isLoading =
+    (isMember && memberDataLoading) || (isProjectManager && pmDataLoading);
+
+  const error = isMember
+    ? memberDataError
+    : isProjectManager
+      ? pmDataError
+      : "";
+
+  /* =====================================================
      RENDER
   ===================================================== */
 
   return (
     <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-sm md:px-8">
-      {/* =================================================
-          LEFT
-      ================================================= */}
+      {/* ================= LEFT ================= */}
 
       <div className="flex flex-1 items-center gap-4">
-        {/* MOBILE MENU */}
-
         <button
           type="button"
           onClick={() => setIsOpen(true)}
@@ -1030,18 +758,14 @@ export default function Navbar({ setIsOpen }) {
           <FaBars className="text-slate-700" />
         </button>
 
-        {/* =================================================
-            SEARCH
-        ================================================= */}
+        {/* ================= SEARCH ================= */}
 
         <div className="relative max-w-md flex-1" ref={searchInputRef}>
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
           <input
             type="text"
-            placeholder={
-              isMember ? "Search your projects and tasks..." : "Search..."
-            }
+            placeholder={searchPlaceholder}
             value={searchQuery}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
@@ -1055,35 +779,33 @@ export default function Navbar({ setIsOpen }) {
 
           {isSearchOpen && searchQuery.trim().length > 0 && (
             <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-125 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl">
-              {/* MEMBER LOADING */}
+              {/* ================= LOADING ================= */}
 
-              {isMember && memberDataLoading && (
+              {isLoading && (
                 <div className="p-5 text-center">
                   <div className="mx-auto mb-3 h-6 w-6 animate-spin rounded-full border-2 border-slate-200 border-t-[#0f5238]" />
 
                   <p className="text-sm text-slate-500">
-                    Loading your projects and tasks...
+                    Loading search data...
                   </p>
                 </div>
               )}
 
-              {/* MEMBER ERROR */}
+              {/* ================= ERROR ================= */}
 
-              {isMember && !memberDataLoading && memberDataError && (
+              {!isLoading && error && (
                 <div className="p-5 text-center">
                   <p className="text-sm font-medium text-red-600">
                     Unable to load search data
                   </p>
 
-                  <p className="mt-1 text-xs text-slate-500">
-                    {memberDataError}
-                  </p>
+                  <p className="mt-1 text-xs text-slate-500">{error}</p>
                 </div>
               )}
 
-              {/* NO RESULTS */}
+              {/* ================= NO RESULTS ================= */}
 
-              {!memberDataLoading && !memberDataError && !hasResults && (
+              {!isLoading && !error && !hasResults && (
                 <div className="p-6 text-center">
                   <FaSearch className="mx-auto mb-3 text-2xl text-slate-300" />
 
@@ -1092,59 +814,20 @@ export default function Navbar({ setIsOpen }) {
                   </p>
 
                   <p className="mt-1 text-xs text-slate-400">
-                    Try another name, project, task, or page.
+                    Try another project or task.
                   </p>
                 </div>
               )}
 
-              {/* RESULTS */}
+              {/* ================= RESULTS ================= */}
 
-              {!memberDataLoading && !memberDataError && hasResults && (
+              {!isLoading && !error && hasResults && (
                 <div className="p-2">
-                  {/* =================================================
-                          1. PAGES FIRST
-                      ================================================= */}
+                  {/* =====================================
+                          ADMIN USERS
+                      ===================================== */}
 
-                  {filteredNavigation.length > 0 && (
-                    <div className="mb-3">
-                      <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                        Pages
-                      </p>
-
-                      {filteredNavigation.slice(0, 8).map((item) => {
-                        const Icon = item.icon;
-
-                        return (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => handleNavigationClick(item.route)}
-                            className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-emerald-50"
-                          >
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
-                              <Icon />
-                            </div>
-
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-sm font-medium text-[#181d19]">
-                                {item.title}
-                              </p>
-
-                              <p className="truncate text-xs text-slate-500">
-                                {item.description}
-                              </p>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {/* =================================================
-                          2. USERS
-                      ================================================= */}
-
-                  {filteredUsers.length > 0 && (
+                  {isAdmin && filteredUsers.length > 0 && (
                     <div className="mb-3">
                       <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
                         Users
@@ -1155,7 +838,7 @@ export default function Navbar({ setIsOpen }) {
                           key={u._id}
                           type="button"
                           onClick={() => handleUserClick(u._id)}
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-emerald-50"
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-emerald-50"
                         >
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#0f5238] text-sm font-medium text-white">
                             {u.name?.charAt(0)?.toUpperCase() || "U"}
@@ -1170,39 +853,63 @@ export default function Navbar({ setIsOpen }) {
                               {u.email}
                             </p>
                           </div>
-
-                          <span
-                            className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-medium ${
-                              u.role === ROLE.ADMIN
-                                ? "bg-purple-100 text-purple-700"
-                                : u.role === ROLE.PROJECT_MANAGER
-                                  ? "bg-blue-100 text-blue-700"
-                                  : "bg-emerald-100 text-emerald-700"
-                            }`}
-                          >
-                            {getRoleLabel(u.role)}
-                          </span>
                         </button>
                       ))}
                     </div>
                   )}
 
-                  {/* =================================================
-                          3. MEMBER PROJECTS
-                      ================================================= */}
+                  {/* =====================================
+                          ADMIN PROJECTS
+                      ===================================== */}
 
-                  {filteredMemberProjects.length > 0 && (
+                  {isAdmin && filteredAdminProjects.length > 0 && (
+                    <div>
+                      <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        Projects
+                      </p>
+
+                      {filteredAdminProjects.slice(0, 7).map((project) => (
+                        <button
+                          key={project._id}
+                          type="button"
+                          onClick={() => handleProjectClick(project._id)}
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-emerald-50"
+                        >
+                          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-[#0f5238]">
+                            <FaFolder />
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium">
+                              {project.title}
+                            </p>
+
+                            <p className="truncate text-xs text-slate-500">
+                              {project.description}
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* =====================================
+                          PM PROJECTS
+                          ONLY PM PROJECT LIST
+                      ===================================== */}
+
+                  {isProjectManager && filteredPmProjects.length > 0 && (
                     <div className="mb-3">
                       <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
                         My Projects
                       </p>
 
-                      {filteredMemberProjects.slice(0, 5).map((project) => (
+                      {filteredPmProjects.slice(0, 7).map((project) => (
                         <button
                           key={project._id}
                           type="button"
-                          onClick={() => handleMemberProjectClick(project._id)}
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-emerald-50"
+                          onClick={() => handleProjectClick(project._id)}
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-emerald-50"
                         >
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[#0f5238]">
                             <FaFolder />
@@ -1216,12 +923,12 @@ export default function Navbar({ setIsOpen }) {
                             <p className="truncate text-xs text-slate-500">
                               {project.description ||
                                 project.status ||
-                                "Assigned project"}
+                                "Project"}
                             </p>
                           </div>
 
                           {project.status && (
-                            <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] capitalize text-slate-500">
+                            <span className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] capitalize text-slate-500">
                               {project.status}
                             </span>
                           )}
@@ -1230,28 +937,38 @@ export default function Navbar({ setIsOpen }) {
                     </div>
                   )}
 
-                  {/* =================================================
-                          4. MEMBER TASKS
-                      ================================================= */}
+                  {/* =====================================
+                          PM TASKS
+                          ONLY TASKS OF PM PROJECTS
+                      ===================================== */}
 
-                  {filteredMemberTasks.length > 0 && (
-                    <div className="mb-3">
+                  {isProjectManager && filteredPmTasks.length > 0 && (
+                    <div>
                       <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
                         My Tasks
                       </p>
 
-                      {filteredMemberTasks.slice(0, 7).map((task) => {
+                      {filteredPmTasks.slice(0, 7).map((task) => {
+                        const projectId =
+                          typeof task?.projectId === "object"
+                            ? task?.projectId?._id
+                            : task?.projectId;
+
+                        const project = pmProjects.find(
+                          (p) => String(p._id) === String(projectId),
+                        );
+
                         const projectTitle =
                           typeof task?.projectId === "object"
-                            ? task?.projectId?.title
-                            : "";
+                            ? task?.projectId?.title || project?.title
+                            : project?.title;
 
                         return (
                           <button
                             key={task._id}
                             type="button"
-                            onClick={() => handleMemberTaskClick(task._id)}
-                            className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors hover:bg-emerald-50"
+                            onClick={() => handleTaskClick(task._id)}
+                            className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-emerald-50"
                           >
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
                               <FaTasks />
@@ -1265,12 +982,12 @@ export default function Navbar({ setIsOpen }) {
                               <p className="truncate text-xs text-slate-500">
                                 {projectTitle
                                   ? `Project: ${projectTitle}`
-                                  : task.description || "Assigned task"}
+                                  : task.description || "Task"}
                               </p>
                             </div>
 
                             {task.status && (
-                              <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] capitalize text-slate-500">
+                              <span className="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-[10px] capitalize text-slate-500">
                                 {task.status}
                               </span>
                             )}
@@ -1280,38 +997,71 @@ export default function Navbar({ setIsOpen }) {
                     </div>
                   )}
 
-                  {/* =================================================
-                          5. PROJECTS
-                      ================================================= */}
+                  {/* =====================================
+                          MEMBER PROJECTS
+                      ===================================== */}
 
-                  {filteredAdminProjects.length > 0 && (
-                    <div>
+                  {isMember && filteredMemberProjects.length > 0 && (
+                    <div className="mb-3">
                       <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-                        Projects
+                        My Projects
                       </p>
 
-                      {filteredAdminProjects.slice(0, 5).map((project) => (
+                      {filteredMemberProjects.slice(0, 5).map((project) => (
                         <button
                           key={project._id}
                           type="button"
-                          onClick={() => handleAdminProjectClick(project._id)}
-                          className="w-full rounded-lg px-3 py-3 text-left transition-colors hover:bg-emerald-50"
+                          onClick={() => handleProjectClick(project._id)}
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-emerald-50"
                         >
-                          <p className="text-sm font-medium text-[#181d19]">
-                            {project.title}
-                          </p>
+                          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-[#0f5238]">
+                            <FaFolder />
+                          </div>
 
-                          {project.description && (
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium">
+                              {project.title}
+                            </p>
+
                             <p className="truncate text-xs text-slate-500">
                               {project.description}
                             </p>
-                          )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
 
-                          {project.status && (
-                            <span className="mt-1 inline-block rounded-full bg-slate-100 px-2 py-1 text-[10px] capitalize text-slate-500">
-                              {project.status}
-                            </span>
-                          )}
+                  {/* =====================================
+                          MEMBER TASKS
+                      ===================================== */}
+
+                  {isMember && filteredMemberTasks.length > 0 && (
+                    <div>
+                      <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        My Tasks
+                      </p>
+
+                      {filteredMemberTasks.slice(0, 7).map((task) => (
+                        <button
+                          key={task._id}
+                          type="button"
+                          onClick={() => handleTaskClick(task._id)}
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition hover:bg-emerald-50"
+                        >
+                          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                            <FaTasks />
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium">
+                              {task.title}
+                            </p>
+
+                            <p className="truncate text-xs text-slate-500">
+                              {task.description}
+                            </p>
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -1323,13 +1073,9 @@ export default function Navbar({ setIsOpen }) {
         </div>
       </div>
 
-      {/* =================================================
-          RIGHT
-      ================================================= */}
+      {/* ================= RIGHT ================= */}
 
       <div className="flex items-center gap-2 md:gap-5">
-        {/* DATE */}
-
         <div className="hidden text-right md:block">
           <p className="text-sm font-medium text-slate-700">{today}</p>
         </div>
@@ -1379,8 +1125,6 @@ export default function Navbar({ setIsOpen }) {
             />
           </button>
 
-          {/* PROFILE MENU */}
-
           {open && (
             <div className="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl sm:w-60">
               <div className="border-b bg-slate-50 p-5">
@@ -1403,6 +1147,7 @@ export default function Navbar({ setIsOpen }) {
                 type="button"
                 onClick={() => {
                   setOpen(false);
+
                   router.push(getProfileRoute());
                 }}
                 className="flex w-full items-center gap-3 px-5 py-4 transition hover:bg-slate-100"
