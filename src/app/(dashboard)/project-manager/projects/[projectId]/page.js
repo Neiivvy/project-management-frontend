@@ -11,8 +11,10 @@ import {
   FaSpinner,
   FaTasks,
   FaCheckCircle,
+  FaUserMinus,
 } from "react-icons/fa";
 
+import axiosInstance from "@/api/axios";
 import useProjectStore from "@/store/useProjectStore";
 import useReportStore from "@/store/useReportStore";
 
@@ -31,6 +33,33 @@ export default function ProjectDetailsPage() {
       fetchReport(projectId);
     }
   }, [projectId, fetchProjectById, fetchReport]);
+
+  const handleRemoveMember = async (member) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to remove ${member.name} from this project?\n\nThey will also be removed from all tasks related to this project.`,
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await axiosInstance.delete(
+        `/projects/${projectId}/members/${member._id || member.id}`,
+      );
+
+      // Refresh project details
+      await fetchProjectById(projectId);
+
+      // Refresh report if member/task information is included
+      await fetchReport(projectId);
+    } catch (error) {
+      console.error("Failed to remove member:", error);
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to remove member from project",
+      );
+    }
+  };
 
   const formatDate = (date) => {
     if (!date) return "-";
@@ -275,40 +304,65 @@ export default function ProjectDetailsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow p-2">
-            <h2 className="text-xl font-bold mb-4">Team Members</h2>
+          <div className="bg-white rounded-xl shadow p-4 sm:p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-xl font-bold">Team Members</h2>
+
+              <span className="rounded-full bg-[#e8f2ee] px-3 py-1 text-xs font-semibold text-[#0f5238]">
+                {project.teamMembers?.length || 0} Members
+              </span>
+            </div>
+
             {project.teamMembers?.length ? (
               <div className="max-h-90 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
-                {project.teamMembers.map((member, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:bg-gray-50"
-                  >
-                    <div className="flex min-w-0 items-center gap-3">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] font-semibold text-white">
-                        {member.name
-                          ?.split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                          .toUpperCase()}
+                {project.teamMembers.map((member, index) => {
+                  const memberId = member._id || member.id;
+
+                  return (
+                    <div
+                      key={memberId || index}
+                      className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white p-3 transition hover:border-gray-300 hover:bg-gray-50"
+                    >
+                      {/* Member Info */}
+                      <div className="flex min-w-0 flex-1 items-center gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2d6a4f] font-semibold text-sm text-white">
+                          {member.name
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                            .toUpperCase()}
+                        </div>
+
+                        <div className="min-w-0">
+                          <h3 className="truncate font-semibold text-gray-800">
+                            {member.name}
+                          </h3>
+
+                          <p className="truncate text-sm text-gray-500">
+                            {member.email || "No email"}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="min-w-0">
-                        <h3 className="truncate font-semibold text-gray-800">
-                          {member.name}
-                        </h3>
+                      {/* Right Side */}
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span className="hidden rounded-full bg-blue-100 px-3 py-1 text-xs font-medium capitalize text-blue-700 sm:inline-flex">
+                          {member.role}
+                        </span>
 
-                        <p className="truncate text-sm text-gray-500">
-                          {member.email}
-                        </p>
+                        {/* Remove Button */}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveMember(member)}
+                          title="Remove member"
+                          className="flex h-9 w-9 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-red-500 transition hover:border-red-300 hover:bg-red-100 hover:text-red-600"
+                        >
+                          <FaUserMinus size={14} />
+                        </button>
                       </div>
                     </div>
-
-                    <span className="shrink-0 rounded-full bg-blue-100 px-3 py-1 text-xs font-medium capitalize text-blue-700">
-                      {member.role}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="py-6 text-center text-gray-500">
